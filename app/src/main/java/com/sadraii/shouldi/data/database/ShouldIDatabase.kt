@@ -22,6 +22,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.sadraii.shouldi.data.dao.PictureDao
 import com.sadraii.shouldi.data.dao.UserDao
 import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.entity.UserEntity
@@ -34,6 +35,7 @@ import kotlinx.coroutines.launch
 abstract class ShouldIDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
+    abstract fun pictureDao(): PictureDao
 
     companion object {
         @Volatile
@@ -43,8 +45,6 @@ abstract class ShouldIDatabase : RoomDatabase() {
             context: Context,
             scope: CoroutineScope
         ): ShouldIDatabase {
-            // if the INSTANCE is not null, then return it,
-            // if it is, then create the database
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
@@ -62,14 +62,8 @@ abstract class ShouldIDatabase : RoomDatabase() {
         private class ShouldIDatabaseCallback(
             private val scope: CoroutineScope
         ) : RoomDatabase.Callback() {
-            /**
-             * Override the onOpen method to populate the database.
-             * For this sample, we clear the database every time it is created or opened.
-             */
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
-                // If you want to keep the data through app restarts,
-                // comment out the following line.
                 INSTANCE?.let { database ->
                     scope.launch(Dispatchers.IO) {
                         populateDatabase(database.userDao())
@@ -78,13 +72,7 @@ abstract class ShouldIDatabase : RoomDatabase() {
             }
         }
 
-        /**
-         * Populate the database in a new coroutine.
-         * If you want to start with more words, just add them.
-         */
         suspend fun populateDatabase(userDao: UserDao) {
-            // Start the app with a clean database every time.
-            // Not needed if you only populate on creation.
             userDao.deleteAllUsers()
 
 //            var word = Word("Hello")

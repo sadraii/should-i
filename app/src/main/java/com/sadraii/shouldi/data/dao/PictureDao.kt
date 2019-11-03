@@ -16,20 +16,20 @@
 
 package com.sadraii.shouldi.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import com.sadraii.shouldi.data.entity.PictureEntity
-import com.sadraii.shouldi.data.entity.UserEntity
-import com.sadraii.shouldi.data.entity.UserEntityMinimal
 
 @Dao
 interface PictureDao : BaseDao<PictureEntity> {
 
     @Query("SELECT * FROM pictures WHERE picture_id = :pictureId")
-    fun getAllPictures(pictureId: Int): LiveData<List<PictureEntity>>
+    suspend fun getPicture(pictureId: Int): PictureEntity
 
     @Query("DELETE FROM pictures")
     suspend fun deleteAllPictures()
+
+    @Query("SELECT * FROM pictures WHERE owner_id = :userId")
+    suspend fun getPicturesForUser(userId: Int): List<PictureEntity>
 }
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2019 Mostafa Sadraii
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-package com.sadraii.shouldi
+package com.sadraii.shouldi.data.repository
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.sadraii.shouldi.data.dao.UserDao
 
-class ShouldIActivity : AppCompatActivity() {
+class UserRepository(private val userDao: UserDao) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_shouldi)
-    }
 }

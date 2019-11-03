@@ -21,17 +21,20 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-
 @Entity(tableName = "users")
-data class UserEntity(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "user_id") val userId: Int,
+data class UserEntity(
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "user_id") val userId: Int,
     @ColumnInfo(name = "user_name") val userName: String?,
     @ColumnInfo(name = "first_name") val firstName: String?,
     @ColumnInfo(name = "last_name") val lastName: String?,
     @ColumnInfo(name = "email") val email: String?,
     @ColumnInfo(name = "created") val created: Date,
-    @ColumnInfo(name = "last_online") var lastOnline: Date)
+    @ColumnInfo(name = "last_online") var lastOnline: Date?
+)
 
-data class UserEntityMinimal(val id: Int,
-    val firstName: String?,
-    val lastName: String?)
+// data class UserEntityMinimal(
+//     val userId: Int,
+//     val firstName: String?,
+//     val lastName: String?
+// )
 

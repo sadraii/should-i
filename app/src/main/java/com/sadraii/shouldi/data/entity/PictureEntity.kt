@@ -18,19 +18,35 @@ package com.sadraii.shouldi.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(tableName = "pictures")
-data class PictureEntity(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "picture_id") val pictureId: Int,
-    @ColumnInfo(name = "uri") val uri: String?,
+@Entity(
+    tableName = "pictures",
+    foreignKeys = arrayOf(
+        ForeignKey(
+            entity = UserEntity::class,
+            parentColumns = arrayOf("user_id"),
+            childColumns = arrayOf("owner_id"),
+            onDelete = ForeignKey.CASCADE
+        )
+    ),
+    indices = arrayOf(Index(value = ["owner_id"]))
+)
+data class PictureEntity(
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "picture_id") val pictureId: Int,
+    @ColumnInfo(name = "picture_uri") val pictureUri: String?,
     @ColumnInfo(name = "created") val created: Date,
-    @ColumnInfo(name = "yes_count") var yesCount: Int,
-    @ColumnInfo(name = "no_count") var noCount: Int,
-    @ColumnInfo(name = "featured_count") var featuredCount: Int,
-    @ColumnInfo(name = "featured_time") var featuredTime: Date,
-    @ColumnInfo(name = "position_time") var positionTime: Date,
-    @ColumnInfo(name = "expo_fallback_scale") var expoFallbackScale: Int)
-//owner details
+    @ColumnInfo(name = "yes_count") var yesCount: Int?,
+    @ColumnInfo(name = "no_count") var noCount: Int?,
+    @ColumnInfo(name = "featured_count") var featuredCount: Int?,
+    @ColumnInfo(name = "featured_time") var featuredTime: Date?,
+    @ColumnInfo(name = "position_time") var positionTime: Date?,
+    @ColumnInfo(name = "expo_fallback_scale") var expoFallbackScale: Byte?,
+    @ColumnInfo(name = "caption") val caption: String,
+    @ColumnInfo(name = "owner_id") val ownerId: Int
+)
 //no caption details - caption is superimposed on pic when taken
 

@@ -18,11 +18,15 @@ package com.sadraii.shouldi
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.sadraii.shouldi.viewmodel.TestViewModel
 
 class ShouldIActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shouldi)
+        val vm = ViewModelProvider(this).get(TestViewModel::class.java)
+        val da = vm.dao
     }
 }

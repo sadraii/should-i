@@ -23,13 +23,15 @@ import com.sadraii.shouldi.data.entity.PictureEntity
 @Dao
 interface PictureDao : BaseDao<PictureEntity> {
 
-    @Query("SELECT * FROM pictures WHERE picture_id = :pictureId")
+    @Query("SELECT * FROM pictures WHERE id = :pictureId")
     suspend fun getPicture(pictureId: Int): PictureEntity
 
     @Query("DELETE FROM pictures")
     suspend fun deleteAllPictures()
 
-    @Query("SELECT * FROM pictures WHERE owner_id = :userId")
+    @Query("SELECT * FROM pictures WHERE user_id = :userId")
     suspend fun getPicturesForUser(userId: Int): List<PictureEntity>
 }
+
+
 

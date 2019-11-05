@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.sadraii.shouldi.data.database
+package com.sadraii.shouldi.data.converter
 
 import androidx.room.TypeConverter
 import java.util.Date
 
-class Converters {
+class DateConverter {
 
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {

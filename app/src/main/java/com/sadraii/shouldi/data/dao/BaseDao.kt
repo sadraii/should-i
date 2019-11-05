@@ -27,7 +27,7 @@ interface BaseDao<T> {
     suspend fun insert(entity: T)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg entity: T)
+    suspend fun insertAll(vararg entity: T)
 
     @Update
     suspend fun update(entity: T)
@@ -35,4 +35,6 @@ interface BaseDao<T> {
     @Delete
     suspend fun delete(entity: T)
 }
+
+
 

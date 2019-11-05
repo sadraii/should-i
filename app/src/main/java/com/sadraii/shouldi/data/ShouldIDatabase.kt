@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sadraii.shouldi.data.database
+package com.sadraii.shouldi.data
 
 import android.content.Context
 import android.util.Log
@@ -24,6 +24,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.sadraii.shouldi.TAG
+import com.sadraii.shouldi.data.converter.DateConverter
 import com.sadraii.shouldi.data.dao.PictureDao
 import com.sadraii.shouldi.data.dao.UserDao
 import com.sadraii.shouldi.data.entity.PictureEntity
@@ -31,10 +32,9 @@ import com.sadraii.shouldi.data.entity.UserEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Date
 
 @Database(entities = [PictureEntity::class, UserEntity::class], version = 1)
-@TypeConverters(Converters::class)
+@TypeConverters(DateConverter::class)
 abstract class ShouldIDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
@@ -55,7 +55,11 @@ abstract class ShouldIDatabase : RoomDatabase() {
                     ShouldIDatabase::class.java,
                     "should_i_database"
                 )
-                    .addCallback(ShouldIDatabaseCallback(scope))
+                    .addCallback(
+                        ShouldIDatabaseCallback(
+                            scope
+                        )
+                    )
                     .build()
                 INSTANCE = instance
                 // return instance
@@ -73,82 +77,9 @@ abstract class ShouldIDatabase : RoomDatabase() {
             Log.d(TAG, "onOpen() database")
             INSTANCE?.let { database ->
                 scope.launch(Dispatchers.IO) {
-                    populateDatabase(database.userDao(), database.pictureDao())
+                    SampleDataGenerator.generate(database.userDao(), database.pictureDao())
                 }
             }
-        }
-
-        suspend fun populateDatabase(userDao: UserDao, pictureDao: PictureDao) {
-            userDao.deleteAllUsers()
-
-            var newUser =
-                UserEntity(1, "user1", "Elise", "Elser", "elise@example.com", Date(), null)
-            userDao.insert(newUser)
-            newUser =
-                UserEntity(2, "user2", "Kendra", "Kahn", "kendra@example.com", Date(), Date())
-            userDao.insert(newUser)
-            newUser = UserEntity(3, "user3", "Corey", "Coursey", "corey@example.com", Date(), null)
-            userDao.insert(newUser)
-
-            pictureDao.deleteAllPictures()
-
-            var newPicture = PictureEntity(
-                11,
-                "https://www.example.com/pic1",
-                Date(),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                "Should I picture 1",
-                1
-            )
-            pictureDao.insert(newPicture)
-            newPicture = PictureEntity(
-                22,
-                "https://www.example.com/pic2",
-                Date(),
-                4,
-                2,
-                1,
-                Date(),
-                Date(),
-                1,
-                "Should I picture 2",
-                2
-            )
-            pictureDao.insert(newPicture)
-            newPicture = PictureEntity(
-                33,
-                "https://www.example.com/pic3",
-                Date(),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                "Should I picture 3",
-                3
-            )
-            pictureDao.insert(newPicture)
-            newPicture = PictureEntity(
-                111,
-                "https://www.example.com/pic111",
-                Date(),
-                100,
-                90,
-                50,
-                Date(),
-                Date(),
-                3,
-                "Should I picture 1 again",
-                1
-            )
-            pictureDao.insert(newPicture)
-            Log.d(TAG, "populated database")
         }
     }
 }

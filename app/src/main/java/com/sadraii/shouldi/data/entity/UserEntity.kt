@@ -23,18 +23,14 @@ import java.util.Date
 
 @Entity(tableName = "users")
 data class UserEntity(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "user_id") val userId: Int,
-    @ColumnInfo(name = "user_name") val userName: String?,
-    @ColumnInfo(name = "first_name") val firstName: String?,
-    @ColumnInfo(name = "last_name") val lastName: String?,
-    @ColumnInfo(name = "email") val email: String?,
-    @ColumnInfo(name = "created") val created: Date,
-    @ColumnInfo(name = "last_online") var lastOnline: Date?
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @ColumnInfo(name = "user_name") val userName: String? = null,
+    @ColumnInfo(name = "first_name") val firstName: String? = null,
+    @ColumnInfo(name = "last_name") val lastName: String? = null,
+    @ColumnInfo(name = "email") val email: String? = null,
+    @ColumnInfo(name = "created") val created: Date = Date(0),
+    @ColumnInfo(name = "last_online") var lastOnline: Date? = null
 )
 
-// data class UserEntityMinimal(
-//     val userId: Int,
-//     val firstName: String?,
-//     val lastName: String?
-// )
+
 

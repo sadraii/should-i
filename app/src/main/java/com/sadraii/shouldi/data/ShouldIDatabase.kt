@@ -77,7 +77,7 @@ abstract class ShouldIDatabase : RoomDatabase() {
             Log.d(TAG, "onOpen() database")
             INSTANCE?.let { database ->
                 scope.launch(Dispatchers.IO) {
-                    SampleDataGenerator.generate(database.userDao(), database.pictureDao())
+                    SampleDataGenerator.generateLocalData(database.userDao(), database.pictureDao())
                 }
             }
         }

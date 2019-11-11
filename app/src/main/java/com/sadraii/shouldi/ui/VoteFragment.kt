@@ -14,35 +14,46 @@
  * limitations under the License.
  */
 
-package com.sadraii.shouldi
+package com.sadraii.shouldi.ui
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.sadraii.shouldi.viewmodel.ShouldIViewModel
+import com.sadraii.shouldi.R
+import com.sadraii.shouldi.viewmodel.VoteViewModel
 
-class ShouldIActivity : AppCompatActivity() {
+class VoteFragment : Fragment() {
 
     companion object {
         const val GOOGLE_SIGN_IN = 10
     }
 
     private lateinit var firestore: FirebaseFirestore
-    private val shouldIViewModel by viewModels<ShouldIViewModel>()
+    private val shouldIViewModel by viewModels<VoteViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_shouldi)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        // TODO(call super then return view at end of function?)
+        val rootView = inflater.inflate(R.layout.fragment_should_i_vote, container, false)
 
         FirebaseFirestore.setLoggingEnabled(true)
         initFirestore()
+
+        return rootView
     }
 
     private fun initFirestore() {
@@ -80,5 +91,3 @@ class ShouldIActivity : AppCompatActivity() {
         }
     }
 }
-
-

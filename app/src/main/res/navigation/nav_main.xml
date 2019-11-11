@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/shouldIVoteFragment">
+
+    <fragment
+        android:id="@+id/shouldIVoteFragment"
+        android:name="com.sadraii.shouldi.ui.VoteFragment"
+        android:label="fragment_should_i_vote"
+        tools:layout="@layout/fragment_should_i_vote" />
+    <fragment
+        android:id="@+id/takePictureFragment"
+        android:name="com.sadraii.shouldi.ui.TakePictureFragment"
+        android:label="fragment_take_picture"
+        tools:layout="@layout/fragment_take_picture" />
+</navigation>

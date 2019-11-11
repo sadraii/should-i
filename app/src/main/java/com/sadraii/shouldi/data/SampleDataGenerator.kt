@@ -17,6 +17,8 @@
 package com.sadraii.shouldi.data
 
 import android.util.Log
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.sadraii.shouldi.TAG
 import com.sadraii.shouldi.data.dao.PictureDao
 import com.sadraii.shouldi.data.dao.UserDao
@@ -26,32 +28,24 @@ import java.util.Date
 
 object SampleDataGenerator {
 
-    suspend fun generate(userDao: UserDao, pictureDao: PictureDao) {
+    suspend fun generateLocalData(userDao: UserDao, pictureDao: PictureDao) {
+        val firestore = Firebase.firestore
+        val users = firestore.collection("users")
+
         userDao.deleteAllUsers()
+        pictureDao.deleteAllPictures()
+
+        // TODO users.document(newUser.id.toString()).set()
+        // users.document("this").set(PictureEntity(
+        //     id = 11,
+        //     pictureUrl = "https://www.example.com/pic1",
+        //     created = Date(),
+        //     caption = "Should I picture 1",
+        //     userId = 1
+        // ))
 
         var newUser = UserEntity(1, "user1", "Elise", "Elser", "elise@example.com", Date(), null)
         userDao.insert(newUser)
-
-        newUser = UserEntity(2, "user2", "Kendra", "Kahn", "kendra@example.com", Date(), Date())
-        userDao.insert(newUser)
-
-        newUser = UserEntity(3, "user3", "Corey", "Coursey", "corey@example.com", Date(), null)
-        userDao.insert(newUser)
-
-        newUser = UserEntity(4, "user4", "Kyong", "Kreger", "kyong@example.com", Date(), Date())
-        userDao.insert(newUser)
-
-        newUser = UserEntity(5, "user5", "Mia", "Minnick", "mia@example.com", Date(), Date())
-        userDao.insert(newUser)
-
-        newUser = UserEntity(6, "user6", "Robby", "Reedy", "robby@example.com", Date(), Date())
-        userDao.insert(newUser)
-
-        newUser = UserEntity(7, "user7", "Peggy", "Potter", "peggy@example.com", Date(), Date())
-        userDao.insert(newUser)
-
-        pictureDao.deleteAllPictures()
-
         var newPicture = PictureEntity(
             id = 11,
             pictureUrl = "https://www.example.com/pic1",
@@ -60,7 +54,55 @@ object SampleDataGenerator {
             userId = 1
         )
         pictureDao.insert(newPicture)
+        users.add(newUser).addOnSuccessListener {
+            val collection = it.collection("pictures")
+            collection.add(newPicture)
+            collection.add(
+                PictureEntity(
+                    111,
+                    "https://www.example.com/pic111",
+                    Date(),
+                    100,
+                    90,
+                    50,
+                    Date(),
+                    Date(),
+                    3,
+                    "Should I picture 1 again",
+                    1
+                )
+            )
+            collection.add(
+                PictureEntity(
+                    id = 66,
+                    pictureUrl = "https://www.example.com/pic6",
+                    created = Date(),
+                    caption = "Should I picture 6",
+                    userId = 1
+                )
+            )
+            collection.add(
+                PictureEntity(
+                    id = 77,
+                    pictureUrl = "https://www.example.com/pic7",
+                    created = Date(),
+                    caption = "Should I picture 7",
+                    userId = 1
+                )
+            )
+            collection.add(
+                PictureEntity(
+                    id = 88,
+                    pictureUrl = "https://www.example.com/pic8",
+                    created = Date(),
+                    caption = "Should I picture 8",
+                    userId = 1
+                )
+            )
+        }
 
+        newUser = UserEntity(2, "user2", "Kendra", "Kahn", "kendra@example.com", Date(), Date())
+        userDao.insert(newUser)
         newPicture = PictureEntity(
             22,
             "https://www.example.com/pic2",
@@ -75,7 +117,13 @@ object SampleDataGenerator {
             2
         )
         pictureDao.insert(newPicture)
+        users.add(newUser).addOnSuccessListener {
+            val colllection = it.collection("pictures")
+            colllection.add(newPicture)
+        }
 
+        newUser = UserEntity(3, "user3", "Corey", "Coursey", "corey@example.com", Date(), null)
+        userDao.insert(newUser)
         newPicture = PictureEntity(
             id = 33,
             pictureUrl = "https://www.example.com/pic3",
@@ -84,6 +132,26 @@ object SampleDataGenerator {
             userId = 3
         )
         pictureDao.insert(newPicture)
+        users.add(newUser).addOnSuccessListener {
+            val colllection = it.collection("pictures")
+            colllection.add(newPicture)
+        }
+
+        newUser = UserEntity(4, "user4", "Kyong", "Kreger", "kyong@example.com", Date(), Date())
+        userDao.insert(newUser)
+        users.add(newUser)
+
+        newUser = UserEntity(5, "user5", "Mia", "Minnick", "mia@example.com", Date(), Date())
+        userDao.insert(newUser)
+        users.add(newUser)
+
+        newUser = UserEntity(6, "user6", "Robby", "Reedy", "robby@example.com", Date(), Date())
+        userDao.insert(newUser)
+        users.add(newUser)
+
+        newUser = UserEntity(7, "user7", "Peggy", "Potter", "peggy@example.com", Date(), Date())
+        userDao.insert(newUser)
+        users.add(newUser)
 
         newPicture = PictureEntity(
             111,

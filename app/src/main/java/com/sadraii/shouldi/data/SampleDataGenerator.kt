@@ -54,7 +54,7 @@ object SampleDataGenerator {
 
         var newPicture = PictureEntity(
             id = 11,
-            url = "https://www.example.com/pic1",
+            pictureUrl = "https://www.example.com/pic1",
             created = Date(),
             caption = "Should I picture 1",
             userId = 1
@@ -78,7 +78,7 @@ object SampleDataGenerator {
 
         newPicture = PictureEntity(
             id = 33,
-            url = "https://www.example.com/pic3",
+            pictureUrl = "https://www.example.com/pic3",
             created = Date(),
             caption = "Should I picture 3",
             userId = 3
@@ -102,7 +102,7 @@ object SampleDataGenerator {
 
         newPicture = PictureEntity(
             id = 66,
-            url = "https://www.example.com/pic6",
+            pictureUrl = "https://www.example.com/pic6",
             created = Date(),
             caption = "Should I picture 6",
             userId = 1
@@ -111,7 +111,7 @@ object SampleDataGenerator {
 
         newPicture = PictureEntity(
             id = 77,
-            url = "https://www.example.com/pic7",
+            pictureUrl = "https://www.example.com/pic7",
             created = Date(),
             caption = "Should I picture 7",
             userId = 1
@@ -120,7 +120,7 @@ object SampleDataGenerator {
 
         newPicture = PictureEntity(
             id = 88,
-            url = "https://www.example.com/pic8",
+            pictureUrl = "https://www.example.com/pic8",
             created = Date(),
             caption = "Should I picture 8",
             userId = 1

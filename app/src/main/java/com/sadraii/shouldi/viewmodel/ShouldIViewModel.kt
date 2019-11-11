@@ -11,16 +11,22 @@ import com.sadraii.shouldi.data.entity.UserEntity
 import kotlinx.coroutines.launch
 import java.util.Date
 
-class TestViewModel(application: Application) : AndroidViewModel(application) {
+class ShouldIViewModel(application: Application) : AndroidViewModel(application) {
 
-    val dao: UserDao
+    private val dao: UserDao // TODO(remove)
+    internal var isAuthenticating = false
 
     init {
+        // TODO(remove)
         Log.d(TAG, "calling getDatabase()")
         dao = ShouldIDatabase.getDatabase(application, viewModelScope).userDao()
         viewModelScope.launch {
             dao.insert(UserEntity(55, "55", "55", "55", "55", Date(), null))
             Log.d(TAG, "inserted 55")
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

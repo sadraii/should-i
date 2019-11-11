@@ -31,11 +31,11 @@ import java.util.Date
         childColumns = arrayOf("user_id"),
         onDelete = ForeignKey.CASCADE
     )],
-    indices = [Index(value = ["owner_id"])]
+    indices = [Index(value = ["user_id"])]
 )
 data class PictureEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "url") val url: String? = null,
+    @ColumnInfo(name = "picture_url") val pictureUrl: String? = null,
     @ColumnInfo(name = "created") val created: Date = Date(0),
     @ColumnInfo(name = "yes_count") var yesCount: Int = 0,
     @ColumnInfo(name = "no_count") var noCount: Int = 0,

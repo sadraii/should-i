@@ -16,17 +16,69 @@
 
 package com.sadraii.shouldi
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import com.sadraii.shouldi.viewmodel.TestViewModel
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.sadraii.shouldi.viewmodel.ShouldIViewModel
 
 class ShouldIActivity : AppCompatActivity() {
+
+    companion object {
+        const val GOOGLE_SIGN_IN = 10
+    }
+
+    private lateinit var firestore: FirebaseFirestore
+    private val shouldIViewModel by viewModels<ShouldIViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shouldi)
-        val vm = ViewModelProvider(this).get(TestViewModel::class.java)
-        val da = vm.dao
+
+        FirebaseFirestore.setLoggingEnabled(true)
+        initFirestore()
+    }
+
+    private fun initFirestore() {
+        firestore = Firebase.firestore
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (shouldStartAuthentication()) {
+            startAuthentication()
+            return
+        }
+    }
+
+    private fun shouldStartAuthentication() =
+        !shouldIViewModel.isAuthenticating && FirebaseAuth.getInstance().currentUser == null
+
+    private fun startAuthentication() {
+        val intent = AuthUI.getInstance().createSignInIntentBuilder()
+            .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))
+            .setIsSmartLockEnabled(false)
+            .build()
+        startActivityForResult(intent, GOOGLE_SIGN_IN)
+        shouldIViewModel.isAuthenticating = true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GOOGLE_SIGN_IN) {
+            shouldIViewModel.isAuthenticating = false
+            if (resultCode != Activity.RESULT_OK && shouldStartAuthentication()) {
+                startAuthentication()
+            }
+        }
     }
 }
+
+

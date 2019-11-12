@@ -11,7 +11,8 @@ import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.data.dao.UserDao
 import com.sadraii.shouldi.data.entity.UserEntity
 import kotlinx.coroutines.launch
-import java.util.Date
+import java.time.Instant
+import java.util.UUID
 
 class VoteViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -19,11 +20,9 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
     internal var isAuthenticating = false
 
     init {
-        // TODO(remove)
-        Log.d(TAG, "calling getDatabase()")
         dao = ShouldIDatabase.getDatabase(application, viewModelScope).userDao()
         viewModelScope.launch {
-            dao.insert(UserEntity(55, "55", "55", "55", "55", Date(), null))
+            dao.insert(UserEntity(UUID.randomUUID().toString(), "55", "55", "55", "55", Instant.now(), null))
             Log.d(TAG, "inserted 55")
         }
     }
@@ -38,3 +37,4 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 }
+

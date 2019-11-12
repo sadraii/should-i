@@ -25,7 +25,7 @@ import com.sadraii.shouldi.data.entity.UserEntity
 interface UserDao : BaseDao<UserEntity> {
 
     @Query("SELECT * FROM users WHERE id = :userId")
-    suspend fun getUser(userId: Int): UserEntity
+    suspend fun getUser(userId: String): UserEntity
 
     @Query("SELECT * FROM users")
     fun getAllUsers(): LiveData<List<UserEntity>>

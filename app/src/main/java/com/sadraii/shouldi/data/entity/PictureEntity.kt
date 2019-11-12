@@ -21,7 +21,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import java.util.Date
+import java.time.Instant
+import java.util.UUID
 
 @Entity(
     tableName = "pictures",
@@ -34,19 +35,58 @@ import java.util.Date
     indices = [Index(value = ["user_id"])]
 )
 data class PictureEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "picture_url") val pictureUrl: String? = null,
-    @ColumnInfo(name = "created") val created: Date = Date(0),
+    @PrimaryKey val id: String = UUID.randomUUID().toString(),
+    @ColumnInfo(name = "user_id") val userId: String,
+    @ColumnInfo(name = "picture_url") val pictureUrl: String = "",
+    @ColumnInfo(name = "created") val created: Instant = Instant.now(),
     @ColumnInfo(name = "yes_count") var yesCount: Int = 0,
     @ColumnInfo(name = "no_count") var noCount: Int = 0,
     @ColumnInfo(name = "featured_count") var featuredCount: Int = 0,
-    @ColumnInfo(name = "featured_time") var featuredTime: Date? = null,
-    @ColumnInfo(name = "position_time") var positionTime: Date? = null,
-    @ColumnInfo(name = "expo_fallback_scale") var expoFallbackScale: Byte = 0,
-    @ColumnInfo(name = "caption") val caption: String = "",
-    @ColumnInfo(name = "user_id") val userId: Int = 0
+    @ColumnInfo(name = "featured_time") var featuredTime: Instant? = null,
+    @ColumnInfo(name = "position_time") var positionTime: Instant? = null,
+    @ColumnInfo(name = "expo_fallback_scale") var expoFallbackScale: Int = 0,
+    @ColumnInfo(name = "caption") val caption: String = ""
+
 )
-//no caption details - caption is superimposed on pic when taken
 
+data class PictureEntityFirebase(
+    val id: String,
+    val userId: String,
+    val pictureUrl: String,
+    val created: Long,
+    var yesCount: Int,
+    var noCount: Int,
+    var featuredCount: Int,
+    var featuredTime: Long?,
+    var positionTime: Long?,
+    var expoFallbackScale: Int,
+    val caption: String
+)
 
+fun PictureEntity.toFirebase() = PictureEntityFirebase(
+    id,
+    userId,
+    pictureUrl,
+    created.epochSecond,
+    yesCount,
+    noCount,
+    featuredCount,
+    featuredTime?.epochSecond,
+    positionTime?.epochSecond,
+    expoFallbackScale,
+    caption
+)
 
+fun PictureEntityFirebase.fromFirebase() = PictureEntity(
+    id,
+    userId,
+    pictureUrl,
+    Instant.ofEpochMilli(created),
+    yesCount,
+    noCount,
+    featuredCount,
+    featuredTime?.let { Instant.ofEpochMilli(it) },
+    positionTime?.let { Instant.ofEpochMilli(it) },
+    expoFallbackScale,
+    caption
+)

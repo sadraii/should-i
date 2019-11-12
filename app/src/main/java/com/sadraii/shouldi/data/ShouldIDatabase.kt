@@ -24,7 +24,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.sadraii.shouldi.TAG
-import com.sadraii.shouldi.data.converter.DateConverter
 import com.sadraii.shouldi.data.dao.PictureDao
 import com.sadraii.shouldi.data.dao.UserDao
 import com.sadraii.shouldi.data.entity.PictureEntity
@@ -34,7 +33,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Database(entities = [PictureEntity::class, UserEntity::class], version = 1)
-@TypeConverters(DateConverter::class)
+@TypeConverters(Converters::class)
 abstract class ShouldIDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
@@ -44,40 +43,26 @@ abstract class ShouldIDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: ShouldIDatabase? = null
 
-        fun getDatabase(
-            context: Context,
-            scope: CoroutineScope
-        ): ShouldIDatabase {
-            Log.d(TAG, "get database()")
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    ShouldIDatabase::class.java,
-                    "should_i_database"
-                )
-                    .addCallback(
-                        ShouldIDatabaseCallback(
-                            scope
-                        )
-                    )
-                    .build()
-                INSTANCE = instance
-                // return instance
-                instance
+        fun getDatabase(context: Context, scope: CoroutineScope): ShouldIDatabase =
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: buildDatabase(context, scope).also { INSTANCE = it }
             }
-        }
+
+        private fun buildDatabase(context: Context, scope: CoroutineScope) =
+            Room.databaseBuilder(context.applicationContext, ShouldIDatabase::class.java, "shouldi.db")
+                .addCallback(ShouldIDatabaseCallback(scope))
+                .build()
     }
 
-    private class ShouldIDatabaseCallback(
-        private val scope: CoroutineScope
-    ) : RoomDatabase.Callback() {
+    private class ShouldIDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
 
         override fun onOpen(db: SupportSQLiteDatabase) {
             super.onOpen(db)
             Log.d(TAG, "onOpen() database")
             INSTANCE?.let { database ->
                 scope.launch(Dispatchers.IO) {
-                    SampleDataGenerator.generateLocalData(database.userDao(), database.pictureDao())
+                    SampleData.delete(database.userDao(), database.pictureDao())
+                    SampleData.generate(database.userDao(), database.pictureDao())
                 }
             }
         }

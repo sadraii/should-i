@@ -33,32 +33,32 @@ data class UserEntity(
     @ColumnInfo(name = "last_online") var lastOnline: Instant? = null
 )
 
-data class UserEntityFirebase(
-    val id: String,
-    val userName: String?,
-    val firstName: String?,
-    val lastName: String?,
-    val email: String?,
-    val created: Long,
-    var lastOnline: Long?
-)
-
-fun UserEntity.toFirebase() = UserEntityFirebase(
-    id,
-    userName,
-    firstName,
-    lastName,
-    email,
-    created.epochSecond,
-    lastOnline?.epochSecond
-)
-
-fun UserEntityFirebase.fromFirebase() = UserEntity(
-    id,
-    userName,
-    firstName,
-    lastName,
-    email,
-    Instant.ofEpochMilli(created),
-    lastOnline?.let { Instant.ofEpochMilli(it) }
-)
+// data class UserEntityFirebase(
+//     val id: String,
+//     val userName: String?,
+//     val firstName: String?,
+//     val lastName: String?,
+//     val email: String?,
+//     val created: Long,
+//     var lastOnline: Long?
+// )
+//
+// fun UserEntity.toFirebase() = UserEntityFirebase(
+//     id,
+//     userName,
+//     firstName,
+//     lastName,
+//     email,
+//     created.epochSecond,
+//     lastOnline?.epochSecond
+// )
+//
+// fun UserEntityFirebase.fromFirebase() = UserEntity(
+//     id,
+//     userName,
+//     firstName,
+//     lastName,
+//     email,
+//     Instant.ofEpochMilli(created),
+//     lastOnline?.let { Instant.ofEpochMilli(it) }
+// )

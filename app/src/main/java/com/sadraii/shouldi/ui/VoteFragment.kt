@@ -20,10 +20,14 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,21 +43,27 @@ class VoteFragment : Fragment() {
     }
 
     private lateinit var firestore: FirebaseFirestore
-    private val shouldIViewModel by viewModels<VoteViewModel>()
+    private val voteViewModel by viewModels<VoteViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // TODO(call super then return view at end of function?)
-        val rootView = inflater.inflate(R.layout.fragment_should_i_vote, container, false)
+        setHasOptionsMenu(true)
+        val rootView = inflater.inflate(R.layout.fragment_vote, container, false)
 
         FirebaseFirestore.setLoggingEnabled(true)
         initFirestore()
 
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<Button>(R.id.take_picture_button)?.setOnClickListener {
+            Navigation.createNavigateOnClickListener(R.id.action_voteFragment_to_takePictureFragment, null)
+        }
     }
 
     private fun initFirestore() {
@@ -70,7 +80,7 @@ class VoteFragment : Fragment() {
     }
 
     private fun shouldStartAuthentication() =
-        !shouldIViewModel.isAuthenticating && FirebaseAuth.getInstance().currentUser == null
+        !voteViewModel.isAuthenticating && FirebaseAuth.getInstance().currentUser == null
 
     private fun startAuthentication() {
         val intent = AuthUI.getInstance().createSignInIntentBuilder()
@@ -78,16 +88,20 @@ class VoteFragment : Fragment() {
             .setIsSmartLockEnabled(false)
             .build()
         startActivityForResult(intent, GOOGLE_SIGN_IN)
-        shouldIViewModel.isAuthenticating = true
+        voteViewModel.isAuthenticating = true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GOOGLE_SIGN_IN) {
-            shouldIViewModel.isAuthenticating = false
+            voteViewModel.isAuthenticating = false
             if (resultCode != Activity.RESULT_OK && shouldStartAuthentication()) {
                 startAuthentication()
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
     }
 }

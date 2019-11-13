@@ -3,5 +3,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="button_take_picture">Should I?</string>
+    <string name="take_picture_button">Should I?</string>
+    <string name="nav_vote_button">Vote</string>
+    <string name="sign_out_button">Sign Out</string>
+    <string name="vote_fragment_title">Should They?</string>
+    <string name="take_picture_fragment_title">Should I?</string>
+    <string name="my_pictures_fragment_title">Should You?</string>
 </resources>

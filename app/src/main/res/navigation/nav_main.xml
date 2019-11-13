@@ -3,16 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/shouldIVoteFragment">
+    app:startDestination="@id/voteFragment">
 
     <fragment
-        android:id="@+id/shouldIVoteFragment"
+        android:id="@+id/voteFragment"
         android:name="com.sadraii.shouldi.ui.VoteFragment"
-        android:label="fragment_should_i_vote"
-        tools:layout="@layout/fragment_should_i_vote" />
+        android:label="@string/vote_fragment_title"
+        tools:layout="@layout/fragment_vote">
+        <action
+            android:id="@+id/action_voteFragment_to_takePictureFragment"
+            app:destination="@id/takePictureFragment"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/takePictureFragment"
         android:name="com.sadraii.shouldi.ui.TakePictureFragment"
-        android:label="fragment_take_picture"
-        tools:layout="@layout/fragment_take_picture" />
+        android:label="@string/take_picture_fragment_title"
+        tools:layout="@layout/fragment_take_picture">
+        <action
+            android:id="@+id/action_takePictureFragment_to_captionFragment"
+            app:destination="@id/captionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/captionFragment"
+        android:name="com.sadraii.shouldi.ui.CaptionFragment"
+        android:label="@string/take_picture_fragment_title"
+        tools:layout="@layout/fragment_caption">
+        <action
+            android:id="@+id/action_captionFragment_to_myPicturesFragment"
+            app:destination="@id/myPicturesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPicturesFragment"
+        android:name="com.sadraii.shouldi.ui.MyPicturesFragment"
+        android:label="@string/my_pictures_fragment_title"
+        tools:layout="@layout/fragment_my_pictures">
+        <action
+            android:id="@+id/action_myPicturesFragment_to_myPictureDetailFragment"
+            app:destination="@id/myPictureDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPictureDetailFragment"
+        android:name="com.sadraii.shouldi.ui.MyPictureDetailFragment"
+        android:label="@string/my_pictures_fragment_title"
+        tools:layout="@layout/fragment_my_picture_detail" />
 </navigation>

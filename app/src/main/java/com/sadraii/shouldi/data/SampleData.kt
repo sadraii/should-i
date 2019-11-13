@@ -24,7 +24,6 @@ import com.sadraii.shouldi.data.dao.PictureDao
 import com.sadraii.shouldi.data.dao.UserDao
 import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.entity.UserEntity
-import com.sadraii.shouldi.data.entity.toFirebase
 import java.time.Instant
 import java.util.UUID
 import kotlin.random.Random
@@ -70,11 +69,11 @@ object SampleData {
             pictureDao.insert(picture)
 
             val userRef = usersCollection.document(user.id)
-            userRef.set(user.toFirebase())
+            userRef.set(user)
                 .addOnSuccessListener {
                     userRef.collection("pictures")
                         .document(picture.id)
-                        .set(picture.toFirebase())
+                        .set(picture)
                         .addOnFailureListener { e ->
                             Log.d(TAG, "Failed to create picture ${picture.id}", e)
                         }

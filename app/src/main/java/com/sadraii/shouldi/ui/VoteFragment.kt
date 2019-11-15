@@ -19,6 +19,7 @@ package com.sadraii.shouldi.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -34,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.sadraii.shouldi.R
+import com.sadraii.shouldi.TAG
 import com.sadraii.shouldi.viewmodel.VoteViewModel
 
 class VoteFragment : Fragment() {
@@ -62,7 +64,8 @@ class VoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.take_picture_button)?.setOnClickListener {
-            Navigation.createNavigateOnClickListener(R.id.action_voteFragment_to_takePictureFragment, null)
+            Navigation.createNavigateOnClickListener(R.id.action_voteFragment_to_takePictureFragment)
+            Log.d(TAG, "setNavOnClick")
         }
     }
 

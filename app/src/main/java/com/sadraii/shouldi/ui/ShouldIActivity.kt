@@ -61,8 +61,7 @@ class ShouldIActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavMenu(navController: NavController) {
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-        bottomNav?.setupWithNavController(navController)
+        findViewById<BottomNavigationView>(R.id.bottom_nav_view)?.setupWithNavController(navController)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

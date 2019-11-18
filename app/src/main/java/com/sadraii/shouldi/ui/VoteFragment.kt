@@ -28,7 +28,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -64,7 +64,7 @@ class VoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.take_picture_button)?.setOnClickListener {
-            Navigation.createNavigateOnClickListener(R.id.action_voteFragment_to_takePictureFragment)
+            findNavController().navigate(R.id.action_voteFragment_to_permissionFragment)
             Log.d(TAG, "setNavOnClick")
         }
     }

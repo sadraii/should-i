@@ -49,7 +49,7 @@ object SampleData {
                 SampleArrays.lastName[i], /* TODO(randomly return null?) */
                 emailOrNull(i),
                 randomPastTime(),
-                timeOrNull(i)
+                timeOrNull()
             )
             val picture = PictureEntity(
                 UUID.randomUUID().toString(),
@@ -59,8 +59,8 @@ object SampleData {
                 randomCount(),
                 randomCount(),
                 randomCount(),
-                timeOrNull(i),
-                timeOrNull(i),
+                timeOrNull(),
+                timeOrNull(),
                 Random.nextInt(3),
                 ""
             )
@@ -90,7 +90,7 @@ object SampleData {
         else -> null
     }
 
-    private fun timeOrNull(i: Int) = when (Random.nextInt(2)) {
+    private fun timeOrNull() = when (Random.nextInt(2)) {
         0 -> Instant.now().minusSeconds(Random.nextLong(100, 200))
         else -> null
     }

@@ -16,8 +16,33 @@
 
 package com.sadraii.shouldi
 
-val Any.TAG: String
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.view.View
+import androidx.camera.core.ImageProxy
+import java.nio.ByteBuffer
+
+internal val Any.TAG: String
     get() {
         return javaClass.simpleName
     }
 
+/** Combination of all flags required to put activity into immersive mode */
+const val FLAGS_FULLSCREEN =
+    View.SYSTEM_UI_FLAG_LOW_PROFILE or
+        View.SYSTEM_UI_FLAG_FULLSCREEN or
+        View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+
+/** Milliseconds used for UI animations */
+const val ANIMATION_FAST_MILLIS = 50L
+const val ANIMATION_SLOW_MILLIS = 100L
+
+internal fun ImageProxy.toBitmap(): Bitmap {
+    val buffer: ByteBuffer = this.planes[0].buffer
+    val bytes = ByteArray(buffer.remaining())
+    buffer.get(bytes)
+    return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+}

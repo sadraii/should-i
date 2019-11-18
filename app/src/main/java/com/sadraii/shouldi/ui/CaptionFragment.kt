@@ -21,9 +21,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.sadraii.shouldi.R
 
-class CaptionFragment : Fragment() {
+class CaptionFragment internal constructor() : Fragment() {
+
+    private val args: CaptionFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -20,13 +20,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.firebase.auth.FirebaseAuth
 import com.sadraii.shouldi.R
+import kotlinx.android.synthetic.main.fragment_caption.*
 
 class CaptionFragment internal constructor() : Fragment() {
 
-    private val args: CaptionFragmentArgs by navArgs()
+    private val safeArgs: CaptionFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,4 +38,20 @@ class CaptionFragment internal constructor() : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_caption, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        picture_imageView.background = safeArgs.picture.toDrawable(resources)
+
+        send_imageButton.setOnClickListener {
+            addPicture()
+            findNavController().navigate(R.id.action_captionFragment_to_myPicturesFragment)
+        }
+    }
+
+    private fun addPicture() {
+        FirebaseAuth.getInstance().currentUser?.uid
+    }
 }
+
+

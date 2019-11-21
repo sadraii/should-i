@@ -28,6 +28,8 @@ import java.time.Instant
 import java.util.UUID
 import kotlin.random.Random
 
+private const val numberOfSamples = 14
+
 object SampleData {
 
     suspend fun delete(userDao: UserDao, pictureDao: PictureDao) {
@@ -40,17 +42,19 @@ object SampleData {
         val firestore = Firebase.firestore
         val usersCollection = firestore.collection("users")
 
-        for (i in 0..14) {
+        for (i in 0..numberOfSamples) {
             val userUuid = UUID.randomUUID().toString()
-            val user = UserEntity(
-                userUuid,
-                SampleArrays.userName[i], /* TODO(randomly return null?) */
-                SampleArrays.firstName[i], /* TODO(randomly return null?) */
-                SampleArrays.lastName[i], /* TODO(randomly return null?) */
-                emailOrNull(i),
-                randomPastTime(),
-                timeOrNull()
-            )
+            val user = with(SampleArrays) {
+                UserEntity(
+                    userUuid,
+                    userName[i], /* TODO(): Randomly return null? */
+                    firstName[i], /* TODO(): Randomly return null? */
+                    lastName[i], /* TODO(): Randomly return null? */
+                    emailOrNull(i),
+                    randomPastTime(),
+                    timeOrNull()
+                )
+            }
             val picture = PictureEntity(
                 UUID.randomUUID().toString(),
                 userUuid,
@@ -62,7 +66,7 @@ object SampleData {
                 timeOrNull(),
                 timeOrNull(),
                 Random.nextInt(3),
-                ""
+                "" /* TODO(): Needed? */
             )
 
             userDao.insert(user)
@@ -86,7 +90,9 @@ object SampleData {
     }
 
     private fun emailOrNull(i: Int) = when (Random.nextInt(2)) {
-        0 -> "${SampleArrays.firstName[i]}.${SampleArrays.lastName[i]}@example.com"
+        0 -> with(SampleArrays) {
+            "${firstName[i]}.${lastName[i]}@example.com"
+        }
         else -> null
     }
 
@@ -161,4 +167,6 @@ object SampleArrays {
         "Cancelliere"
     )
 }
+
+
 

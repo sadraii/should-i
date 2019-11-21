@@ -15,21 +15,21 @@
  * limitations under the License.
  *
  * Modifications:
+ * Added imageCapturedListener
+ * Modified onViewCreated()
+ * Modified updateCameraUi()
+ * Removed imageSavedListener
  * Removed volumeDownReceiver()
  * Removed LuminosityAnalyzer
- * Modified onImageSaved()
- * Modified onViewCreated()
  */
 
 package com.sadraii.shouldi.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.hardware.display.DisplayManager
-import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -55,7 +55,6 @@ import androidx.navigation.fragment.findNavController
 import com.sadraii.shouldi.ANIMATION_FAST_MILLIS
 import com.sadraii.shouldi.ANIMATION_SLOW_MILLIS
 import com.sadraii.shouldi.R
-import com.sadraii.shouldi.toBitmap
 import com.sadraii.shouldi.util.AutoFitPreviewBuilder
 import java.io.File
 import java.text.SimpleDateFormat
@@ -77,7 +76,6 @@ class TakePictureFragment : Fragment() {
 
     private lateinit var container: ConstraintLayout
     private lateinit var viewFinder: TextureView
-    private lateinit var outputDirectory: File
     private lateinit var broadcastManager: LocalBroadcastManager
 
     private var displayId = -1
@@ -150,19 +148,17 @@ class TakePictureFragment : Fragment() {
     ): View? =
         inflater.inflate(R.layout.fragment_take_picture, container, false)
 
-    /** Define callback that will be triggered after a photo has been taken and saved to disk */
-    private val imageSavedListener = object : ImageCapture.OnImageSavedListener {
-        override fun onError(
-            error: ImageCapture.ImageCaptureError, message: String, exc: Throwable?
-        ) {
-            Log.e(TAG, "Photo capture failed: $message")
-            exc?.printStackTrace()
-        }
-
-        override fun onImageSaved(photoFile: File) {
-            Log.d(TAG, "Photo capture succeeded: ${photoFile.absolutePath}")
-
-            // TODO(send to caption fragment)
+    private val imageCapturedListener = object : ImageCapture.OnImageCapturedListener() {
+        override fun onCaptureSuccess(image: ImageProxy?, rotationDegrees: Int) {
+            image.use { imageProxy ->
+                imageProxy?.let {
+                    activity?.runOnUiThread {
+                        findNavController().navigate(
+                            TakePictureFragmentDirections.actionTakePictureFragmentToCaptionFragment(viewFinder.bitmap)
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -177,9 +173,6 @@ class TakePictureFragment : Fragment() {
         displayManager = viewFinder.context
             .getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         displayManager.registerDisplayListener(displayListener, null)
-
-        // Determine the output directory
-        outputDirectory = OutputDir.getOutputDirectory(requireContext())
 
         // Wait for the views to be properly laid out
         viewFinder.post {
@@ -248,45 +241,25 @@ class TakePictureFragment : Fragment() {
         // Inflate a new view containing all UI for controlling the camera
         val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
-        // Listener for button used to capture photo
         controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnClickListener {
             // Get a stable reference of the modifiable image capture use case
             imageCapture?.let { imageCapture ->
-
-                // Create output file to hold the image
-                val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
 
                 // Setup image capture metadata
                 val metadata = Metadata().apply {
                     // Mirror image when using the front camera
                     isReversedHorizontal = lensFacing == CameraX.LensFacing.FRONT
                 }
-                // TODO(): Fix args and remove imageSaveListener
-                imageCapture.takePicture(Executors.newSingleThreadExecutor(),
-                    object : ImageCapture.OnImageCapturedListener() {
-                        override fun onCaptureSuccess(image: ImageProxy?, rotationDegrees: Int) {
-                            image.use {
-                                val bitmap: Bitmap? = it?.toBitmap()
-                                val args = Bundle()
-                                args.putParcelable("picture", bitmap)
-                                findNavController().navigate(R.id.action_takePictureFragment_to_captionFragment, args)
-                            }
-                        }
-                    })
-                // Setup image capture listener which is triggered after photo has been taken
-                imageCapture.takePicture(photoFile, metadata, Executors.newSingleThreadExecutor(), imageSavedListener)
 
-                // We can only change the foreground Drawable using API level 23+ API
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                imageCapture.takePicture(Executors.newSingleThreadExecutor(), imageCapturedListener)
 
-                    // Display flash animation to indicate that photo was captured
-                    container.postDelayed({
-                        container.foreground = ColorDrawable(Color.WHITE)
-                        container.postDelayed(
-                            { container.foreground = null }, ANIMATION_FAST_MILLIS
-                        )
-                    }, ANIMATION_SLOW_MILLIS)
-                }
+                // Display flash animation to indicate that photo was captured
+                container.postDelayed({
+                    container.foreground = ColorDrawable(Color.WHITE)
+                    container.postDelayed(
+                        { container.foreground = null }, ANIMATION_FAST_MILLIS
+                    )
+                }, ANIMATION_SLOW_MILLIS)
             }
         }
 
@@ -322,17 +295,7 @@ class TakePictureFragment : Fragment() {
                     .format(System.currentTimeMillis()) + extension
             )
     }
-
-    object OutputDir {
-
-        /** Use external media if it is available, our app's file directory otherwise */
-        fun getOutputDirectory(context: Context): File {
-            val appContext = context.applicationContext
-            val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
-                File(it, appContext.resources.getString(R.string.app_name)).apply { mkdirs() }
-            }
-            return if (mediaDir != null && mediaDir.exists())
-                mediaDir else appContext.filesDir
-        }
-    }
 }
+
+
+

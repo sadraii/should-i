@@ -24,7 +24,9 @@
             app:destination="@id/captionFragment" />
         <action
             android:id="@+id/action_takePictureFragment_to_permissionFragment"
-            app:destination="@id/permissionFragment" />
+            app:destination="@id/permissionFragment"
+            app:popUpTo="@id/voteFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/captionFragment"
@@ -59,9 +61,12 @@
         tools:layout="@layout/fragment_permission">
         <action
             android:id="@+id/action_permissionFragment_to_takePictureFragment"
-            app:destination="@id/takePictureFragment" />
+            app:destination="@id/takePictureFragment"
+            app:popUpTo="@id/voteFragment" />
         <action
             android:id="@+id/action_permissionFragment_to_voteFragment"
-            app:destination="@id/voteFragment" />
+            app:destination="@id/voteFragment"
+            app:popUpTo="@id/voteFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

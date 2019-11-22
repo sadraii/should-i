@@ -62,7 +62,7 @@ class PermissionFragment : Fragment() {
                 findNavController().navigate(R.id.action_permissionFragment_to_takePictureFragment)
             } else {
                 Toast.makeText(context, "Permission request denied", Toast.LENGTH_LONG).show()
-                findNavController().navigate(R.id.action_permissionFragment_to_takePictureFragment)
+                findNavController().navigate(R.id.action_permissionFragment_to_voteFragment)
             }
         }
     }

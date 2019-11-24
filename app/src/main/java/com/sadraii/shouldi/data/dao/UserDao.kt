@@ -24,11 +24,11 @@ import com.sadraii.shouldi.data.entity.UserEntity
 @Dao
 interface UserDao : BaseDao<UserEntity> {
 
-    @Query("SELECT * FROM users WHERE id = :userId")
-    suspend fun getUser(userId: String): UserEntity
+    @Query("SELECT * FROM users WHERE id = :userId LIMIT 1")
+    suspend fun getUser(userId: String): UserEntity?
 
     @Query("SELECT * FROM users")
-    fun getAllUsers(): LiveData<List<UserEntity>>
+    fun getAllUsers(): LiveData<List<UserEntity>>?
 
     @Query("DELETE FROM users")
     suspend fun deleteAllUsers()

@@ -16,6 +16,7 @@
 
 package com.sadraii.shouldi.data.entity
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -24,13 +25,14 @@ import java.util.UUID
 
 @Entity(tableName = "users")
 data class UserEntity(
-    @PrimaryKey val id: String = UUID.randomUUID().toString(),
+    @PrimaryKey val id: String = UUID.randomUUID().toString(), /* TODO Remove */
     @ColumnInfo(name = "user_name") val userName: String? = null,
     @ColumnInfo(name = "first_name") val firstName: String? = null,
     @ColumnInfo(name = "last_name") val lastName: String? = null,
     @ColumnInfo(name = "email") val email: String? = null,
     @ColumnInfo(name = "created") val created: Instant = Instant.now(),
-    @ColumnInfo(name = "last_online") var lastOnline: Instant? = null
+    @ColumnInfo(name = "last_online") val lastOnline: Instant? = null,
+    @ColumnInfo(name = "photo_url") val photoUrl: Uri? = null
 )
 
 // data class UserEntityFirebase(

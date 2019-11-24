@@ -20,6 +20,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.View
 import androidx.camera.core.ImageProxy
+import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 
 internal val Any.TAG: String
@@ -46,3 +47,11 @@ internal fun ImageProxy.toBitmap(): Bitmap {
     buffer.get(bytes)
     return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 }
+
+internal fun Bitmap.toByteArray(): ByteArray {
+    val stream = ByteArrayOutputStream()
+    compress(Bitmap.CompressFormat.WEBP, 100, stream)
+    return stream.toByteArray()
+}
+
+

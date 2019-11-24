@@ -16,28 +16,23 @@
 
 package com.sadraii.shouldi.ui
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.sadraii.shouldi.R
+import com.sadraii.shouldi.viewmodel.CaptionViewModel
 import kotlinx.android.synthetic.main.fragment_caption.*
-import java.io.ByteArrayOutputStream
 
 class CaptionFragment internal constructor() : Fragment() {
 
-    companion object {
-        const val GS_BUCKET = "gs://should-i-98830.appspot.com"
-    }
     private val safeArgs: CaptionFragmentArgs by navArgs()
+    private val captionViewModel by viewModels<CaptionViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,22 +43,18 @@ class CaptionFragment internal constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        picture_imageView.background = safeArgs.picture.toDrawable(resources)
+
+        val picture = safeArgs.picture
+
+        picture_imageView.background = picture.toDrawable(resources)
 
         send_imageButton.setOnClickListener {
-            addPicture()
+            captionViewModel.addPicture(picture)
             findNavController().navigate(R.id.action_captionFragment_to_myPicturesFragment)
         }
     }
-
-    private fun addPicture() {
-        FirebaseAuth.getInstance().currentUser?.uid
-        Firebase.storage(GS_BUCKET)
-
-        val stream = ByteArrayOutputStream()
-        safeArgs.picture.compress(Bitmap.CompressFormat.WEBP, 100, stream)
-        val byteArray = stream.toByteArray()
-    }
 }
+
+
 
 

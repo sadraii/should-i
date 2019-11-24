@@ -17,7 +17,26 @@
 package com.sadraii.shouldi.data.repository
 
 import com.sadraii.shouldi.data.dao.UserDao
+import com.sadraii.shouldi.data.dao.UserFirebaseDao
+import com.sadraii.shouldi.data.entity.UserEntity
 
-class UserRepository(private val userDao: UserDao) {
+class UserRepository(private val userDao: UserDao, private val userFirebaseDao: UserFirebaseDao) {
 
+    companion object {
+
+        internal const val USERS_PATH = "users"
+    }
+
+    /** If user exists, update it. If not, add it. */
+    internal suspend fun addOrUpdate(user: UserEntity) {
+        val dbUser = userDao.getUser(user.id)
+        if (dbUser?.id == user.id) {
+            userDao.update(user)
+        } else {
+            userDao.insert(user)
+        }
+
+        userFirebaseDao.addOrUpdate(user)
+    }
 }
+

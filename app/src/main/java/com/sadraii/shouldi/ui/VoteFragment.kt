@@ -41,7 +41,7 @@ import com.sadraii.shouldi.viewmodel.VoteViewModel
 class VoteFragment : Fragment() {
 
     companion object {
-        const val GOOGLE_SIGN_IN = 10
+        private const val SIGN_IN = 1001
     }
 
     private lateinit var firestore: FirebaseFirestore
@@ -90,15 +90,24 @@ class VoteFragment : Fragment() {
             .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))
             .setIsSmartLockEnabled(false)
             .build()
-        startActivityForResult(intent, GOOGLE_SIGN_IN)
+        startActivityForResult(intent, SIGN_IN)
         voteViewModel.isAuthenticating = true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == GOOGLE_SIGN_IN) {
+        if (requestCode == SIGN_IN) {
             voteViewModel.isAuthenticating = false
-            if (resultCode != Activity.RESULT_OK && shouldStartAuthentication()) {
+
+            if (resultCode == Activity.RESULT_OK) {
+                val user = FirebaseAuth.getInstance().currentUser
+                user?.metadata?.run {
+                    //     if (creationTimestamp == lastSignInTimestamp) {
+                    //         // User is new
+                    voteViewModel.addUser(user)
+                    //     }
+                }
+            } else if (resultCode != Activity.RESULT_OK && shouldStartAuthentication()) {
                 startAuthentication()
             }
         }
@@ -108,3 +117,5 @@ class VoteFragment : Fragment() {
         inflater.inflate(R.menu.main_menu, menu)
     }
 }
+
+

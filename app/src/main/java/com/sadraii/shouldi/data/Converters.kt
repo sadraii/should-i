@@ -16,6 +16,7 @@
 
 package com.sadraii.shouldi.data
 
+import android.net.Uri
 import androidx.room.TypeConverter
 import java.time.Instant
 import java.util.Date
@@ -23,6 +24,7 @@ import java.util.Date
 class Converters {
 
     companion object {
+
         @TypeConverter
         @JvmStatic
         fun fromInstant(value: Instant?): Long? {
@@ -34,6 +36,20 @@ class Converters {
         fun toInstant(value: Long?): Instant? {
             return value?.let {
                 Instant.ofEpochMilli(it)
+            }
+        }
+
+        @TypeConverter
+        @JvmStatic
+        fun fromUri(value: Uri?): String? {
+            return value?.toString()
+        }
+
+        @TypeConverter
+        @JvmStatic
+        fun toUri(value: String?): Uri? {
+            return value?.let {
+                Uri.parse(it)
             }
         }
 

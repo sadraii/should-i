@@ -20,4 +20,9 @@ import com.sadraii.shouldi.data.dao.PictureDao
 
 class PictureRepository(private val pictureDao: PictureDao) {
 
+    companion object {
+
+        internal const val PICTURES_PATH = "pictures"
+    }
 }
+

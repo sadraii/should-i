@@ -16,6 +16,7 @@
 
 package com.sadraii.shouldi.data.entity
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -35,17 +36,17 @@ import java.util.UUID
     indices = [Index(value = ["user_id"])]
 )
 data class PictureEntity(
-    @PrimaryKey val id: String = UUID.randomUUID().toString(),
+    @PrimaryKey val id: String = UUID.randomUUID().toString(), /* TODO Remove */
     @ColumnInfo(name = "user_id") val userId: String,
-    @ColumnInfo(name = "picture_url") val pictureUrl: String = "",
+    @ColumnInfo(name = "picture_url") val pictureUrl: Uri,
     @ColumnInfo(name = "created") val created: Instant = Instant.now(),
-    @ColumnInfo(name = "yes_count") var yesCount: Int = 0,
-    @ColumnInfo(name = "no_count") var noCount: Int = 0,
-    @ColumnInfo(name = "featured_count") var featuredCount: Int = 0,
-    @ColumnInfo(name = "featured_time") var featuredTime: Instant? = null,
-    @ColumnInfo(name = "position_time") var positionTime: Instant? = null,
-    @ColumnInfo(name = "expo_fallback_scale") var expoFallbackScale: Int = 0,
-    @ColumnInfo(name = "caption") val caption: String = ""
+    @ColumnInfo(name = "yes_count") val yesCount: Int = 0,
+    @ColumnInfo(name = "no_count") val noCount: Int = 0,
+    @ColumnInfo(name = "featured_count") val featuredCount: Int = 0,
+    @ColumnInfo(name = "featured_time") val featuredTime: Instant? = null,
+    @ColumnInfo(name = "position_time") val positionTime: Instant? = null,
+    @ColumnInfo(name = "expo_fallback_scale") val expoFallbackScale: Int = 0,
+    @ColumnInfo(name = "caption") val caption: String = "" /* TODO Remove */
 
 )
 

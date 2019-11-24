@@ -24,6 +24,8 @@ import com.sadraii.shouldi.data.dao.PictureDao
 import com.sadraii.shouldi.data.dao.UserDao
 import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.entity.UserEntity
+import com.sadraii.shouldi.data.repository.PictureRepository
+import com.sadraii.shouldi.data.repository.UserRepository
 import java.time.Instant
 import java.util.UUID
 import kotlin.random.Random
@@ -40,7 +42,7 @@ object SampleData {
 
     suspend fun generate(userDao: UserDao, pictureDao: PictureDao) {
         val firestore = Firebase.firestore
-        val usersCollection = firestore.collection("users")
+        val usersCollection = firestore.collection(UserRepository.USERS_PATH)
 
         for (i in 0..numberOfSamples) {
             val userUuid = UUID.randomUUID().toString()
@@ -75,7 +77,7 @@ object SampleData {
             val userRef = usersCollection.document(user.id)
             userRef.set(user)
                 .addOnSuccessListener {
-                    userRef.collection("pictures")
+                    userRef.collection(PictureRepository.PICTURES_PATH)
                         .document(picture.id)
                         .set(picture)
                         .addOnFailureListener { e ->

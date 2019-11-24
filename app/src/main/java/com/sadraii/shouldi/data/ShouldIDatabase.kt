@@ -36,6 +36,9 @@ abstract class ShouldIDatabase : RoomDatabase() {
     abstract fun pictureDao(): PictureDao
 
     companion object {
+
+        internal const val GS_BUCKET = "gs://should-i-98830.appspot.com"
+
         @Volatile
         private var INSTANCE: ShouldIDatabase? = null
 
@@ -64,4 +67,6 @@ abstract class ShouldIDatabase : RoomDatabase() {
         }
     }
 }
+
+
 

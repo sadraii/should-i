@@ -16,7 +16,6 @@
 
 package com.sadraii.shouldi.data.entity
 
-import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -38,7 +37,7 @@ import java.util.UUID
 data class PictureEntity(
     @PrimaryKey val id: String = UUID.randomUUID().toString(), /* TODO Remove */
     @ColumnInfo(name = "user_id") val userId: String,
-    @ColumnInfo(name = "picture_url") val pictureUrl: Uri,
+    @ColumnInfo(name = "picture_url") val pictureUrl: String,
     @ColumnInfo(name = "created") val created: Instant = Instant.now(),
     @ColumnInfo(name = "yes_count") val yesCount: Int = 0,
     @ColumnInfo(name = "no_count") val noCount: Int = 0,

@@ -105,10 +105,14 @@ dependencies {
     // Firebase
     implementation "com.google.firebase:firebase-analytics:17.2.1"
     implementation "com.google.firebase:firebase-auth:19.1.0"
-    implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
-    implementation "com.google.firebase:firebase-firestore-ktx:21.2.1"
+    implementation "com.google.firebase:firebase-firestore-ktx:21.3.0"
     implementation "com.google.firebase:firebase-storage-ktx:19.1.0"
-    implementation "com.google.firebase:firebase-messaging:20.0.0"
+    implementation "com.google.firebase:firebase-messaging:20.0.1"
+
+    // Firebase UI
+    implementation 'com.firebaseui:firebase-ui-auth:6.1.0'
+    implementation 'com.firebaseui:firebase-ui-database:6.1.0'
+    implementation 'androidx.paging:paging-runtime-ktx:2.1.0' // May need to use 1.x.x
 
     // Camera
     implementation "androidx.camera:camera-core:$rootProject.cameraVersion"

@@ -7,7 +7,7 @@ import com.sadraii.shouldi.TAG
 import com.sadraii.shouldi.data.entity.UserEntity
 import com.sadraii.shouldi.data.repository.UserRepository
 
-class UserFirebaseDao {
+class UserFirebaseDataSource {
 
     private val userCollection = Firebase.firestore.collection(UserRepository.USERS_PATH)
 
@@ -18,7 +18,7 @@ class UserFirebaseDao {
                 with(task) {
                     if (isSuccessful) {
                         if (result!!.isEmpty) {
-                            createUser(user)
+                            addUser(user)
                         } else {
                             updateUser(user)
                         }
@@ -29,7 +29,7 @@ class UserFirebaseDao {
             }
     }
 
-    private fun createUser(user: UserEntity) {
+    private fun addUser(user: UserEntity) {
         userCollection.document(user.id)
             .set(user)
             .addOnFailureListener { e ->

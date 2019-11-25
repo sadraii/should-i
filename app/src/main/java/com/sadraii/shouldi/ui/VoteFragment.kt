@@ -98,7 +98,7 @@ class VoteFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == SIGN_IN) {
             voteViewModel.isAuthenticating = false
-
+            Log.d(TAG, "hiii")
             if (resultCode == Activity.RESULT_OK) {
                 val user = FirebaseAuth.getInstance().currentUser
                 user?.metadata?.run {

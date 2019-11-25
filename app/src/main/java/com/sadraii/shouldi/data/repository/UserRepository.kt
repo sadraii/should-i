@@ -17,10 +17,10 @@
 package com.sadraii.shouldi.data.repository
 
 import com.sadraii.shouldi.data.dao.UserDao
-import com.sadraii.shouldi.data.dao.UserFirebaseDao
+import com.sadraii.shouldi.data.dao.UserFirebaseDataSource
 import com.sadraii.shouldi.data.entity.UserEntity
 
-class UserRepository(private val userDao: UserDao, private val userFirebaseDao: UserFirebaseDao) {
+class UserRepository(private val userDao: UserDao, private val userFirebaseDataSource: UserFirebaseDataSource) {
 
     companion object {
 
@@ -36,7 +36,7 @@ class UserRepository(private val userDao: UserDao, private val userFirebaseDao: 
             userDao.insert(user)
         }
 
-        userFirebaseDao.addOrUpdate(user)
+        userFirebaseDataSource.addOrUpdate(user)
     }
 }
 

@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.sadraii.shouldi.TAG
 import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.data.dao.UserDao
-import com.sadraii.shouldi.data.dao.UserFirebaseDao
+import com.sadraii.shouldi.data.dao.UserFirebaseDataSource
 import com.sadraii.shouldi.data.entity.UserEntity
 import com.sadraii.shouldi.data.repository.UserRepository
 import kotlinx.coroutines.launch
@@ -27,7 +27,7 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
     init {
         val db = ShouldIDatabase.getDatabase(application, viewModelScope)
         userDao = db.userDao()
-        userRepo = UserRepository(userDao, UserFirebaseDao())
+        userRepo = UserRepository(userDao, UserFirebaseDataSource())
 
         viewModelScope.launch {
             userDao.insert(UserEntity(UUID.randomUUID().toString(), "55", "55", "55", "55", Instant.now(), null))
@@ -45,7 +45,7 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
                 email,
                 Instant.ofEpochMilli(metadata!!.creationTimestamp),
                 Instant.ofEpochMilli(metadata!!.lastSignInTimestamp),
-                user.photoUrl.toString()
+                user.photoUrl
             )
         }
         viewModelScope.launch {

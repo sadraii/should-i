@@ -8,6 +8,7 @@
     android:id="@+id/frameLayout3">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/my_pictures_recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

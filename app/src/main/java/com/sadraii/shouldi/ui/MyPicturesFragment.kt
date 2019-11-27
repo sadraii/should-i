@@ -17,6 +17,7 @@
 package com.sadraii.shouldi.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,24 +25,33 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.firebase.ui.database.paging.FirebaseRecyclerPagingAdapter
+import com.bumptech.glide.Glide
+import com.firebase.ui.firestore.paging.FirestorePagingAdapter
+import com.firebase.ui.firestore.paging.FirestorePagingOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.sadraii.shouldi.R
+import com.sadraii.shouldi.TAG
+import com.sadraii.shouldi.data.ShouldIDatabase
+import com.sadraii.shouldi.data.dao.PictureFirebaseDataSource
 import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.repository.PictureRepository
 import com.sadraii.shouldi.data.repository.UserRepository
 import com.sadraii.shouldi.viewmodel.MyPicturesViewModel
-import kotlinx.android.synthetic.main.fragment_my_pictures.*
+import kotlinx.android.synthetic.main.fragment_my_pictures.view.*
 import kotlinx.android.synthetic.main.item_my_picture.view.*
 
 class MyPicturesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: FirebaseRecyclerPagingAdapter<PictureEntity, PictureViewHolder>
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewAdapter: FirestorePagingAdapter<PictureEntity, PictureViewHolder>
     private val myPicturesViewModel by viewModels<MyPicturesViewModel>()
 
     override fun onCreateView(
@@ -54,30 +64,63 @@ class MyPicturesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = my_pictures_recyclerView
-
         val firestore = Firebase.firestore
         val user = FirebaseAuth.getInstance().currentUser
-        val picturesCollectionId = firestore
+        val collectionId = firestore
             .collection(UserRepository.USERS_PATH)
             .document(user!!.uid)
             .collection(PictureRepository.PICTURES_PATH)
             .id
-        val picturesQuery = firestore.collectionGroup(picturesCollectionId)
-        // val adapterParser =
-        val adapterOptions = FirebaseRecyclerOptions.Builder<PictureEntity>()
-            .setLifecycleOwner(this)
-            .setQuery(picturesQuery, PictureEntity::class.java)
+        val query = firestore.collectionGroup(collectionId)
+            .orderBy("created", Query.Direction.DESCENDING)
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setPrefetchDistance(10)
+            .setPageSize(10)
             .build()
-        adapter = FirebaseRecyclerPagingAdapter<PictureEntity, PictureViewHolder>(adapterOptions) {
-            
+        // TODO Parser?
+        val options = FirestorePagingOptions.Builder<PictureEntity>()
+            .setLifecycleOwner(this)
+            .setQuery(query, config, PictureEntity::class.java)
+            .build()
+        viewAdapter = object : FirestorePagingAdapter<PictureEntity, PictureViewHolder>(options) {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
+                val item = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_my_picture, parent, false)
+                return PictureViewHolder(item)
+            }
+
+            override fun onBindViewHolder(holder: PictureViewHolder, position: Int, model: PictureEntity) {
+                holder.yesVotes.text = model.yesVotes.toString()
+                holder.noVotes.text = model.noVotes.toString()
+                Log.d(TAG, "recycling yes: ${model.yesVotes.toString()}")
+
+                // TODO Move to Repo
+                val storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
+                val picturePath = "${model.userId}/${model.id}.${PictureFirebaseDataSource.PICTURE_FORMAT}"
+                val pictureRef = storageRef.child(picturePath)
+                pictureRef.downloadUrl.addOnSuccessListener {
+                    Glide.with(holder.itemView.context).load(it.encodedPath).into(holder.picture)
+                    Log.d(TAG, "recycling ${it.encodedPath}")
+                }
+            }
+        }
+
+        viewManager = LinearLayoutManager(requireContext())
+        recyclerView = view.my_pictures_recyclerView.apply {
+            // setHasFixedSize(true)
+            adapter = viewAdapter
+            layoutManager = viewManager
         }
     }
 
     class PictureViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val picture: ImageView = itemView.picture_imageView
-        val upVotes: TextView = itemView.up_vote_textView
-        val downVotes: TextView = itemView.down_vote_textView
+        val picture: ImageView = view.picture_imageView.apply {
+            setOnClickListener { Log.d(TAG, "pic clicked") }
+        }
+        val yesVotes: TextView = view.up_vote_textView
+        val noVotes: TextView = view.down_vote_textView
     }
 }
+

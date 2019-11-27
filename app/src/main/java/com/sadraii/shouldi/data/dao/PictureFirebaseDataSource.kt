@@ -18,7 +18,7 @@ class PictureFirebaseDataSource {
 
     companion object {
 
-        private const val PICTURE_FORMAT = "webp" // Will also need to change Bitmap.toByteArray() extension
+        const val PICTURE_FORMAT = "webp" // Will also need to change Bitmap.toByteArray() extension
     }
 
     private val user = FirebaseAuth.getInstance().currentUser

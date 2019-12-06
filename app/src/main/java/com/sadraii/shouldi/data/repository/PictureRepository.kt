@@ -43,7 +43,7 @@ class PictureRepository(
         val uri = Uri.Builder()
             .authority(ShouldIDatabase.GS_BUCKET)
             .appendPath(user!!.uid)
-            .appendPath(uuid)
+            .appendPath("$uuid.${PictureFirebaseDataSource.PICTURE_FORMAT}")
             .build().toString()
         val pictureToAdd = PictureEntity(uuid, user.uid, uri)
 
@@ -55,4 +55,3 @@ class PictureRepository(
         pictureFirebaseDataSource.add(pictureToAdd, picture)
     }
 }
-

@@ -15,35 +15,35 @@
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <ImageView
-        android:id="@+id/up_vote_imageView"
+        android:id="@+id/yes_vote_imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/up_vote_textView"
-        app:layout_constraintEnd_toStartOf="@+id/up_vote_textView"
-        app:layout_constraintTop_toTopOf="@+id/up_vote_textView"
+        app:layout_constraintBottom_toBottomOf="@+id/yes_vote_textView"
+        app:layout_constraintEnd_toStartOf="@+id/yes_vote_textView"
+        app:layout_constraintTop_toTopOf="@+id/yes_vote_textView"
         app:srcCompat="@drawable/ic_up_votes_24dp" />
 
     <ImageView
-        android:id="@+id/down_vote_imageView"
+        android:id="@+id/no_vote_imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/down_vote_textView"
-        app:layout_constraintEnd_toStartOf="@+id/down_vote_textView"
-        app:layout_constraintTop_toTopOf="@+id/down_vote_textView"
+        app:layout_constraintBottom_toBottomOf="@+id/no_vote_textView"
+        app:layout_constraintEnd_toStartOf="@+id/no_vote_textView"
+        app:layout_constraintTop_toTopOf="@+id/no_vote_textView"
         app:srcCompat="@drawable/ic_down_votes_24dp" />
 
     <TextView
-        android:id="@+id/up_vote_textView"
+        android:id="@+id/yes_vote_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/down_vote_imageView"
-        app:layout_constraintEnd_toStartOf="@+id/down_vote_imageView"
-        app:layout_constraintTop_toTopOf="@+id/down_vote_imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/no_vote_imageView"
+        app:layout_constraintEnd_toStartOf="@+id/no_vote_imageView"
+        app:layout_constraintTop_toTopOf="@+id/no_vote_imageView"
         tools:text="35" />
 
     <TextView
-        android:id="@+id/down_vote_textView"
+        android:id="@+id/no_vote_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -52,3 +52,4 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="7" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+

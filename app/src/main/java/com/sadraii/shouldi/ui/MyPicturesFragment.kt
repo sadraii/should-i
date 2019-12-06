@@ -39,7 +39,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.sadraii.shouldi.R
 import com.sadraii.shouldi.TAG
 import com.sadraii.shouldi.data.ShouldIDatabase
-import com.sadraii.shouldi.data.dao.PictureFirebaseDataSource
 import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.repository.PictureRepository
 import com.sadraii.shouldi.data.repository.UserRepository
@@ -64,14 +63,11 @@ class MyPicturesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val firestore = Firebase.firestore
         val user = FirebaseAuth.getInstance().currentUser
-        val collectionId = firestore
+        val query = Firebase.firestore
             .collection(UserRepository.USERS_PATH)
             .document(user!!.uid)
             .collection(PictureRepository.PICTURES_PATH)
-            .id
-        val query = firestore.collectionGroup(collectionId)
             .orderBy("created", Query.Direction.DESCENDING)
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -83,6 +79,7 @@ class MyPicturesFragment : Fragment() {
             .setLifecycleOwner(this)
             .setQuery(query, config, PictureEntity::class.java)
             .build()
+
         viewAdapter = object : FirestorePagingAdapter<PictureEntity, PictureViewHolder>(options) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
                 val item = LayoutInflater.from(parent.context)
@@ -96,13 +93,20 @@ class MyPicturesFragment : Fragment() {
                 Log.d(TAG, "recycling yes: ${model.yesVotes.toString()}")
 
                 // TODO Move to Repo
-                val storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
-                val picturePath = "${model.userId}/${model.id}.${PictureFirebaseDataSource.PICTURE_FORMAT}"
-                val pictureRef = storageRef.child(picturePath)
-                pictureRef.downloadUrl.addOnSuccessListener {
-                    Glide.with(holder.itemView.context).load(it.encodedPath).into(holder.picture)
-                    Log.d(TAG, "recycling ${it.encodedPath}")
-                }
+                FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
+                    .child(model.pictureUrl)
+                    .downloadUrl
+                    .addOnSuccessListener {
+                        Glide.with(holder.itemView.context)
+                            .load(it.encodedPath)
+                            .into(holder.picture)
+                        Log.d(TAG, "recycling ${it.encodedPath}")
+                    }
+                holder.picture.setOnClickListener { Log.d(TAG, "pic ${model.id} clicked") }
+            }
+
+            override fun onError(e: Exception) {
+                Log.e(TAG, e.message ?: "Generic FirestorePagingAdapter error")
             }
         }
 
@@ -116,11 +120,11 @@ class MyPicturesFragment : Fragment() {
 
     class PictureViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val picture: ImageView = view.picture_imageView.apply {
-            setOnClickListener { Log.d(TAG, "pic clicked") }
-        }
-        val yesVotes: TextView = view.up_vote_textView
-        val noVotes: TextView = view.down_vote_textView
+        val picture: ImageView = view.picture_imageView
+        val yesVotes: TextView = view.yes_vote_textView
+        val noVotes: TextView = view.no_vote_textView
     }
 }
+
+
 

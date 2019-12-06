@@ -12,13 +12,13 @@ import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.repository.PictureRepository
 import com.sadraii.shouldi.data.repository.UserRepository
-import com.sadraii.shouldi.toByteArray
+import com.sadraii.shouldi.toByteArrayWebp
 
 class PictureFirebaseDataSource {
 
     companion object {
 
-        const val PICTURE_FORMAT = "webp" // Will also need to change Bitmap.toByteArray() extension
+        const val PICTURE_FORMAT = "webp"
     }
 
     private val user = FirebaseAuth.getInstance().currentUser
@@ -26,11 +26,10 @@ class PictureFirebaseDataSource {
     private val storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
 
     internal fun add(pictureEntity: PictureEntity, picture: Bitmap) {
-        val picturePath = "${pictureEntity.userId}/${pictureEntity.id}.$PICTURE_FORMAT"
-        val pictureRef = storageRef.child(picturePath)
-        pictureRef.putBytes(
-            picture.toByteArray(),
-            storageMetadata { contentType = "image/$PICTURE_FORMAT" }) // TODO Can metadata be skipped?
+        storageRef.child(pictureEntity.pictureUrl)
+            .putBytes(
+                picture.toByteArrayWebp(),
+                storageMetadata { contentType = "image/$PICTURE_FORMAT" }) // TODO Can metadata be skipped?
             .addOnFailureListener { e ->
                 Log.d(TAG, "Failed to add picture ${pictureEntity.id} to Storage: ", e)
             }
@@ -43,3 +42,4 @@ class PictureFirebaseDataSource {
             }
     }
 }
+

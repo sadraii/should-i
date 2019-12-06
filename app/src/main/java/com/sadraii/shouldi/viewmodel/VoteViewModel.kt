@@ -30,7 +30,17 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
         userRepo = UserRepository(userDao, UserFirebaseDataSource())
 
         viewModelScope.launch {
-            userDao.insert(UserEntity(UUID.randomUUID().toString(), "55", "55", "55", "55", Instant.now(), null))
+            userDao.insert(
+                UserEntity(
+                    UUID.randomUUID().toString(),
+                    "55",
+                    "55",
+                    "55",
+                    "55",
+                    Instant.now().toEpochMilli(),
+                    null
+                )
+            )
             Log.d(TAG, "inserted 55")
         }
     }
@@ -43,8 +53,8 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
                 "First", /* TODO Get first/last name */
                 "Last",
                 email,
-                Instant.ofEpochMilli(metadata!!.creationTimestamp),
-                Instant.ofEpochMilli(metadata!!.lastSignInTimestamp),
+                metadata!!.creationTimestamp,
+                metadata!!.lastSignInTimestamp,
                 user.photoUrl
             )
         }

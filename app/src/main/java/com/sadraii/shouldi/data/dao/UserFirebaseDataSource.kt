@@ -46,7 +46,7 @@ class UserFirebaseDataSource {
                         "firstName" to firstName,
                         "lastName" to lastName,
                         "email" to email,
-                        "lastOnline" to lastOnline?.toEpochMilli()
+                        "lastOnline" to lastOnline
                     )
                 }
             )

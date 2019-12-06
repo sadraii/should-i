@@ -28,7 +28,6 @@ import androidx.fragment.app.viewModels
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.firebase.ui.firestore.paging.FirestorePagingAdapter
 import com.firebase.ui.firestore.paging.FirestorePagingOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -42,6 +41,7 @@ import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.repository.PictureRepository
 import com.sadraii.shouldi.data.repository.UserRepository
+import com.sadraii.shouldi.util.GlideApp
 import com.sadraii.shouldi.viewmodel.MyPicturesViewModel
 import kotlinx.android.synthetic.main.fragment_my_pictures.view.*
 import kotlinx.android.synthetic.main.item_my_picture.view.*
@@ -93,15 +93,19 @@ class MyPicturesFragment : Fragment() {
                 Log.d(TAG, "recycling yes: ${model.yesVotes.toString()}")
 
                 // TODO Move to Repo
-                FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
+                val pictureRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
                     .child(model.pictureUrl)
-                    .downloadUrl
-                    .addOnSuccessListener {
-                        Glide.with(holder.itemView.context)
-                            .load(it.encodedPath)
-                            .into(holder.picture)
-                        Log.d(TAG, "recycling ${it.encodedPath}")
-                    }
+
+                Log.d(TAG, "Glide loading ${model.pictureUrl}")
+                GlideApp.with(holder.itemView.context)
+                    .load(pictureRef)
+                    .centerCrop()
+                    .into(holder.picture)
+
+                // Log.d(TAG, "Glide loading ${model.pictureUrl}")
+                // Glide.with(holder.itemView.context)
+                //     .load(model.pictureUrl)
+                //     .into(holder.picture)
                 holder.picture.setOnClickListener { Log.d(TAG, "pic ${model.id} clicked") }
             }
 

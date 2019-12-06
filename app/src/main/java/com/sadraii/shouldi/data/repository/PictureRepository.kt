@@ -17,9 +17,7 @@
 package com.sadraii.shouldi.data.repository
 
 import android.graphics.Bitmap
-import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
-import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.data.dao.PictureDao
 import com.sadraii.shouldi.data.dao.PictureFirebaseDataSource
 import com.sadraii.shouldi.data.entity.PictureEntity
@@ -40,11 +38,12 @@ class PictureRepository(
     internal suspend fun add(picture: Bitmap) {
         // TODO add actual bitmap?
         val uuid = UUID.randomUUID().toString()
-        val uri = Uri.Builder()
-            .authority(ShouldIDatabase.GS_BUCKET)
-            .appendPath(user!!.uid)
-            .appendPath("$uuid.${PictureFirebaseDataSource.PICTURE_FORMAT}")
-            .build().toString()
+        // val uri = Uri.Builder()
+        //     // .authority(ShouldIDatabase.GS_BUCKET)
+        //     .appendPath(user!!.uid)
+        //     .appendPath("$uuid.${PictureFirebaseDataSource.PICTURE_FORMAT}")
+        //     .build().toString()
+        val uri = "${user!!.uid}/$uuid.${PictureFirebaseDataSource.PICTURE_FORMAT}"
         val pictureToAdd = PictureEntity(uuid, user.uid, uri)
 
         val dbPicture = pictureDao.getPicture(uuid)

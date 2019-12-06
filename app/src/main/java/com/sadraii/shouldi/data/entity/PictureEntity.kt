@@ -37,17 +37,18 @@ import java.util.UUID
 data class PictureEntity(
     @PrimaryKey val id: String = UUID.randomUUID().toString(), /* TODO Remove */
     @ColumnInfo(name = "user_id") val userId: String,
-    @ColumnInfo(name = "picture_url") val pictureUrl: String,
-    @ColumnInfo(name = "created") val created: Instant = Instant.now(),
+    @ColumnInfo(name = "picture_url") var pictureUrl: String,
+    @ColumnInfo(name = "created") val created: Long = Instant.now().toEpochMilli(),
     @ColumnInfo(name = "yes_votes") val yesVotes: Int = 0,
     @ColumnInfo(name = "no_votes") val noVotes: Int = 0,
     @ColumnInfo(name = "featured_count") val featuredCount: Int = 0,
-    @ColumnInfo(name = "featured_time") val featuredTime: Instant? = null,
-    @ColumnInfo(name = "position_time") val positionTime: Instant? = null,
+    @ColumnInfo(name = "featured_time") val featuredTime: Long? = null,
+    @ColumnInfo(name = "position_time") val positionTime: Long? = null,
     @ColumnInfo(name = "expo_fallback_scale") val expoFallbackScale: Int = 0,
     @ColumnInfo(name = "caption") val caption: String = "" /* TODO Remove */
-
-)
+) {
+    constructor() : this("", "", "") // TODO Needed for FirebaseUI?
+}
 
 // data class PictureEntityFirebase(
 //     val id: String,

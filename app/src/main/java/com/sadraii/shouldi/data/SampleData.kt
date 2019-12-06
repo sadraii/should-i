@@ -99,7 +99,7 @@ object SampleData {
     }
 
     private fun timeOrNull() = when (Random.nextInt(2)) {
-        0 -> Instant.now().minusSeconds(Random.nextLong(100, 200))
+        0 -> Instant.now().minusSeconds(Random.nextLong(100, 200)).toEpochMilli()
         else -> null
     }
 
@@ -109,9 +109,9 @@ object SampleData {
         return "http://placekitten.com/$randX/$randY"
     }
 
-    private fun randomPastTime() = Instant.now().minusSeconds(Random.nextLong(10_000, 20_000))
+    private fun randomPastTime() = Instant.now().minusSeconds(Random.nextLong(10_000, 20_000)).toEpochMilli()
 
-    private fun randomShortPastTime() = Instant.now().minusSeconds(Random.nextLong(1_000, 2_000))
+    private fun randomShortPastTime() = Instant.now().minusSeconds(Random.nextLong(1_000, 2_000)).toEpochMilli()
 
     private fun randomCount() = Random.nextInt(300)
 }

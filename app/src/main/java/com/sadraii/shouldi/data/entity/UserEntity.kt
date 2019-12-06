@@ -30,8 +30,8 @@ data class UserEntity(
     @ColumnInfo(name = "first_name") val firstName: String? = null,
     @ColumnInfo(name = "last_name") val lastName: String? = null,
     @ColumnInfo(name = "email") val email: String? = null,
-    @ColumnInfo(name = "created") val created: Instant = Instant.now(),
-    @ColumnInfo(name = "last_online") val lastOnline: Instant? = null,
+    @ColumnInfo(name = "created") val created: Long = Instant.now().toEpochMilli(),
+    @ColumnInfo(name = "last_online") val lastOnline: Long? = null,
     @ColumnInfo(name = "photo_url") val photoUrl: Uri? = null
 )
 

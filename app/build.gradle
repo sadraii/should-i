@@ -112,6 +112,7 @@ dependencies {
     // Firebase UI
     implementation "com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion"
     implementation "com.firebaseui:firebase-ui-firestore:$rootProject.firebaseUiVersion"
+    implementation "com.firebaseui:firebase-ui-storage:$rootProject.firebaseUiVersion"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0' // May need to use 1.x.x
 
     // Camera

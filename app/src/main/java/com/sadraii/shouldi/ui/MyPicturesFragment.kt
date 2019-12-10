@@ -23,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.paging.PagedList
@@ -81,6 +82,9 @@ class MyPicturesFragment : Fragment() {
             .build()
 
         viewAdapter = object : FirestorePagingAdapter<PictureEntity, PictureViewHolder>(options) {
+
+            val storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
+
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
                 val item = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_my_picture, parent, false)
@@ -90,23 +94,21 @@ class MyPicturesFragment : Fragment() {
             override fun onBindViewHolder(holder: PictureViewHolder, position: Int, model: PictureEntity) {
                 holder.yesVotes.text = model.yesVotes.toString()
                 holder.noVotes.text = model.noVotes.toString()
-                Log.d(TAG, "recycling yes: ${model.yesVotes.toString()}")
+                Log.d(TAG, "recycling yes: ${model.yesVotes}")
 
                 // TODO Move to Repo
-                val pictureRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
-                    .child(model.pictureUrl)
+                val pictureRef = storageRef.child(model.pictureUrl)
 
                 Log.d(TAG, "Glide loading ${model.pictureUrl}")
                 GlideApp.with(holder.itemView.context)
                     .load(pictureRef)
+                    .placeholder(R.drawable.ic_photo_placeholder_24dp)
                     .centerCrop()
                     .into(holder.picture)
 
-                // Log.d(TAG, "Glide loading ${model.pictureUrl}")
-                // Glide.with(holder.itemView.context)
-                //     .load(model.pictureUrl)
-                //     .into(holder.picture)
-                holder.picture.setOnClickListener { Log.d(TAG, "pic ${model.id} clicked") }
+                holder.itemView.setOnClickListener {
+                    Toast.makeText(holder.itemView.context, "pic ${model.id} clicked", Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onError(e: Exception) {

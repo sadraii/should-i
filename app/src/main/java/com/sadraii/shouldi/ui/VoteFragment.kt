@@ -25,18 +25,28 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.sadraii.shouldi.R
 import com.sadraii.shouldi.TAG
+import com.sadraii.shouldi.data.ShouldIDatabase
+import com.sadraii.shouldi.data.entity.PictureEntity
+import com.sadraii.shouldi.util.GlideApp
 import com.sadraii.shouldi.viewmodel.VoteViewModel
+import kotlinx.android.synthetic.main.fragment_vote.*
 
 class VoteFragment : Fragment() {
 
@@ -45,7 +55,8 @@ class VoteFragment : Fragment() {
     }
 
     private lateinit var firestore: FirebaseFirestore
-    private val voteViewModel by viewModels<VoteViewModel>()
+    private lateinit var storageRef: StorageReference
+    private val voteViewModel: VoteViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,20 +68,28 @@ class VoteFragment : Fragment() {
 
         FirebaseFirestore.setLoggingEnabled(true)
         initFirestore()
+        subscribeToModel()
 
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<Button>(R.id.take_picture_button)?.setOnClickListener {
+        take_picture_button.setOnClickListener {
             findNavController().navigate(R.id.action_voteFragment_to_permissionFragment)
             Log.d(TAG, "setNavOnClick")
         }
+
+        picture_imageView.visibility = View.GONE
+        no_vote_imageButton.visibility = View.GONE
+        yes_vote_imageButton.visibility = View.GONE
+        username_textView.visibility = View.GONE
+        if (hasAuthenticated()) displayPictureForVoting()
     }
 
     private fun initFirestore() {
         firestore = Firebase.firestore
+        storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
     }
 
     override fun onStart() {
@@ -84,6 +103,9 @@ class VoteFragment : Fragment() {
 
     private fun shouldStartAuthentication() =
         !voteViewModel.isAuthenticating && FirebaseAuth.getInstance().currentUser == null
+
+    private fun hasAuthenticated() =
+        !voteViewModel.isAuthenticating && FirebaseAuth.getInstance().currentUser != null
 
     private fun startAuthentication() {
         val intent = AuthUI.getInstance().createSignInIntentBuilder()
@@ -104,18 +126,48 @@ class VoteFragment : Fragment() {
                 user?.metadata?.run {
                     //     if (creationTimestamp == lastSignInTimestamp) {
                     //         // User is new
-                    voteViewModel.addUser(user)
+                    // voteViewModel.addUser(user)
                     //     }
                 }
+                voteViewModel.addUser(user!!)
+                displayPictureForVoting()
             } else if (resultCode != Activity.RESULT_OK && shouldStartAuthentication()) {
                 startAuthentication()
             }
         }
     }
 
+    private fun subscribeToModel() {
+        voteViewModel.currentPicture.observe(viewLifecycleOwner, Observer<PictureEntity> { newPicture ->
+            // TODO Move to viewModel
+            val pictureRef = storageRef.child(newPicture.pictureUrl)
+            Log.d(TAG, "Glide loading ${newPicture.pictureUrl}")
+            GlideApp.with(this)
+                .load(pictureRef)
+                .transform(CenterCrop(), RoundedCorners(50))
+                .placeholder(R.drawable.ic_photo_placeholder_24dp)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(picture_imageView)
+        })
+    }
+
+    private fun displayPictureForVoting() {
+        voteViewModel.user = FirebaseAuth.getInstance().currentUser!!
+        voteViewModel.updateCurrentPicture()
+
+        no_vote_imageButton.visibility = View.VISIBLE
+        no_vote_imageButton.setOnClickListener {
+            Toast.makeText(context, "Voted NO", Toast.LENGTH_SHORT).show()
+        }
+        yes_vote_imageButton.visibility = View.VISIBLE
+        yes_vote_imageButton.setOnClickListener {
+            Toast.makeText(context, "Voted YES", Toast.LENGTH_SHORT).show()
+        }
+        picture_imageView.visibility = View.VISIBLE
+        username_textView.visibility = View.VISIBLE
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
     }
 }
-
-

@@ -17,16 +17,20 @@
 package com.sadraii.shouldi.data
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.sadraii.shouldi.TAG
 import com.sadraii.shouldi.data.dao.PictureDao
 import com.sadraii.shouldi.data.dao.UserDao
 import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.entity.UserEntity
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Database(entities = [PictureEntity::class, UserEntity::class], version = 1)
 @TypeConverters(Converters::class)
@@ -55,15 +59,25 @@ abstract class ShouldIDatabase : RoomDatabase() {
 
     private class ShouldIDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
 
-        override fun onOpen(db: SupportSQLiteDatabase) {
-            super.onOpen(db)
-            // Log.d(TAG, "onOpen() database")
-            // INSTANCE?.let { database ->
-            //     scope.launch(Dispatchers.IO) {
-            //         SampleData.delete(database.userDao(), database.pictureDao())
-            //         SampleData.generate(database.userDao(), database.pictureDao())
-            //     }
-            // }
+        // override fun onOpen(db: SupportSQLiteDatabase) {
+        //     super.onOpen(db)
+        //     Log.d(TAG, "db onOpen")
+        //     INSTANCE?.let { database ->
+        //         scope.launch(Dispatchers.IO) {
+        //             SampleData.delete(database.userDao(), database.pictureDao())
+        //             SampleData.generate(database.userDao(), database.pictureDao())
+        //         }
+        //     }
+        // }
+
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            Log.d(TAG, "db onCreate")
+            INSTANCE?.let { database ->
+                scope.launch(Dispatchers.IO) {
+                    SampleData.generateUserAndPicture(database.userDao(), database.pictureDao())
+                }
+            }
         }
     }
 }

@@ -30,7 +30,7 @@ import java.time.Instant
 import java.util.UUID
 import kotlin.random.Random
 
-private const val numberOfSamples = 14
+private const val numberOfSamples = 15
 
 object SampleData {
 
@@ -40,11 +40,59 @@ object SampleData {
         Log.d(TAG, "Deleted database data")
     }
 
+    suspend fun generateUserAndPicture(userDao: UserDao, pictureDao: PictureDao) {
+        // val firestore = Firebase.firestore
+        // val usersCollection = firestore.collection(UserRepository.USERS_PATH)
+
+        val userUuid = UUID.randomUUID().toString()
+        val user = with(SampleArrays) {
+            UserEntity(
+                userUuid,
+                userName[0], /* TODO(): Randomly return null? */
+                firstName[0], /* TODO(): Randomly return null? */
+                lastName[0], /* TODO(): Randomly return null? */
+                emailOrNull(0),
+                randomPastTime(),
+                timeOrNull()
+            )
+        }
+        val picture = PictureEntity(
+            UUID.randomUUID().toString(),
+            userUuid,
+            randomPictureUrl(),
+            randomShortPastTime(),
+            randomCount(),
+            randomCount(),
+            randomCount(),
+            timeOrNull(),
+            timeOrNull(),
+            Random.nextInt(3),
+            "" /* TODO(): Needed? */
+        )
+        userDao.insert(user)
+        pictureDao.insert(picture)
+
+        // val userRef = usersCollection.document(user.id)
+        // userRef.set(user)
+        //     .addOnSuccessListener {
+        //         userRef.collection(PictureRepository.PICTURES_PATH)
+        //             .document(picture.id)
+        //             .set(picture)
+        //             .addOnFailureListener { e ->
+        //                 Log.d(TAG, "Failed to create picture ${picture.id}", e)
+        //             }
+        //     }
+        //     .addOnFailureListener { e ->
+        //         Log.d(TAG, "Failed to create user ${user.id}", e)
+        //     }
+        Log.d(TAG, "Generated database user and picture")
+    }
+
     suspend fun generate(userDao: UserDao, pictureDao: PictureDao) {
         val firestore = Firebase.firestore
         val usersCollection = firestore.collection(UserRepository.USERS_PATH)
 
-        for (i in 0..numberOfSamples) {
+        for (i in 0 until numberOfSamples) {
             val userUuid = UUID.randomUUID().toString()
             val user = with(SampleArrays) {
                 UserEntity(

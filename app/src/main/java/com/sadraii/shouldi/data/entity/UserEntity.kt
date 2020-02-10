@@ -32,7 +32,8 @@ data class UserEntity(
     @ColumnInfo(name = "email") val email: String? = null,
     @ColumnInfo(name = "created") val created: Long = Instant.now().toEpochMilli(),
     @ColumnInfo(name = "last_online") val lastOnline: Long? = null,
-    @ColumnInfo(name = "photo_url") val photoUrl: Uri? = null
+    @ColumnInfo(name = "photo_url") val photoUrl: Uri? = null,
+    @ColumnInfo(name = "last_vote") val lastVote: Long? = null
 )
 
 // data class UserEntityFirebase(
@@ -64,3 +65,5 @@ data class UserEntity(
 //     Instant.ofEpochMilli(created),
 //     lastOnline?.let { Instant.ofEpochMilli(it) }
 // )
+
+

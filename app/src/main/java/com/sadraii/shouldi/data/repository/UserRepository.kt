@@ -16,11 +16,13 @@
 
 package com.sadraii.shouldi.data.repository
 
+import com.google.firebase.auth.FirebaseUser
 import com.sadraii.shouldi.data.dao.UserDao
-import com.sadraii.shouldi.data.dao.UserFirebaseDataSource
+import com.sadraii.shouldi.data.dao.UserFirebaseDataStore
+import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.entity.UserEntity
 
-class UserRepository(private val userDao: UserDao, private val userFirebaseDataSource: UserFirebaseDataSource) {
+class UserRepository(private val userDao: UserDao, private val userFirebaseDataStore: UserFirebaseDataStore) {
 
     companion object {
 
@@ -36,7 +38,11 @@ class UserRepository(private val userDao: UserDao, private val userFirebaseDataS
             userDao.insert(user)
         }
 
-        userFirebaseDataSource.addOrUpdate(user)
+        userFirebaseDataStore.addOrUpdate(user)
+    }
+
+    internal suspend fun nextPictureToVote(user: FirebaseUser): PictureEntity? {
+        return userFirebaseDataStore.nextPictureOrNull(user)
     }
 }
 

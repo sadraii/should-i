@@ -103,7 +103,7 @@ class MyPicturesFragment : Fragment() {
                 GlideApp.with(holder.itemView.context)
                     .load(pictureRef)
                     .placeholder(R.drawable.ic_photo_placeholder_24dp)
-                    .centerCrop()
+                    .fitCenter()
                     .into(holder.picture)
 
                 holder.itemView.setOnClickListener {

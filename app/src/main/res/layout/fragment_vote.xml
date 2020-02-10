@@ -7,28 +7,61 @@
     android:layout_height="match_parent"
     tools:context=".ui.VoteFragment">
 
+    <ImageView
+        android:id="@+id/picture_imageView"
+        android:layout_width="0dp"
+        android:layout_height="450dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
     <Button
         android:id="@+id/take_picture_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/take_picture_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/username_textView" />
 
-    <ImageView
-        android:id="@+id/profile_imageView"
-        android:layout_width="0dp"
-        android:layout_height="500dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="w,3:4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:src="@tools:sample/backgrounds/scenic" />
+    <TextView
+        android:id="@+id/username_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/no_vote_imageButton"
+        app:layout_constraintEnd_toStartOf="@+id/yes_vote_imageButton"
+        app:layout_constraintStart_toEndOf="@+id/no_vote_imageButton"
+        app:layout_constraintTop_toTopOf="@+id/no_vote_imageButton" />
+
+    <ImageButton
+        android:id="@+id/yes_vote_imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_yes_vote_black_36dp"
+        app:layout_constraintEnd_toEndOf="@+id/picture_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/picture_imageView" />
+
+    <ImageButton
+        android:id="@+id/no_vote_imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_no_vote_black_36dp"
+        app:layout_constraintStart_toStartOf="@+id/picture_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/picture_imageView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -138,16 +138,22 @@ class VoteFragment : Fragment() {
     }
 
     private fun subscribeToModel() {
-        voteViewModel.currentPicture.observe(viewLifecycleOwner, Observer<PictureEntity> { newPicture ->
-            // TODO Move to viewModel
-            val pictureRef = storageRef.child(newPicture.pictureUrl)
-            Log.d(TAG, "Glide loading ${newPicture.pictureUrl}")
-            GlideApp.with(this)
-                .load(pictureRef)
-                .transform(CenterCrop(), RoundedCorners(50))
-                .placeholder(R.drawable.ic_photo_placeholder_24dp)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(picture_imageView)
+        voteViewModel.currentPicture.observe(viewLifecycleOwner, Observer<PictureEntity?> { newPicture ->
+            if (newPicture == null) {
+                GlideApp.with(this)
+                    .load(R.drawable.ic_add_a_photo_black_36dp)
+                    .transform(CenterCrop(), RoundedCorners(50))
+                    .into(picture_imageView)
+            } else {
+                val pictureRef = storageRef.child(newPicture.pictureUrl)
+                Log.d(TAG, "Glide loading ${newPicture.pictureUrl}")
+                GlideApp.with(this)
+                    .load(pictureRef)
+                    .transform(CenterCrop(), RoundedCorners(50))
+                    .placeholder(R.drawable.ic_photo_placeholder_24dp)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(picture_imageView)
+            }
         })
     }
 
@@ -158,10 +164,12 @@ class VoteFragment : Fragment() {
         no_vote_imageButton.visibility = View.VISIBLE
         no_vote_imageButton.setOnClickListener {
             Toast.makeText(context, "Voted NO", Toast.LENGTH_SHORT).show()
+            voteViewModel.voteNo()
         }
         yes_vote_imageButton.visibility = View.VISIBLE
         yes_vote_imageButton.setOnClickListener {
             Toast.makeText(context, "Voted YES", Toast.LENGTH_SHORT).show()
+            voteViewModel.voteYes()
         }
         picture_imageView.visibility = View.VISIBLE
         username_textView.visibility = View.VISIBLE

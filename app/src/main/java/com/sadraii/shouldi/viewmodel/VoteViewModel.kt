@@ -20,8 +20,9 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
     private val userDao: UserDao // TODO(remove)
     private val userRepo: UserRepository
     internal lateinit var user: FirebaseUser
-    internal val currentPicture: MutableLiveData<PictureEntity> by lazy {
-        MutableLiveData<PictureEntity>()
+    internal lateinit var userEntity: UserEntity
+    internal val currentPicture: MutableLiveData<PictureEntity?> by lazy {
+        MutableLiveData<PictureEntity?>()
     }
 
     internal var isAuthenticating = false
@@ -50,6 +51,7 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
 
     internal fun addUser(user: FirebaseUser) {
         this.user = user
+        this.userEntity = userRepo
         val userToAdd = with(user) {
             UserEntity(
                 uid,
@@ -69,16 +71,17 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
 
     internal fun updateCurrentPicture() {
         viewModelScope.launch {
-            userRepo.nextPictureToVote(user)?.let { nextPic ->
-                currentPicture.postValue(nextPic)
-            }
+            val pictureEntity = userRepo.nextPictureToVote(user)
+            currentPicture.postValue(pictureEntity)
         }
     }
 
-    internal fun voteYes() {
+    internal fun voteNo() {
     }
 
-    internal fun voteNo() {
+    internal fun voteYes() {
+        userRepo.updateVote()
+        updateCurrentPicture()
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

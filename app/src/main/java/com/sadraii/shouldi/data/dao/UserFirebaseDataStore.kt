@@ -63,6 +63,30 @@ class UserFirebaseDataStore {
             }
     }
 
+    internal fun updateVote(user: UserEntity) {
+        userCollection.document(user.id)
+            .update(
+                with(user) {
+                    mapOf("lastVote" to lastVote)
+                }
+            )
+            .addOnFailureListener { e ->
+                Log.d(TAG, "Failed to update vote for ${user.id} in Firestore", e)
+            }
+    }
+
+    // TODO fix
+    internal suspend fun getUser(firebaseUser: FirebaseUser) =
+        withContext(Dispatchers.IO) {
+            val userDoc = try {
+                userCollection.document(firebaseUser.uid).get().await()
+            } catch (e: FirebaseFirestoreException) {
+                Log.d(TAG, e.localizedMessage!!)
+                null
+            }
+            userDoc?.toObject(UserEntity::class.java)
+        }
+
     internal suspend fun nextPictureOrNull(firebaseUser: FirebaseUser) =
         withContext(Dispatchers.IO) {
             val userDoc = try {
@@ -73,16 +97,6 @@ class UserFirebaseDataStore {
             }
             val userEntity = userDoc?.toObject(UserEntity::class.java)
             getPicture(userEntity?.lastVote)
-            // userCollection.document(firebaseUser.uid).get()
-            //     .addOnSuccessListener { userDoc ->
-            //         val userEntity = userDoc.toObject(UserEntity::class.java)
-            //         userEntity?.let { user ->
-            //             if (user.lastVote != null) {
-            //                 val nextPic = Firebase.firestore.collectionGroup(PictureRepository.PICTURES_PATH)
-            //                     .whereGreaterThan("created", user.lastVote).get()
-            //             }
-            //         }
-            //     }
         }
 
     private suspend fun getPicture(lastVote: Long?): PictureEntity? {
@@ -110,13 +124,6 @@ class UserFirebaseDataStore {
         } else {
             null
         }
-        // return nextPicSnapshot?.let { snap ->
-        //     if (!snap.isEmpty) {
-        //         snap.documents[0].toObject(PictureEntity::class.java)
-        //     } else {
-        //         null
-        //     }
-        // }
     }
 }
 

@@ -44,5 +44,13 @@ class UserRepository(private val userDao: UserDao, private val userFirebaseDataS
     internal suspend fun nextPictureToVote(user: FirebaseUser): PictureEntity? {
         return userFirebaseDataStore.nextPictureOrNull(user)
     }
+
+    // TODO fix
+    internal suspend fun getUser(user: FirebaseUser) =
+        return userFirebaseDataStore.getUser(user)
+
+    internal fun updateVote(user: UserEntity) {
+        return userFirebaseDataStore.updateVote(user)
+    }
 }
 

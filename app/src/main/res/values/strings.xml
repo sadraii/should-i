@@ -11,4 +11,6 @@
     <string name="my_pictures_fragment_title">Should You?</string>
     <string name="switch_camera_button_alt">Switch camera</string>
     <string name="capture_button_alt">Capture</string>
+    <string name="no_pictures_to_vote">Check back later for new pics and post your own!</string>
+    <string name="caption_hint">Should I...</string>
 </resources>

@@ -16,6 +16,12 @@
 
 package com.sadraii.shouldi.ui
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +35,7 @@ import com.sadraii.shouldi.R
 import com.sadraii.shouldi.viewmodel.CaptionViewModel
 import kotlinx.android.synthetic.main.fragment_caption.*
 
-class CaptionFragment internal constructor() : Fragment() {
+class CaptionFragment : Fragment() {
 
     private val safeArgs: CaptionFragmentArgs by navArgs()
     private val captionViewModel by viewModels<CaptionViewModel>()
@@ -45,13 +51,25 @@ class CaptionFragment internal constructor() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val picture = safeArgs.picture
-
         picture_imageView.background = picture.toDrawable(resources)
 
         send_imageButton.setOnClickListener {
+            overlayText(picture)
             captionViewModel.addPicture(picture)
             findNavController().navigate(R.id.action_captionFragment_to_myPicturesFragment)
         }
+    }
+
+    private fun overlayText(picture: Bitmap) {
+        val canvas = Canvas(picture)
+        val paint = Paint()
+        paint.color = Color.WHITE
+        paint.textSize = 100F
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)
+        canvas.drawBitmap(picture, 0F, 0F, paint)
+        canvas.drawText(caption_editText.text.toString(), 10F, 1300F, paint)
+
+        // picture_imageView.background = picture.toDrawable(resources)
     }
 }
 

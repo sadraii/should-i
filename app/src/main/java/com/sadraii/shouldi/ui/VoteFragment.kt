@@ -25,7 +25,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -80,10 +79,7 @@ class VoteFragment : Fragment() {
             Log.d(TAG, "setNavOnClick")
         }
 
-        picture_imageView.visibility = View.GONE
-        vote_no_imageButton.visibility = View.GONE
-        vote_yes_imageButton.visibility = View.GONE
-        username_textView.visibility = View.GONE
+        displayVotingOptions(false)
         if (hasAuthenticated()) displayPictureForVoting()
     }
 
@@ -140,11 +136,13 @@ class VoteFragment : Fragment() {
     private fun subscribeToModel() {
         voteViewModel.currentPicture.observe(viewLifecycleOwner, Observer<PictureEntity?> { newPicture ->
             if (newPicture == null) {
-                GlideApp.with(this)
-                    .load(R.drawable.ic_add_a_photo_black_36dp)
-                    .transform(CenterCrop(), RoundedCorners(50))
-                    .into(picture_imageView)
+                displayVotingOptions(false)
+                // GlideApp.with(this)
+                //     .load(R.drawable.ic_add_a_photo_black_36dp)
+                //     .transform(CenterCrop(), RoundedCorners(50))
+                //     .into(picture_imageView)
             } else {
+                displayVotingOptions(true)
                 val pictureRef = storageRef.child(newPicture.pictureUrl)
                 Log.d(TAG, "Glide loading ${newPicture.pictureUrl}")
                 GlideApp.with(this)
@@ -160,19 +158,25 @@ class VoteFragment : Fragment() {
     private fun displayPictureForVoting() {
         voteViewModel.user = FirebaseAuth.getInstance().currentUser!!
         voteViewModel.updateCurrentPicture()
+        displayVotingOptions(true)
+        vote_no_imageButton.setOnClickListener { voteViewModel.voteYes(false) }
+        vote_yes_imageButton.setOnClickListener { voteViewModel.voteYes(true) }
+    }
 
-        vote_no_imageButton.visibility = View.VISIBLE
-        vote_no_imageButton.setOnClickListener {
-            Toast.makeText(context, "Voted NO", Toast.LENGTH_SHORT).show()
-            voteViewModel.voteYes(false)
+    private fun displayVotingOptions(visible: Boolean) {
+        if (visible) {
+            picture_imageView.visibility = View.VISIBLE
+            vote_no_imageButton.visibility = View.VISIBLE
+            vote_yes_imageButton.visibility = View.VISIBLE
+            username_textView.visibility = View.VISIBLE
+            no_pictures_textView.visibility = View.GONE
+        } else {
+            picture_imageView.visibility = View.GONE
+            vote_no_imageButton.visibility = View.GONE
+            vote_yes_imageButton.visibility = View.GONE
+            username_textView.visibility = View.GONE
+            no_pictures_textView.visibility = View.VISIBLE
         }
-        vote_yes_imageButton.visibility = View.VISIBLE
-        vote_yes_imageButton.setOnClickListener {
-            Toast.makeText(context, "Voted YES", Toast.LENGTH_SHORT).show()
-            voteViewModel.voteYes(true)
-        }
-        picture_imageView.visibility = View.VISIBLE
-        username_textView.visibility = View.VISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

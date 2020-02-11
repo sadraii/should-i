@@ -29,16 +29,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/caption_editText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Should I? ___ __ __ _____"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/caption_hint"
+        android:inputType="textCapSentences"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/picture_imageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.13"
+        app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.87" />
+        app:layout_constraintTop_toTopOf="@+id/picture_imageView"
+        app:layout_constraintVertical_bias="0.90999997" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

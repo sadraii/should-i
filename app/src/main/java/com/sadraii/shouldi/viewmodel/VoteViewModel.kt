@@ -28,7 +28,6 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
     internal val currentPicture: MutableLiveData<PictureEntity?> by lazy {
         MutableLiveData<PictureEntity?>()
     }
-
     internal var isAuthenticating = false
 
     init {
@@ -38,21 +37,6 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
         userRepo = UserRepository(userDao, UserFirebaseDataStore())
         pictureDao = db.pictureDao()
         pictureRepo = PictureRepository(pictureDao, PictureFirebaseDataStore())
-        //
-        // viewModelScope.launch {
-        //     userDao.insert(
-        //         UserEntity(
-        //             UUID.randomUUID().toString(),
-        //             "55",
-        //             "55",
-        //             "55",
-        //             "55",
-        //             Instant.now().toEpochMilli(),
-        //             null
-        //         )
-        //     )
-        //     Log.d(TAG, "inserted 55")
-        // }
     }
 
     internal fun addUser(user: FirebaseUser) {
@@ -91,7 +75,6 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            // TODO Test if this is called by viewModels()
             if (modelClass.isAssignableFrom(VoteViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 return VoteViewModel(app) as T

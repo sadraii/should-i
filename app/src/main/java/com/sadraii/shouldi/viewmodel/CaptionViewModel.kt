@@ -11,7 +11,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.data.dao.PictureDao
-import com.sadraii.shouldi.data.dao.PictureFirebaseDataSource
+import com.sadraii.shouldi.data.dao.PictureFirebaseDataStore
 import com.sadraii.shouldi.data.repository.PictureRepository
 import kotlinx.coroutines.launch
 
@@ -25,7 +25,7 @@ class CaptionViewModel(application: Application) : AndroidViewModel(application)
     init {
         val db = ShouldIDatabase.getDatabase(application, viewModelScope)
         pictureDao = db.pictureDao()
-        pictureRepo = PictureRepository(pictureDao, PictureFirebaseDataSource())
+        pictureRepo = PictureRepository(pictureDao, PictureFirebaseDataStore())
     }
 
     internal fun addPicture(picture: Bitmap) {

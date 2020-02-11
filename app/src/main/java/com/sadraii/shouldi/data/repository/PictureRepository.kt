@@ -19,13 +19,13 @@ package com.sadraii.shouldi.data.repository
 import android.graphics.Bitmap
 import com.google.firebase.auth.FirebaseAuth
 import com.sadraii.shouldi.data.dao.PictureDao
-import com.sadraii.shouldi.data.dao.PictureFirebaseDataSource
+import com.sadraii.shouldi.data.dao.PictureFirebaseDataStore
 import com.sadraii.shouldi.data.entity.PictureEntity
 import java.util.UUID
 
 class PictureRepository(
     private val pictureDao: PictureDao,
-    private val pictureFirebaseDataSource: PictureFirebaseDataSource
+    private val pictureFirebaseDataStore: PictureFirebaseDataStore
 ) {
 
     companion object {
@@ -41,9 +41,9 @@ class PictureRepository(
         // val uri = Uri.Builder()
         //     // .authority(ShouldIDatabase.GS_BUCKET)
         //     .appendPath(user!!.uid)
-        //     .appendPath("$uuid.${PictureFirebaseDataSource.PICTURE_FORMAT}")
+        //     .appendPath("$uuid.${PictureFirebaseDataStore.PICTURE_FORMAT}")
         //     .build().toString()
-        val uri = "${user!!.uid}/$uuid.${PictureFirebaseDataSource.PICTURE_FORMAT}"
+        val uri = "${user!!.uid}/$uuid.${PictureFirebaseDataStore.PICTURE_FORMAT}"
         val pictureToAdd = PictureEntity(uuid, user.uid, uri)
 
         val dbPicture = pictureDao.getPicture(uuid)
@@ -51,6 +51,10 @@ class PictureRepository(
             pictureDao.insert(pictureToAdd)
         }
 
-        pictureFirebaseDataSource.add(pictureToAdd, picture)
+        pictureFirebaseDataStore.add(pictureToAdd, picture)
+    }
+
+    internal suspend fun updatePictureVoteCount(picture: PictureEntity, vote: Boolean) {
+        pictureFirebaseDataStore.updatePictureVoteCount(picture, vote)
     }
 }

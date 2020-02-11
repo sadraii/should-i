@@ -47,10 +47,10 @@ class UserRepository(private val userDao: UserDao, private val userFirebaseDataS
 
     // TODO fix
     internal suspend fun getUser(user: FirebaseUser) =
-        return userFirebaseDataStore.getUser(user)
+        userFirebaseDataStore.getUser(user)
 
-    internal fun updateVote(user: UserEntity) {
-        return userFirebaseDataStore.updateVote(user)
+    internal suspend fun updateLastVote(user: FirebaseUser, picture: PictureEntity) {
+        userFirebaseDataStore.updateLastVote(user, picture.created)
     }
 }
 

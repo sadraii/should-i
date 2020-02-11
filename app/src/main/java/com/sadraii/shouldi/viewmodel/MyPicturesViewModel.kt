@@ -22,7 +22,7 @@ class MyPicturesViewModel(application: Application) : AndroidViewModel(applicati
     init {
         // val db = ShouldIDatabase.getDatabase(application, viewModelScope)
         // pictureDao = db.pictureDao()
-        // pictureRepo = PictureRepository(pictureDao, PictureFirebaseDataSource())
+        // pictureRepo = PictureRepository(pictureDao, PictureFirebaseDataStore())
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

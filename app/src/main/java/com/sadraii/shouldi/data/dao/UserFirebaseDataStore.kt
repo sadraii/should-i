@@ -63,15 +63,13 @@ class UserFirebaseDataStore {
             }
     }
 
-    internal fun updateVote(user: UserEntity) {
-        userCollection.document(user.id)
+    internal suspend fun updateLastVote(user: FirebaseUser, lastVote: Long) {
+        userCollection.document(user.uid)
             .update(
-                with(user) {
-                    mapOf("lastVote" to lastVote)
-                }
+                mapOf("lastVote" to lastVote)
             )
             .addOnFailureListener { e ->
-                Log.d(TAG, "Failed to update vote for ${user.id} in Firestore", e)
+                Log.d(TAG, "Failed to update vote for ${user.uid} in Firestore", e)
             }
     }
 
@@ -82,6 +80,7 @@ class UserFirebaseDataStore {
                 userCollection.document(firebaseUser.uid).get().await()
             } catch (e: FirebaseFirestoreException) {
                 Log.d(TAG, e.localizedMessage!!)
+                Log.d(TAG, "Failed to get user ref ${firebaseUser.uid} from Firestore")
                 null
             }
             userDoc?.toObject(UserEntity::class.java)
@@ -93,13 +92,14 @@ class UserFirebaseDataStore {
                 userCollection.document(firebaseUser.uid).get().await()
             } catch (e: FirebaseFirestoreException) {
                 Log.d(TAG, e.localizedMessage!!)
+                Log.d(TAG, "Failed to get user ref ${firebaseUser.uid} from Firestore")
                 null
             }
             val userEntity = userDoc?.toObject(UserEntity::class.java)
-            getPicture(userEntity?.lastVote)
+            getNextPicture(userEntity?.lastVote)
         }
 
-    private suspend fun getPicture(lastVote: Long?): PictureEntity? {
+    private suspend fun getNextPicture(lastVote: Long?): PictureEntity? {
         val nextPicSnapshot = try {
             if (lastVote == null) {
                 Firebase.firestore.collectionGroup(PictureRepository.PICTURES_PATH)

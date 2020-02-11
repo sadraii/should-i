@@ -81,8 +81,8 @@ class VoteFragment : Fragment() {
         }
 
         picture_imageView.visibility = View.GONE
-        no_vote_imageButton.visibility = View.GONE
-        yes_vote_imageButton.visibility = View.GONE
+        vote_no_imageButton.visibility = View.GONE
+        vote_yes_imageButton.visibility = View.GONE
         username_textView.visibility = View.GONE
         if (hasAuthenticated()) displayPictureForVoting()
     }
@@ -161,15 +161,15 @@ class VoteFragment : Fragment() {
         voteViewModel.user = FirebaseAuth.getInstance().currentUser!!
         voteViewModel.updateCurrentPicture()
 
-        no_vote_imageButton.visibility = View.VISIBLE
-        no_vote_imageButton.setOnClickListener {
+        vote_no_imageButton.visibility = View.VISIBLE
+        vote_no_imageButton.setOnClickListener {
             Toast.makeText(context, "Voted NO", Toast.LENGTH_SHORT).show()
-            voteViewModel.voteNo()
+            voteViewModel.voteYes(false)
         }
-        yes_vote_imageButton.visibility = View.VISIBLE
-        yes_vote_imageButton.setOnClickListener {
+        vote_yes_imageButton.visibility = View.VISIBLE
+        vote_yes_imageButton.setOnClickListener {
             Toast.makeText(context, "Voted YES", Toast.LENGTH_SHORT).show()
-            voteViewModel.voteYes()
+            voteViewModel.voteYes(true)
         }
         picture_imageView.visibility = View.VISIBLE
         username_textView.visibility = View.VISIBLE

@@ -38,13 +38,13 @@
         android:layout_marginEnd="8dp"
         android:text="TextView"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/no_vote_imageButton"
-        app:layout_constraintEnd_toStartOf="@+id/yes_vote_imageButton"
-        app:layout_constraintStart_toEndOf="@+id/no_vote_imageButton"
-        app:layout_constraintTop_toTopOf="@+id/no_vote_imageButton" />
+        app:layout_constraintBottom_toBottomOf="@+id/vote_no_imageButton"
+        app:layout_constraintEnd_toStartOf="@+id/vote_yes_imageButton"
+        app:layout_constraintStart_toEndOf="@+id/vote_no_imageButton"
+        app:layout_constraintTop_toTopOf="@+id/vote_no_imageButton" />
 
     <ImageButton
-        android:id="@+id/yes_vote_imageButton"
+        android:id="@+id/vote_yes_imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/picture_imageView" />
 
     <ImageButton
-        android:id="@+id/no_vote_imageButton"
+        android:id="@+id/vote_no_imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

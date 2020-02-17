@@ -38,11 +38,6 @@ class PictureRepository(
     internal suspend fun add(picture: Bitmap) {
         // TODO add actual bitmap?
         val uuid = UUID.randomUUID().toString()
-        // val uri = Uri.Builder()
-        //     // .authority(ShouldIDatabase.GS_BUCKET)
-        //     .appendPath(user!!.uid)
-        //     .appendPath("$uuid.${PictureFirebaseDataStore.PICTURE_FORMAT}")
-        //     .build().toString()
         val uri = "${user!!.uid}/$uuid.${PictureFirebaseDataStore.PICTURE_FORMAT}"
         val pictureToAdd = PictureEntity(uuid, user.uid, uri)
 

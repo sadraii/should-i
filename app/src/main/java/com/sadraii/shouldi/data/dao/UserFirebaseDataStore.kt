@@ -117,7 +117,7 @@ class UserFirebaseDataStore {
             Log.d(TAG, e.message!!)
             null
         }
-        Log.d(TAG, "collectionGroup size=${nextPicSnapshot?.documents?.size}")
+        Log.d(TAG, "collectionGroup size=${nextPicSnapshot?.size()}")
 
         return if (nextPicSnapshot != null && !nextPicSnapshot.isEmpty) {
             nextPicSnapshot.documents[0].toObject(PictureEntity::class.java)

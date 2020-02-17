@@ -81,6 +81,14 @@ class MyPicturesFragment : Fragment() {
             .setQuery(query, config, PictureEntity::class.java)
             .build()
 
+        // TODO remove
+        Firebase.firestore
+            .collection(UserRepository.USERS_PATH)
+            .document(user!!.uid)
+            .collection(PictureRepository.PICTURES_PATH).get().addOnSuccessListener {
+                Log.d(TAG, "size=before recycler: ${it.size()}")
+            }
+
         viewAdapter = object : FirestorePagingAdapter<PictureEntity, PictureViewHolder>(options) {
 
             val storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
@@ -92,6 +100,14 @@ class MyPicturesFragment : Fragment() {
             }
 
             override fun onBindViewHolder(holder: PictureViewHolder, position: Int, model: PictureEntity) {
+                // TODO remove
+                Firebase.firestore
+                    .collection(UserRepository.USERS_PATH)
+                    .document(user!!.uid)
+                    .collection(PictureRepository.PICTURES_PATH).get().addOnSuccessListener {
+                        Log.d(TAG, "size=during recycler: ${it.size()}")
+                    }
+
                 holder.yesVotes.text = model.yesVotes.toString()
                 holder.noVotes.text = model.noVotes.toString()
                 Log.d(TAG, "recycling yes: ${model.yesVotes}")
@@ -112,13 +128,12 @@ class MyPicturesFragment : Fragment() {
             }
 
             override fun onError(e: Exception) {
-                Log.e(TAG, e.message ?: "Generic FirestorePagingAdapter error")
+                Log.e(TAG, "FirestorePagingAdapter error: ${e.message}")
             }
         }
 
         viewManager = LinearLayoutManager(requireContext())
         recyclerView = view.my_pictures_recyclerView.apply {
-            // setHasFixedSize(true)
             adapter = viewAdapter
             layoutManager = viewManager
         }

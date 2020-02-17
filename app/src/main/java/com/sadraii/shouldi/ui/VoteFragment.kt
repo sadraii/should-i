@@ -42,7 +42,6 @@ import com.google.firebase.storage.StorageReference
 import com.sadraii.shouldi.R
 import com.sadraii.shouldi.TAG
 import com.sadraii.shouldi.data.ShouldIDatabase
-import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.util.GlideApp
 import com.sadraii.shouldi.viewmodel.VoteViewModel
 import kotlinx.android.synthetic.main.fragment_vote.*
@@ -78,9 +77,7 @@ class VoteFragment : Fragment() {
             findNavController().navigate(R.id.action_voteFragment_to_permissionFragment)
             Log.d(TAG, "setNavOnClick")
         }
-
-        displayVotingOptions(false)
-        if (hasAuthenticated()) displayPictureForVoting()
+        if (hasAuthenticated()) displayPictureForVoting() else displayVotingOptions(false)
     }
 
     private fun initFirestore() {
@@ -90,7 +87,6 @@ class VoteFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
         if (shouldStartAuthentication()) {
             startAuthentication()
             return
@@ -119,12 +115,6 @@ class VoteFragment : Fragment() {
             Log.d(TAG, "hiii")
             if (resultCode == Activity.RESULT_OK) {
                 val user = FirebaseAuth.getInstance().currentUser
-                user?.metadata?.run {
-                    //     if (creationTimestamp == lastSignInTimestamp) {
-                    //         // User is new
-                    // voteViewModel.addUser(user)
-                    //     }
-                }
                 voteViewModel.addUser(user!!)
                 displayPictureForVoting()
             } else if (resultCode != Activity.RESULT_OK && shouldStartAuthentication()) {
@@ -134,13 +124,9 @@ class VoteFragment : Fragment() {
     }
 
     private fun subscribeToModel() {
-        voteViewModel.currentPicture.observe(viewLifecycleOwner, Observer<PictureEntity?> { newPicture ->
+        voteViewModel.currentPicture.observe(viewLifecycleOwner, Observer { newPicture ->
             if (newPicture == null) {
                 displayVotingOptions(false)
-                // GlideApp.with(this)
-                //     .load(R.drawable.ic_add_a_photo_black_36dp)
-                //     .transform(CenterCrop(), RoundedCorners(50))
-                //     .into(picture_imageView)
             } else {
                 displayVotingOptions(true)
                 val pictureRef = storageRef.child(newPicture.pictureUrl)

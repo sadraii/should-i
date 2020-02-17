@@ -16,8 +16,7 @@ class MyPicturesViewModel(application: Application) : AndroidViewModel(applicati
     // private val storage = Firebase.storage(ShouldIDatabase.GS_BUCKET)
     private var _pictures =
         MutableLiveData<List<PictureEntity>>().apply { value = emptyList() }
-    internal val pictures: LiveData<List<PictureEntity>>
-        get() = _pictures
+    internal val pictures: LiveData<List<PictureEntity>> = _pictures
 
     init {
         // val db = ShouldIDatabase.getDatabase(application, viewModelScope)

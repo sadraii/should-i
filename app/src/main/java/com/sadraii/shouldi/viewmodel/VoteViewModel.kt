@@ -2,6 +2,7 @@ package com.sadraii.shouldi.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -20,18 +21,20 @@ import kotlinx.coroutines.launch
 
 class VoteViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val userDao: UserDao // TODO(remove)
+    private val userDao: UserDao
     private val userRepo: UserRepository
     private val pictureDao: PictureDao
     private val pictureRepo: PictureRepository
+
     internal lateinit var user: FirebaseUser
-    internal val currentPicture: MutableLiveData<PictureEntity?> by lazy {
-        MutableLiveData<PictureEntity?>()
-    }
     internal var isAuthenticating = false
 
+    private val _currentPicture: MutableLiveData<PictureEntity?> by lazy {
+        MutableLiveData<PictureEntity?>()
+    }
+    internal val currentPicture: LiveData<PictureEntity?> = _currentPicture
+
     init {
-        // TODO remove this
         val db = ShouldIDatabase.getDatabase(application, viewModelScope)
         userDao = db.userDao()
         userRepo = UserRepository(userDao, UserFirebaseDataStore())
@@ -61,7 +64,7 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
     internal fun updateCurrentPicture() {
         viewModelScope.launch {
             val pictureEntity = userRepo.nextPictureToVote(user)
-            currentPicture.postValue(pictureEntity)
+            _currentPicture.postValue(pictureEntity)
         }
     }
 

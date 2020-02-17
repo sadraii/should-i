@@ -2,7 +2,6 @@ package com.sadraii.shouldi.data.dao
 
 import android.graphics.Bitmap
 import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
@@ -24,8 +23,7 @@ class PictureFirebaseDataStore {
         const val PICTURE_FORMAT = "webp"
     }
 
-    private val user = FirebaseAuth.getInstance().currentUser
-    private val userRef = Firebase.firestore.collection(UserRepository.USERS_PATH).document(user!!.uid)
+    // private val user = FirebaseAuth.getInstance().currentUser
     private val storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
 
     internal fun add(pictureEntity: PictureEntity, picture: Bitmap) {
@@ -37,12 +35,24 @@ class PictureFirebaseDataStore {
                 Log.d(TAG, "Failed to add picture ${pictureEntity.id} to Storage: ", e)
             }
 
+        val userRef = Firebase.firestore.collection(UserRepository.USERS_PATH)
+            .document(pictureEntity.userId)
+        // TODO Remove
+        userRef.collection(PictureRepository.PICTURES_PATH).get().addOnSuccessListener {
+            Log.d(TAG, "size=before add: ${it.size()}")
+        }
+
         userRef.collection(PictureRepository.PICTURES_PATH)
             .document(pictureEntity.id)
             .set(pictureEntity)
             .addOnFailureListener { e ->
                 Log.d(TAG, "Failed to add picture ${pictureEntity.id} to Firestore", e)
             }
+
+        // TODO remove
+        userRef.collection(PictureRepository.PICTURES_PATH).get().addOnSuccessListener {
+            Log.d(TAG, "size=after add: ${it.size()}")
+        }
     }
 
     internal suspend fun updatePictureVoteCount(picture: PictureEntity, vote: Boolean) {

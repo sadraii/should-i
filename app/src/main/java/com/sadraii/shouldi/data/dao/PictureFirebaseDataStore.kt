@@ -26,7 +26,7 @@ class PictureFirebaseDataStore {
     // private val user = FirebaseAuth.getInstance().currentUser
     private val storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
 
-    internal fun add(pictureEntity: PictureEntity, picture: Bitmap) {
+    internal suspend fun add(pictureEntity: PictureEntity, picture: Bitmap) {
         storageRef.child(pictureEntity.pictureUrl)
             .putBytes(
                 picture.toByteArrayWebp(),
@@ -47,7 +47,7 @@ class PictureFirebaseDataStore {
             .set(pictureEntity)
             .addOnFailureListener { e ->
                 Log.d(TAG, "Failed to add picture ${pictureEntity.id} to Firestore", e)
-            }
+            }.await()
 
         // TODO remove
         userRef.collection(PictureRepository.PICTURES_PATH).get().addOnSuccessListener {

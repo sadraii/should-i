@@ -3,6 +3,8 @@ package com.sadraii.shouldi.viewmodel
 import android.app.Application
 import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -21,6 +23,8 @@ class CaptionViewModel(application: Application) : AndroidViewModel(application)
     private val pictureRepo: PictureRepository
     private val currentUser = FirebaseAuth.getInstance().currentUser?.uid
     private val storage = Firebase.storage(ShouldIDatabase.GS_BUCKET)
+    private var _pictureAdded = MutableLiveData<Boolean>()
+    internal val pictureAdded: LiveData<Boolean> = _pictureAdded
 
     init {
         val db = ShouldIDatabase.getDatabase(application, viewModelScope)
@@ -30,7 +34,12 @@ class CaptionViewModel(application: Application) : AndroidViewModel(application)
 
     internal fun addPicture(picture: Bitmap) {
         viewModelScope.launch {
-            pictureRepo.add(picture)
+            _pictureAdded.value = false
+            try {
+                pictureRepo.add(picture)
+            } finally {
+                _pictureAdded.value = true
+            }
         }
     }
 

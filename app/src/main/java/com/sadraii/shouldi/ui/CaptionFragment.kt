@@ -29,6 +29,7 @@ import android.view.ViewGroup
 import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sadraii.shouldi.R
@@ -38,7 +39,7 @@ import kotlinx.android.synthetic.main.fragment_caption.*
 class CaptionFragment : Fragment() {
 
     private val safeArgs: CaptionFragmentArgs by navArgs()
-    private val captionViewModel by viewModels<CaptionViewModel>()
+    private val captionViewModel: CaptionViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +57,12 @@ class CaptionFragment : Fragment() {
         send_imageButton.setOnClickListener {
             overlayText(picture)
             captionViewModel.addPicture(picture)
-            findNavController().navigate(R.id.action_captionFragment_to_myPicturesFragment)
+            captionViewModel.pictureAdded.observe(viewLifecycleOwner, Observer { picAdded ->
+                if (picAdded) {
+                    findNavController().navigate(R.id.action_captionFragment_to_myPicturesFragment)
+                }
+            })
+
         }
     }
 

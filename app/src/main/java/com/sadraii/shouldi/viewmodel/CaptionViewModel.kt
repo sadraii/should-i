@@ -32,6 +32,7 @@ class CaptionViewModel(application: Application) : AndroidViewModel(application)
         pictureRepo = PictureRepository(pictureDao, PictureFirebaseDataStore())
     }
 
+    // TODO look into StorageException
     internal fun addPicture(picture: Bitmap) {
         viewModelScope.launch {
             _pictureAdded.value = false

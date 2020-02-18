@@ -22,25 +22,19 @@ class PictureFirebaseDataStore {
 
         const val PICTURE_FORMAT = "webp"
     }
-
-    // private val user = FirebaseAuth.getInstance().currentUser
     private val storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
 
     internal suspend fun add(pictureEntity: PictureEntity, picture: Bitmap) {
         storageRef.child(pictureEntity.pictureUrl)
             .putBytes(
                 picture.toByteArrayWebp(),
-                storageMetadata { contentType = "image/$PICTURE_FORMAT" }) // TODO Can metadata be skipped?
+                storageMetadata { contentType = "image/$PICTURE_FORMAT" })
             .addOnFailureListener { e ->
                 Log.d(TAG, "Failed to add picture ${pictureEntity.id} to Storage: ", e)
-            }
+            }.await()
 
         val userRef = Firebase.firestore.collection(UserRepository.USERS_PATH)
             .document(pictureEntity.userId)
-        // TODO Remove
-        userRef.collection(PictureRepository.PICTURES_PATH).get().addOnSuccessListener {
-            Log.d(TAG, "size=before add: ${it.size()}")
-        }
 
         userRef.collection(PictureRepository.PICTURES_PATH)
             .document(pictureEntity.id)
@@ -48,11 +42,6 @@ class PictureFirebaseDataStore {
             .addOnFailureListener { e ->
                 Log.d(TAG, "Failed to add picture ${pictureEntity.id} to Firestore", e)
             }.await()
-
-        // TODO remove
-        userRef.collection(PictureRepository.PICTURES_PATH).get().addOnSuccessListener {
-            Log.d(TAG, "size=after add: ${it.size()}")
-        }
     }
 
     internal suspend fun updatePictureVoteCount(picture: PictureEntity, vote: Boolean) {

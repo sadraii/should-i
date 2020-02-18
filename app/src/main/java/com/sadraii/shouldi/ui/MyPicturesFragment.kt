@@ -23,9 +23,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -81,14 +81,6 @@ class MyPicturesFragment : Fragment() {
             .setQuery(query, config, PictureEntity::class.java)
             .build()
 
-        // TODO remove
-        Firebase.firestore
-            .collection(UserRepository.USERS_PATH)
-            .document(user!!.uid)
-            .collection(PictureRepository.PICTURES_PATH).get().addOnSuccessListener {
-                Log.d(TAG, "size=before recycler: ${it.size()}")
-            }
-
         viewAdapter = object : FirestorePagingAdapter<PictureEntity, PictureViewHolder>(options) {
 
             val storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
@@ -100,14 +92,6 @@ class MyPicturesFragment : Fragment() {
             }
 
             override fun onBindViewHolder(holder: PictureViewHolder, position: Int, model: PictureEntity) {
-                // TODO remove
-                Firebase.firestore
-                    .collection(UserRepository.USERS_PATH)
-                    .document(user!!.uid)
-                    .collection(PictureRepository.PICTURES_PATH).get().addOnSuccessListener {
-                        Log.d(TAG, "size=during recycler: ${it.size()}")
-                    }
-
                 holder.yesVotes.text = model.yesVotes.toString()
                 holder.noVotes.text = model.noVotes.toString()
                 Log.d(TAG, "recycling yes: ${model.yesVotes}")
@@ -123,7 +107,9 @@ class MyPicturesFragment : Fragment() {
                     .into(holder.picture)
 
                 holder.itemView.setOnClickListener {
-                    Toast.makeText(holder.itemView.context, "pic ${model.id} clicked", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(
+                        MyPicturesFragmentDirections.actionMyPicturesFragmentToPictureDetailFragment(model)
+                    )
                 }
             }
 

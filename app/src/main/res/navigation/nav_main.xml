@@ -46,14 +46,18 @@
         android:label="@string/my_pictures_fragment_title"
         tools:layout="@layout/fragment_my_pictures">
         <action
-            android:id="@+id/action_myPicturesFragment_to_myPictureDetailFragment"
-            app:destination="@id/myPictureDetailFragment" />
+            android:id="@+id/action_myPicturesFragment_to_pictureDetailFragment"
+            app:destination="@id/pictureDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/myPictureDetailFragment"
-        android:name="com.sadraii.shouldi.ui.MyPictureDetailFragment"
+        android:id="@+id/pictureDetailFragment"
+        android:name="com.sadraii.shouldi.ui.PictureDetailFragment"
         android:label="@string/my_pictures_fragment_title"
-        tools:layout="@layout/fragment_my_picture_detail" />
+        tools:layout="@layout/fragment_picture_detail">
+        <argument
+            android:name="pictureEntity"
+            app:argType="com.sadraii.shouldi.data.entity.PictureEntity" />
+    </fragment>
     <fragment
         android:id="@+id/permissionFragment"
         android:name="com.sadraii.shouldi.ui.PermissionFragment"

@@ -16,6 +16,8 @@
 
 package com.sadraii.shouldi.data.entity
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -46,8 +48,50 @@ data class PictureEntity(
     @ColumnInfo(name = "position_time") val positionTime: Long? = null,
     @ColumnInfo(name = "expo_fallback_scale") val expoFallbackScale: Int = 0,
     @ColumnInfo(name = "caption") val caption: String = "" /* TODO Remove */
-) {
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readLong(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readValue(Long::class.java.classLoader) as? Long,
+        parcel.readValue(Long::class.java.classLoader) as? Long,
+        parcel.readInt(),
+        parcel.readString()!!
+    )
+
     constructor() : this("", "", "") // TODO Needed for FirebaseUI?
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
+        parcel.writeString(userId)
+        parcel.writeString(pictureUrl)
+        parcel.writeLong(created)
+        parcel.writeInt(yesVotes)
+        parcel.writeInt(noVotes)
+        parcel.writeInt(featuredCount)
+        parcel.writeValue(featuredTime)
+        parcel.writeValue(positionTime)
+        parcel.writeInt(expoFallbackScale)
+        parcel.writeString(caption)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<PictureEntity> {
+        override fun createFromParcel(parcel: Parcel): PictureEntity {
+            return PictureEntity(parcel)
+        }
+
+        override fun newArray(size: Int): Array<PictureEntity?> {
+            return arrayOfNulls(size)
+        }
+    }
 }
 
 // data class PictureEntityFirebase(

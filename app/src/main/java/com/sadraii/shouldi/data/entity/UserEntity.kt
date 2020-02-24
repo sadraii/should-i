@@ -35,35 +35,3 @@ data class UserEntity(
     @ColumnInfo(name = "photo_url") val photoUrl: Uri? = null,
     @ColumnInfo(name = "last_vote") val lastVote: Long? = null
 )
-
-// data class UserEntityFirebase(
-//     val id: String,
-//     val userName: String?,
-//     val firstName: String?,
-//     val lastName: String?,
-//     val email: String?,
-//     val created: Long,
-//     var lastOnline: Long?
-// )
-//
-// fun UserEntity.toFirebase() = UserEntityFirebase(
-//     id,
-//     userName,
-//     firstName,
-//     lastName,
-//     email,
-//     created.epochSecond,
-//     lastOnline?.epochSecond
-// )
-//
-// fun UserEntityFirebase.fromFirebase() = UserEntity(
-//     id,
-//     userName,
-//     firstName,
-//     lastName,
-//     email,
-//     Instant.ofEpochMilli(created),
-//     lastOnline?.let { Instant.ofEpochMilli(it) }
-// )
-
-

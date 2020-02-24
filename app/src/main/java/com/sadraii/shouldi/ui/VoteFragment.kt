@@ -29,8 +29,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
@@ -129,11 +127,12 @@ class VoteFragment : Fragment() {
                 displayVotingOptions(false)
             } else {
                 displayVotingOptions(true)
+                username_textView.text = newPicture.userId // TODO get username instead of ID
                 val pictureRef = storageRef.child(newPicture.pictureUrl)
                 Log.d(TAG, "Glide loading ${newPicture.pictureUrl}")
                 GlideApp.with(this)
                     .load(pictureRef)
-                    .transform(CenterCrop(), RoundedCorners(50))
+                    .centerCrop()
                     .placeholder(R.drawable.ic_photo_placeholder_24dp)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(picture_imageView)
@@ -145,22 +144,16 @@ class VoteFragment : Fragment() {
         voteViewModel.user = FirebaseAuth.getInstance().currentUser!!
         voteViewModel.updateCurrentPicture()
         displayVotingOptions(true)
-        vote_no_imageButton.setOnClickListener { voteViewModel.voteYes(false) }
-        vote_yes_imageButton.setOnClickListener { voteViewModel.voteYes(true) }
+        vote_no_button.setOnClickListener { voteViewModel.voteYes(false) }
+        vote_yes_button.setOnClickListener { voteViewModel.voteYes(true) }
     }
 
     private fun displayVotingOptions(visible: Boolean) {
         if (visible) {
-            picture_imageView.visibility = View.VISIBLE
-            vote_no_imageButton.visibility = View.VISIBLE
-            vote_yes_imageButton.visibility = View.VISIBLE
-            username_textView.visibility = View.VISIBLE
+            picture_cardView.visibility = View.VISIBLE
             no_pictures_textView.visibility = View.GONE
         } else {
-            picture_imageView.visibility = View.GONE
-            vote_no_imageButton.visibility = View.GONE
-            vote_yes_imageButton.visibility = View.GONE
-            username_textView.visibility = View.GONE
+            picture_cardView.visibility = View.GONE
             no_pictures_textView.visibility = View.VISIBLE
         }
     }

@@ -1,16 +1,25 @@
 <resources>
     <string name="app_name">Should I</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="take_picture_button">Should I?</string>
-    <string name="nav_vote_button">Vote</string>
-    <string name="sign_out_button">Sign Out</string>
-    <string name="vote_fragment_title">Should They?</string>
-    <string name="take_picture_fragment_title">Should I?</string>
-    <string name="my_pictures_fragment_title">Should You?</string>
-    <string name="switch_camera_button_alt">Switch camera</string>
-    <string name="capture_button_alt">Capture</string>
-    <string name="no_pictures_to_vote">Check back later for new pics and post your own!</string>
-    <string name="caption_hint">Should I...</string>
+   <string name="take_picture_button">Should I?</string>
+   <string name="nav_vote_button">Vote</string>
+   <string name="nav_pictures_button">My Pictures</string>
+   <string name="sign_out_button">Sign Out</string>
+   <string name="caption_upload_button">Upload</string>
+   <string name="vote_no_button">NO</string>
+   <string name="vote_yes_button">YES</string>
+   <string name="nav_should_i_button">Should I?</string>
+
+   <string name="vote_fragment_title">Should They?</string>
+   <string name="take_picture_fragment_title">Should I?</string>
+   <string name="my_pictures_fragment_title">Should You?</string>
+   <string name="caption_title">Should I...</string>
+
+   <string name="switch_camera_button_alt">Switch camera</string>
+   <string name="capture_button_alt">Capture</string>
+   <string name="no_pictures_to_vote">Check back later for new pics and post your own!</string>
+   <string name="caption_hint">Type something</string>
+
+   <string name="sample_caption">Should I do this amazing thing?</string>
+   <string name="sample_username">Username</string>
 </resources>

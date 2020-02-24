@@ -35,11 +35,11 @@ class PictureRepository(
 
     private val user = FirebaseAuth.getInstance().currentUser
 
-    internal suspend fun add(picture: Bitmap) {
+    internal suspend fun add(picture: Bitmap, caption: String) {
         // TODO add actual bitmap?
         val uuid = UUID.randomUUID().toString()
         val uri = "${user!!.uid}/$uuid.${PictureFirebaseDataStore.PICTURE_FORMAT}"
-        val pictureToAdd = PictureEntity(uuid, user.uid, uri)
+        val pictureToAdd = PictureEntity(uuid, user.uid, uri, caption = caption)
 
         val dbPicture = pictureDao.getPicture(uuid)
         if (dbPicture?.id != uuid) {

@@ -33,11 +33,11 @@ class CaptionViewModel(application: Application) : AndroidViewModel(application)
     }
 
     // TODO look into StorageException
-    internal fun addPicture(picture: Bitmap) {
+    internal fun addPicture(picture: Bitmap, caption: String) {
         viewModelScope.launch {
             _pictureAdded.value = false
             try {
-                pictureRepo.add(picture)
+                pictureRepo.add(picture, caption)
             } finally {
                 _pictureAdded.value = true
             }

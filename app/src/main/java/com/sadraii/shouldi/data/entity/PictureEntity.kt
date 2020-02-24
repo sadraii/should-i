@@ -47,8 +47,11 @@ data class PictureEntity(
     @ColumnInfo(name = "featured_time") val featuredTime: Long? = null,
     @ColumnInfo(name = "position_time") val positionTime: Long? = null,
     @ColumnInfo(name = "expo_fallback_scale") val expoFallbackScale: Int = 0,
-    @ColumnInfo(name = "caption") val caption: String = "" /* TODO Remove */
+    @ColumnInfo(name = "caption") val caption: String = ""
 ) : Parcelable {
+
+    constructor() : this("", "", "") // TODO Needed for FirebaseUI?
+
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
@@ -62,8 +65,6 @@ data class PictureEntity(
         parcel.readInt(),
         parcel.readString()!!
     )
-
-    constructor() : this("", "", "") // TODO Needed for FirebaseUI?
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
@@ -93,61 +94,3 @@ data class PictureEntity(
         }
     }
 }
-
-// data class PictureEntityFirebase(
-//     val id: String,
-//     val userId: String,
-//     val pictureUrl: String,
-//     val created: Long,
-//     var yesVotes: Int,
-//     var noVotes: Int,
-//     var featuredCount: Int,
-//     var featuredTime: Long?,
-//     var positionTime: Long?,
-//     var expoFallbackScale: Int,
-//     val caption: String
-// )
-//
-// fun PictureEntity.toFB() = mapOf<String, Any?>(
-//     "id" to id,
-//     "userId" to userId,
-//     "pictureUrl" to pictureUrl,
-//     "created" to created.epochSecond,
-//     "yesVotes" to yesVotes,
-//     "noVotes" to noVotes,
-//     "featuredCount" to featuredCount,
-//     "featuredTime" to featuredTime?.epochSecond,
-//     "positionTime" to positionTime?.epochSecond,
-//     "expoFallbackScale" to expoFallbackScale,
-//     "caption" to caption
-// )
-//
-// fun PictureEntity.toFirebase() = PictureEntityFirebase(
-//     id,
-//     userId,
-//     pictureUrl,
-//     created.epochSecond,
-//     yesVotes,
-//     noVotes,
-//     featuredCount,
-//     featuredTime?.epochSecond,
-//     positionTime?.epochSecond,
-//     expoFallbackScale,
-//     caption
-// )
-//
-// fun PictureEntityFirebase.fromFirebase() = PictureEntity(
-//     id,
-//     userId,
-//     pictureUrl,
-//     Instant.ofEpochMilli(created),
-//     yesVotes,
-//     noVotes,
-//     featuredCount,
-//     featuredTime?.let { Instant.ofEpochMilli(it) },
-//     positionTime?.let { Instant.ofEpochMilli(it) },
-//     expoFallbackScale,
-//     caption
-// )
-
-

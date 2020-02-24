@@ -44,10 +44,10 @@ import com.sadraii.shouldi.data.repository.PictureRepository
 import com.sadraii.shouldi.data.repository.UserRepository
 import com.sadraii.shouldi.util.GlideApp
 import com.sadraii.shouldi.viewmodel.MyPicturesViewModel
-import kotlinx.android.synthetic.main.fragment_my_pictures.view.*
-import kotlinx.android.synthetic.main.item_my_picture.view.*
+import kotlinx.android.synthetic.main.fragment_pictures.view.*
+import kotlinx.android.synthetic.main.item_picture.view.*
 
-class MyPicturesFragment : Fragment() {
+class PicturesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -58,7 +58,7 @@ class MyPicturesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_my_pictures, container, false)
+        return inflater.inflate(R.layout.fragment_pictures, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -87,13 +87,14 @@ class MyPicturesFragment : Fragment() {
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
                 val item = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_my_picture, parent, false)
+                    .inflate(R.layout.item_picture, parent, false)
                 return PictureViewHolder(item)
             }
 
             override fun onBindViewHolder(holder: PictureViewHolder, position: Int, model: PictureEntity) {
                 holder.yesVotes.text = model.yesVotes.toString()
                 holder.noVotes.text = model.noVotes.toString()
+                holder.caption.text = model.caption
                 Log.d(TAG, "recycling yes: ${model.yesVotes}")
 
                 // TODO Move to Repo
@@ -103,12 +104,11 @@ class MyPicturesFragment : Fragment() {
                 GlideApp.with(holder.itemView.context)
                     .load(pictureRef)
                     .placeholder(R.drawable.ic_photo_placeholder_24dp)
-                    .fitCenter()
                     .into(holder.picture)
 
                 holder.itemView.setOnClickListener {
                     findNavController().navigate(
-                        MyPicturesFragmentDirections.actionMyPicturesFragmentToPictureDetailFragment(model)
+                        PicturesFragmentDirections.actionMyPicturesFragmentToPictureDetailFragment(model)
                     )
                 }
             }
@@ -130,6 +130,7 @@ class MyPicturesFragment : Fragment() {
         val picture: ImageView = view.picture_imageView
         val yesVotes: TextView = view.yes_vote_textView
         val noVotes: TextView = view.no_vote_textView
+        val caption: TextView = view.caption_textView
     }
 }
 

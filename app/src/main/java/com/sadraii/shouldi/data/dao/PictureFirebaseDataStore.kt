@@ -45,12 +45,18 @@ class PictureFirebaseDataStore {
     }
 
     internal suspend fun updatePictureVoteCount(picture: PictureEntity, vote: Boolean) {
-        val picSnapshot = Firebase.firestore.collectionGroup(PictureRepository.PICTURES_PATH)
+        val picSnapshot = try {
+            Firebase.firestore.collectionGroup(PictureRepository.PICTURES_PATH)
             .whereEqualTo("userId", picture.userId)
             .whereEqualTo("created", picture.created)
             .limit(1)
             .get().await()
-        if (!picSnapshot.isEmpty) {
+        } catch (e: FirebaseFirestoreException) {
+            Log.d(TAG, e.localizedMessage!!)
+            Log.d(TAG, "Failed to get picture snapshot ${picture.id} from Firestore")
+            null
+        }
+        if (picSnapshot != null && !picSnapshot.isEmpty) {
             val picRef = picSnapshot.documents[0].reference
             val newVotes = getCurrentVotes(picRef, vote) + 1
             picRef.update(if (vote) mapOf("yesVotes" to newVotes) else mapOf("noVotes" to newVotes))

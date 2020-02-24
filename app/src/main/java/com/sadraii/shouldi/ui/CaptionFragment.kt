@@ -16,17 +16,17 @@
 
 package com.sadraii.shouldi.ui
 
+import android.app.Activity
 import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -53,29 +53,54 @@ class CaptionFragment : Fragment() {
 
         val picture = safeArgs.picture
         picture_imageView.background = picture.toDrawable(resources)
+        upload_button.isEnabled = false
 
-        send_imageButton.setOnClickListener {
-            overlayText(picture)
-            captionViewModel.addPicture(picture)
-            captionViewModel.pictureAdded.observe(viewLifecycleOwner, Observer { picAdded ->
-                if (picAdded) {
-                    findNavController().navigate(R.id.action_captionFragment_to_myPicturesFragment)
+        upload_button.setOnClickListener { v ->
+            hideKeyboardAndUploadPicture(v, picture)
+        }
+
+        caption_editText.setOnEditorActionListener { v, actionId, _ ->
+            return@setOnEditorActionListener when (actionId) {
+                EditorInfo.IME_ACTION_SEND -> {
+                    hideKeyboardAndUploadPicture(v, picture)
+                    true
                 }
-            })
+                else -> false
+            }
+        }
+        caption_editText.setOnKeyListener { v, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN) {
+                when (keyCode) {
+                    KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
+                        hideKeyboardAndUploadPicture(v, picture)
+                        return@setOnKeyListener true
+                    }
+                }
+            }
+            false
+        }
 
+        caption_editText.doAfterTextChanged { text ->
+            upload_button.isEnabled = !text.isNullOrBlank()
         }
     }
 
-    private fun overlayText(picture: Bitmap) {
-        val canvas = Canvas(picture)
-        val paint = Paint()
-        paint.color = Color.WHITE
-        paint.textSize = 100F
-        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)
-        canvas.drawBitmap(picture, 0F, 0F, paint)
-        canvas.drawText(caption_editText.text.toString(), 10F, 1300F, paint)
+    private fun hideKeyboardAndUploadPicture(view: View, picture: Bitmap) {
+        hideKeyboardFrom(view)
+        caption_progress.visibility = View.VISIBLE
+        caption_editText.isEnabled = false
+        upload_button.isEnabled = false
+        captionViewModel.addPicture(picture, caption_editText.text.toString())
+        captionViewModel.pictureAdded.observe(viewLifecycleOwner, Observer { picAdded ->
+            if (picAdded) {
+                findNavController().navigate(R.id.action_captionFragment_to_myPicturesFragment)
+            }
+        })
+    }
 
-        // picture_imageView.background = picture.toDrawable(resources)
+    private fun hideKeyboardFrom(view: View) {
+        val imm = view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
 

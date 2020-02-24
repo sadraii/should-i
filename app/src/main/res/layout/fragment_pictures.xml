@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MyPicturesFragment"
+    tools:context=".ui.PicturesFragment"
     android:id="@+id/frameLayout3">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -16,5 +16,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="5"
-        tools:listitem="@layout/item_my_picture" />
+        tools:listitem="@layout/item_picture" />
 </androidx.constraintlayout.widget.ConstraintLayout>

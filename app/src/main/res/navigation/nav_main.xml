@@ -42,9 +42,9 @@
     </fragment>
     <fragment
         android:id="@+id/myPicturesFragment"
-        android:name="com.sadraii.shouldi.ui.MyPicturesFragment"
+        android:name="com.sadraii.shouldi.ui.PicturesFragment"
         android:label="@string/my_pictures_fragment_title"
-        tools:layout="@layout/fragment_my_pictures">
+        tools:layout="@layout/fragment_pictures">
         <action
             android:id="@+id/action_myPicturesFragment_to_pictureDetailFragment"
             app:destination="@id/pictureDetailFragment" />

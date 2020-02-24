@@ -22,8 +22,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.sadraii.shouldi.R
 import com.sadraii.shouldi.data.ShouldIDatabase
@@ -53,9 +51,7 @@ class PictureDetailFragment : Fragment() {
         val pictureRef = storageRef.child(pictureEntity.pictureUrl)
         GlideApp.with(this)
             .load(pictureRef)
-            .transform(CenterCrop())
-            .placeholder(R.drawable.ic_photo_placeholder_24dp)
-            .transition(DrawableTransitionOptions.withCrossFade())
+            .centerCrop()
             .into(picture_imageView)
     }
 }

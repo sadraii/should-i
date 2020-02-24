@@ -4,4 +4,12 @@
         android:id="@id/voteFragment"
         android:icon="@drawable/ic_nav_vote"
         android:title="@string/nav_vote_button" />
+    <item
+        android:id="@id/permissionFragment"
+        android:icon="@drawable/ic_add_a_photo_black_36dp"
+        android:title="@string/nav_should_i_button" />
+    <item
+        android:id="@id/myPicturesFragment"
+        android:icon="@drawable/ic_nav_my_pictures_black_24dp"
+        android:title="@string/nav_pictures_button" />
 </menu>

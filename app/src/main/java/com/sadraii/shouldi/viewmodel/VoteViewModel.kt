@@ -29,10 +29,15 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
     internal lateinit var user: FirebaseUser
     internal var isAuthenticating = false
 
-    private val _currentPicture: MutableLiveData<PictureEntity?> by lazy {
+    private val _currentVotePicture: MutableLiveData<PictureEntity?> by lazy {
         MutableLiveData<PictureEntity?>()
     }
-    internal val currentPicture: LiveData<PictureEntity?> = _currentPicture
+    internal val currentVotePicture: LiveData<PictureEntity?> = _currentVotePicture
+
+    private val _currentVoteUser: MutableLiveData<UserEntity?> by lazy {
+        MutableLiveData<UserEntity?>()
+    }
+    internal val currentVoteUser: LiveData<UserEntity?> = _currentVoteUser
 
     init {
         val db = ShouldIDatabase.getDatabase(application, viewModelScope)
@@ -61,19 +66,20 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    internal fun voteYes(vote: Boolean) {
+        viewModelScope.launch {
+            userRepo.updateLastVote(user, currentVotePicture.value!!)
+            pictureRepo.updatePictureVoteCount(currentVotePicture.value!!, vote)
+        }
+        updateCurrentPicture()
+    }
+
     internal fun updateCurrentPicture() {
         viewModelScope.launch {
             val pictureEntity = userRepo.nextPictureToVote(user)
-            _currentPicture.postValue(pictureEntity)
+            val userEntity = userRepo.getUser(pictureEntity.userId) // TODO finish
+            _currentVotePicture.postValue(pictureEntity)
         }
-    }
-
-    internal fun voteYes(vote: Boolean) {
-        viewModelScope.launch {
-            userRepo.updateLastVote(user, currentPicture.value!!)
-            pictureRepo.updatePictureVoteCount(currentPicture.value!!, vote)
-        }
-        updateCurrentPicture()
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

@@ -86,6 +86,19 @@ class UserFirebaseDataStore {
             userDoc?.toObject(UserEntity::class.java)
         }
 
+    // TODO finish
+    internal suspend fun getUser(user: String) =
+        withContext(Dispatchers.IO) {
+            val userDoc = try {
+                userCollection.document(user).get().await()
+            } catch (e: FirebaseFirestoreException) {
+                Log.d(TAG, e.localizedMessage!!)
+                Log.d(TAG, "Failed to get user ref ${user} from Firestore")
+                null
+            }
+            userDoc?.toObject(UserEntity::class.java)
+        }
+
     internal suspend fun nextPictureOrNull(firebaseUser: FirebaseUser) =
         withContext(Dispatchers.IO) {
             val userDoc = try {

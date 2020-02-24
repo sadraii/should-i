@@ -29,7 +29,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -122,20 +121,24 @@ class VoteFragment : Fragment() {
     }
 
     private fun subscribeToModel() {
-        voteViewModel.currentPicture.observe(viewLifecycleOwner, Observer { newPicture ->
+        voteViewModel.currentVotePicture.observe(viewLifecycleOwner, Observer { newPicture ->
             if (newPicture == null) {
                 displayVotingOptions(false)
             } else {
                 displayVotingOptions(true)
-                username_textView.text = newPicture.userId // TODO get username instead of ID
                 val pictureRef = storageRef.child(newPicture.pictureUrl)
                 Log.d(TAG, "Glide loading ${newPicture.pictureUrl}")
                 GlideApp.with(this)
                     .load(pictureRef)
                     .centerCrop()
-                    .placeholder(R.drawable.ic_photo_placeholder_24dp)
-                    .transition(DrawableTransitionOptions.withCrossFade())
                     .into(picture_imageView)
+            }
+        })
+        voteViewModel.currentVoteUser.observe(viewLifecycleOwner, Observer { newUser ->
+            if (newUser.userName.isNullOrBlank()) {
+                username_textView.text = getString(R.string.anonymous_username)
+            } else {
+                username_textView.text = newUser.userName
             }
         })
     }

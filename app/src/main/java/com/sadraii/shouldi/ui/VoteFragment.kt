@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Mostafa Sadraii
+ * Copyright 2020 Mostafa Sadraii
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -134,11 +134,12 @@ class VoteFragment : Fragment() {
                     .into(picture_imageView)
             }
         })
+
         voteViewModel.currentVoteUser.observe(viewLifecycleOwner, Observer { newUser ->
-            if (newUser.userName.isNullOrBlank()) {
+            if (newUser?.userName.isNullOrBlank()) {
                 username_textView.text = getString(R.string.anonymous_username)
             } else {
-                username_textView.text = newUser.userName
+                username_textView.text = newUser?.userName
             }
         })
     }
@@ -165,3 +166,5 @@ class VoteFragment : Fragment() {
         inflater.inflate(R.menu.main_menu, menu)
     }
 }
+
+

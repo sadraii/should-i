@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Mostafa Sadraii
+ * Copyright 2020 Mostafa Sadraii
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.firebase.ui.firestore.paging.FirestorePagingAdapter
 import com.firebase.ui.firestore.paging.FirestorePagingOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -42,7 +43,6 @@ import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.repository.PictureRepository
 import com.sadraii.shouldi.data.repository.UserRepository
-import com.sadraii.shouldi.util.GlideApp
 import com.sadraii.shouldi.viewmodel.MyPicturesViewModel
 import kotlinx.android.synthetic.main.fragment_pictures.view.*
 import kotlinx.android.synthetic.main.item_picture.view.*
@@ -101,7 +101,7 @@ class PicturesFragment : Fragment() {
                 val pictureRef = storageRef.child(model.pictureUrl)
 
                 Log.d(TAG, "Glide loading ${model.pictureUrl}")
-                GlideApp.with(holder.itemView.context)
+                Glide.with(holder.itemView.context)
                     .load(pictureRef)
                     .placeholder(R.drawable.ic_photo_placeholder_24dp)
                     .into(holder.picture)
@@ -133,6 +133,8 @@ class PicturesFragment : Fragment() {
         val caption: TextView = view.caption_textView
     }
 }
+
+
 
 
 

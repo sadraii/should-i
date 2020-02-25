@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Mostafa Sadraii
+ * Copyright 2020 Mostafa Sadraii
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,11 +42,8 @@ class ShouldIActivity : AppCompatActivity() {
 
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment? ?: return
-
         val navController = host.navController
-
         appBarConfiguration = AppBarConfiguration(navController.graph)
-
         setupActionBar(navController, appBarConfiguration)
         setupBottomNavMenu(navController)
     }
@@ -71,5 +68,7 @@ class ShouldIActivity : AppCompatActivity() {
         return findNavController(R.id.nav_host_fragment).navigateUp(appBarConfiguration)
     }
 }
+
+
 
 

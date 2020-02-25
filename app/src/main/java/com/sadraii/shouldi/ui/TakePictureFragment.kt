@@ -1,27 +1,27 @@
 /*
- * Copyright 2019 Mostafa Sadraii
- * Copyright 2019 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Modifications:
- * Added imageCapturedListener
- * Modified onViewCreated()
- * Modified updateCameraUi()
- * Removed imageSavedListener
- * Removed volumeDownReceiver()
- * Removed LuminosityAnalyzer
- */
+* Copyright 2020 Mostafa Sadraii
+* Copyright 2019 Google LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     https://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+* Modifications:
+* Added imageCapturedListener
+* Modified onViewCreated()
+* Modified updateCameraUi()
+* Removed imageSavedListener
+* Removed volumeDownReceiver()
+* Removed LuminosityAnalyzer
+*/
 
 package com.sadraii.shouldi.ui
 
@@ -61,17 +61,6 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.Executors
 
-/** Helper type alias used for analysis use case callbacks */
-typealias LumaListener = (luma: Double) -> Unit
-
-private const val IMMERSIVE_FLAG_TIMEOUT = 500L
-
-/**
- * Main fragment for this app. Implements all camera operations including:
- * - Viewfinder
- * - Photo taking
- * - Image analysis
- */
 class TakePictureFragment : Fragment() {
 
     private lateinit var container: ConstraintLayout
@@ -83,7 +72,6 @@ class TakePictureFragment : Fragment() {
     private var preview: Preview? = null
     private var imageCapture: ImageCapture? = null
 
-    /** Internal reference of the [DisplayManager] */
     private lateinit var displayManager: DisplayManager
 
     /**
@@ -105,7 +93,7 @@ class TakePictureFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Mark this as a retain fragment, so the lifecycle does not get restarted on config change
+
         retainInstance = true
     }
 
@@ -116,28 +104,11 @@ class TakePictureFragment : Fragment() {
         if (!PermissionFragment.hasPermissions(requireContext())) {
             findNavController().navigate(R.id.action_takePictureFragment_to_permissionFragment)
         }
-
-        // TODO()
-        // activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment)
-        //     ?.view
-        //     ?.postDelayed({
-        //         container.systemUiVisibility = FLAGS_FULLSCREEN
-        //     }, IMMERSIVE_FLAG_TIMEOUT)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        // activity?.supportFragmentManager?.findFragmentById(R.id.nav_host_fragment)
-        //     ?.view
-        //     ?.postDelayed({
-        //         container.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-        //     }, IMMERSIVE_FLAG_TIMEOUT)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
 
-        // Unregister the broadcast receivers and listeners
         displayManager.unregisterDisplayListener(displayListener)
     }
 
@@ -178,8 +149,6 @@ class TakePictureFragment : Fragment() {
         viewFinder.post {
             // Keep track of the display in which this view is attached
             displayId = viewFinder.display.displayId
-
-            // Build UI controls and bind all camera use cases
             updateCameraUi()
             bindCameraUseCases()
         }
@@ -188,7 +157,6 @@ class TakePictureFragment : Fragment() {
     /** Declare and bind preview, capture and analysis use cases */
     @SuppressLint("RestrictedApi")
     private fun bindCameraUseCases() {
-
         // Get screen metrics used to setup camera for full screen resolution
         val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
         val screenAspectRatio = Rational(metrics.widthPixels, metrics.heightPixels)
@@ -284,6 +252,7 @@ class TakePictureFragment : Fragment() {
     }
 
     companion object {
+
         private const val TAG = "CameraXBasic"
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
@@ -296,6 +265,8 @@ class TakePictureFragment : Fragment() {
             )
     }
 }
+
+
 
 
 

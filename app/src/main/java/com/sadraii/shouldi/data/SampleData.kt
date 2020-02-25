@@ -1,18 +1,18 @@
 /*
- * Copyright 2019 Mostafa Sadraii
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright 2020 Mostafa Sadraii
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 package com.sadraii.shouldi.data
 
@@ -41,16 +41,11 @@ object SampleData {
     }
 
     suspend fun generateUserAndPicture(userDao: UserDao, pictureDao: PictureDao) {
-        // val firestore = Firebase.firestore
-        // val usersCollection = firestore.collection(UserRepository.USERS_PATH)
-
         val userUuid = UUID.randomUUID().toString()
         val user = with(SampleArrays) {
             UserEntity(
                 userUuid,
-                userName[0], /* TODO(): Randomly return null? */
-                firstName[0], /* TODO(): Randomly return null? */
-                lastName[0], /* TODO(): Randomly return null? */
+                usernameOrNull(0),
                 emailOrNull(0),
                 randomPastTime(),
                 timeOrNull()
@@ -72,19 +67,6 @@ object SampleData {
         userDao.insert(user)
         pictureDao.insert(picture)
 
-        // val userRef = usersCollection.document(user.id)
-        // userRef.set(user)
-        //     .addOnSuccessListener {
-        //         userRef.collection(PictureRepository.PICTURES_PATH)
-        //             .document(picture.id)
-        //             .set(picture)
-        //             .addOnFailureListener { e ->
-        //                 Log.d(TAG, "Failed to create picture ${picture.id}", e)
-        //             }
-        //     }
-        //     .addOnFailureListener { e ->
-        //         Log.d(TAG, "Failed to create user ${user.id}", e)
-        //     }
         Log.d(TAG, "Generated database user and picture")
     }
 
@@ -97,9 +79,7 @@ object SampleData {
             val user = with(SampleArrays) {
                 UserEntity(
                     userUuid,
-                    userName[i], /* TODO(): Randomly return null? */
-                    firstName[i], /* TODO(): Randomly return null? */
-                    lastName[i], /* TODO(): Randomly return null? */
+                    usernameOrNull(i),
                     emailOrNull(i),
                     randomPastTime(),
                     timeOrNull()
@@ -137,6 +117,11 @@ object SampleData {
                 }
         }
         Log.d(TAG, "Generated database data")
+    }
+
+    private fun usernameOrNull(i: Int) = when (Random.nextInt(2)) {
+        0 -> SampleArrays.userName[i]
+        else -> null
     }
 
     private fun emailOrNull(i: Int) = when (Random.nextInt(2)) {

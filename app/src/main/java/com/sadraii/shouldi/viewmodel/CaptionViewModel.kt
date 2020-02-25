@@ -1,3 +1,19 @@
+/*
+* Copyright 2020 Mostafa Sadraii
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
 package com.sadraii.shouldi.viewmodel
 
 import android.app.Application
@@ -8,9 +24,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.data.dao.PictureDao
 import com.sadraii.shouldi.data.dao.PictureFirebaseDataStore
@@ -21,8 +34,6 @@ class CaptionViewModel(application: Application) : AndroidViewModel(application)
 
     private val pictureDao: PictureDao
     private val pictureRepo: PictureRepository
-    private val currentUser = FirebaseAuth.getInstance().currentUser?.uid
-    private val storage = Firebase.storage(ShouldIDatabase.GS_BUCKET)
     private var _pictureAdded = MutableLiveData<Boolean>()
     internal val pictureAdded: LiveData<Boolean> = _pictureAdded
 
@@ -54,4 +65,6 @@ class CaptionViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 }
+
+
 

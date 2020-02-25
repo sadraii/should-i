@@ -1,3 +1,19 @@
+/*
+* Copyright 2020 Mostafa Sadraii
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
 package com.sadraii.shouldi.data.dao
 
 import android.graphics.Bitmap
@@ -14,7 +30,10 @@ import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.repository.PictureRepository
 import com.sadraii.shouldi.data.repository.UserRepository
 import com.sadraii.shouldi.toByteArrayWebp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class PictureFirebaseDataStore {
 
@@ -22,35 +41,46 @@ class PictureFirebaseDataStore {
 
         const val PICTURE_FORMAT = "webp"
     }
+
     private val storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
 
     internal suspend fun add(pictureEntity: PictureEntity, picture: Bitmap) {
-        storageRef.child(pictureEntity.pictureUrl)
-            .putBytes(
-                picture.toByteArrayWebp(),
-                storageMetadata { contentType = "image/$PICTURE_FORMAT" })
-            .addOnFailureListener { e ->
-                Log.d(TAG, "Failed to add picture ${pictureEntity.id} to Storage: ", e)
-            }.await()
+        // Await() is used on Tasks to ensure picture is uploaded before RecyclerView load list of pictures.
+        withContext(Dispatchers.IO) {
+            val storage = async {
+                storageRef.child(pictureEntity.pictureUrl)
+                    .putBytes(
+                        picture.toByteArrayWebp(),
+                        storageMetadata { contentType = "image/$PICTURE_FORMAT" })
+                    .addOnFailureListener { e ->
+                        Log.d(TAG, "Failed to add picture ${pictureEntity.id} to Storage: ", e)
+                    }.await()
+            }
 
-        val userRef = Firebase.firestore.collection(UserRepository.USERS_PATH)
-            .document(pictureEntity.userId)
+            val userRef = Firebase.firestore.collection(UserRepository.USERS_PATH)
+                .document(pictureEntity.userId)
 
-        userRef.collection(PictureRepository.PICTURES_PATH)
-            .document(pictureEntity.id)
-            .set(pictureEntity)
-            .addOnFailureListener { e ->
-                Log.d(TAG, "Failed to add picture ${pictureEntity.id} to Firestore", e)
-            }.await()
+            val user = async {
+                userRef.collection(PictureRepository.PICTURES_PATH)
+                    .document(pictureEntity.id)
+                    .set(pictureEntity)
+                    .addOnFailureListener { e ->
+                        Log.d(TAG, "Failed to add picture ${pictureEntity.id} to Firestore", e)
+                    }.await()
+            }
+
+            storage.await()
+            user.await()
+        }
     }
 
     internal suspend fun updatePictureVoteCount(picture: PictureEntity, vote: Boolean) {
         val picSnapshot = try {
             Firebase.firestore.collectionGroup(PictureRepository.PICTURES_PATH)
-            .whereEqualTo("userId", picture.userId)
-            .whereEqualTo("created", picture.created)
-            .limit(1)
-            .get().await()
+                .whereEqualTo("userId", picture.userId)
+                .whereEqualTo("created", picture.created)
+                .limit(1)
+                .get().await()
         } catch (e: FirebaseFirestoreException) {
             Log.d(TAG, e.localizedMessage!!)
             Log.d(TAG, "Failed to get picture snapshot ${picture.id} from Firestore")
@@ -81,4 +111,6 @@ class PictureFirebaseDataStore {
         }
     }
 }
+
+
 

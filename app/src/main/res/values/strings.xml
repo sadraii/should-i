@@ -22,5 +22,5 @@
 
    <string name="sample_caption">Should I do this amazing thing?</string>
    <string name="sample_username">Username</string>
-   <string name="anonymous_username">Anonymous</string>
+   <string name="anonymous_username">Anonymous User</string>
 </resources>

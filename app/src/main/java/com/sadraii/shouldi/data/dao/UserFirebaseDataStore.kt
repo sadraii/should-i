@@ -1,3 +1,19 @@
+/*
+* Copyright 2020 Mostafa Sadraii
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
 package com.sadraii.shouldi.data.dao
 
 import android.util.Log
@@ -50,8 +66,6 @@ class UserFirebaseDataStore {
                 with(user) {
                     mapOf(
                         "userName" to userName,
-                        "firstName" to firstName,
-                        "lastName" to lastName,
                         "email" to email,
                         "lastOnline" to lastOnline,
                         "lastVote" to lastVote
@@ -65,38 +79,25 @@ class UserFirebaseDataStore {
 
     internal suspend fun updateLastVote(user: FirebaseUser, lastVote: Long) {
         userCollection.document(user.uid)
-            .update(
-                mapOf("lastVote" to lastVote)
-            )
+            .update(mapOf("lastVote" to lastVote))
             .addOnFailureListener { e ->
                 Log.d(TAG, "Failed to update vote for ${user.uid} in Firestore", e)
             }
     }
 
-    // TODO fix
-    internal suspend fun getUser(firebaseUser: FirebaseUser) =
-        withContext(Dispatchers.IO) {
-            val userDoc = try {
-                userCollection.document(firebaseUser.uid).get().await()
-            } catch (e: FirebaseFirestoreException) {
-                Log.d(TAG, e.localizedMessage!!)
-                Log.d(TAG, "Failed to get user ref ${firebaseUser.uid} from Firestore")
-                null
-            }
-            userDoc?.toObject(UserEntity::class.java)
-        }
-
     // TODO finish
-    internal suspend fun getUser(user: String) =
-        withContext(Dispatchers.IO) {
-            val userDoc = try {
-                userCollection.document(user).get().await()
-            } catch (e: FirebaseFirestoreException) {
-                Log.d(TAG, e.localizedMessage!!)
-                Log.d(TAG, "Failed to get user ref ${user} from Firestore")
-                null
+    internal suspend fun getUser(user: String?) =
+        user?.let {
+            withContext(Dispatchers.IO) {
+                val userDoc = try {
+                    userCollection.document(user).get().await()
+                } catch (e: FirebaseFirestoreException) {
+                    Log.d(TAG, e.localizedMessage!!)
+                    Log.d(TAG, "Failed to get user ref ${user} from Firestore")
+                    null
+                }
+                userDoc?.toObject(UserEntity::class.java)
             }
-            userDoc?.toObject(UserEntity::class.java)
         }
 
     internal suspend fun nextPictureOrNull(firebaseUser: FirebaseUser) =
@@ -139,4 +140,6 @@ class UserFirebaseDataStore {
         }
     }
 }
+
+
 

@@ -17,6 +17,7 @@
 package com.sadraii.shouldi.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,6 +25,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
+import com.sadraii.shouldi.TAG
 import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.data.dao.PictureDao
 import com.sadraii.shouldi.data.dao.PictureFirebaseDataStore
@@ -74,23 +76,27 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
                 photoUrl.toString()
             )
         }
+        Log.d(TAG, "dbug viewModel adding user=${userToAdd.id}")
         viewModelScope.launch {
             userRepo.addOrUpdate(userToAdd)
         }
     }
 
-    internal fun voteYes(vote: Boolean) {
+    internal fun vote(voteYes: Boolean) {
         viewModelScope.launch {
             userRepo.updateLastVote(user, currentVotePicture.value!!)
-            pictureRepo.updatePictureVoteCount(currentVotePicture.value!!, vote)
+            pictureRepo.updatePictureVoteCount(currentVotePicture.value!!, voteYes)
         }
         updateCurrentPicture()
     }
 
     internal fun updateCurrentPicture() {
+        Log.d(TAG, "dbug updateCurrentPicture()")
         viewModelScope.launch {
             val pictureEntity = userRepo.nextPictureToVote(user)
+            Log.d(TAG, "dbug updateCurrentPicture() picEnt=${pictureEntity?.id}")
             val userEntity = userRepo.getUser(pictureEntity?.userId)
+            Log.d(TAG, "dbug updateCurrentPicture() userEnt=${userEntity?.id}")
             _currentVotePicture.postValue(pictureEntity)
             _currentVoteUser.postValue(userEntity)
         }

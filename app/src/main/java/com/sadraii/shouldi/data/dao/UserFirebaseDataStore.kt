@@ -114,6 +114,7 @@ class UserFirebaseDataStore {
             getNextPicture(userEntity?.lastVote)
         }
 
+    // TODO Can't vote for your own picture
     private suspend fun getNextPicture(lastVote: Long?): PictureEntity? {
         val nextPicSnapshot = try {
             if (lastVote == null) {

@@ -59,6 +59,7 @@ class AuthFragment : Fragment() {
         !authViewModel.isAuthenticating && FirebaseAuth.getInstance().currentUser == null
 
     private fun startAuthentication() {
+        authViewModel.isAuthenticating = true
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build(),
@@ -72,7 +73,6 @@ class AuthFragment : Fragment() {
                 .build(),
             SIGN_IN
         )
-        authViewModel.isAuthenticating = true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -80,6 +80,7 @@ class AuthFragment : Fragment() {
         if (requestCode == SIGN_IN) {
             authViewModel.isAuthenticating = false
             if (resultCode == Activity.RESULT_OK) {
+                // TODO if current dest = auth
                 findNavController().navigate(R.id.action_authFragment_to_voteFragment)
             } else if (resultCode != Activity.RESULT_OK && shouldStartAuthentication()) {
                 startAuthentication()

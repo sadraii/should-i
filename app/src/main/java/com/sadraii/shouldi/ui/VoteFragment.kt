@@ -29,6 +29,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.sadraii.shouldi.R
@@ -40,6 +42,7 @@ import kotlinx.android.synthetic.main.fragment_vote.*
 
 class VoteFragment : Fragment() {
 
+    private lateinit var firestore: FirebaseFirestore
     private lateinit var storageRef: StorageReference
     private val voteViewModel: VoteViewModel by viewModels()
 
@@ -62,14 +65,15 @@ class VoteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         take_picture_button.setOnClickListener {
             findNavController().navigate(R.id.action_voteFragment_to_permissionFragment)
-            Log.d(TAG, "setNavOnClick")
         }
         val user = FirebaseAuth.getInstance().currentUser
+        Log.d(TAG, "dbug onViewCreated() user=${user?.uid}")
         voteViewModel.addUser(user!!)
         displayPictureForVoting()
     }
 
     private fun initFirestore() {
+        firestore = Firebase.firestore
         storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
     }
 
@@ -98,14 +102,16 @@ class VoteFragment : Fragment() {
     }
 
     private fun displayPictureForVoting() {
+        Log.d(TAG, "dbug displayPictureForVoting user=${FirebaseAuth.getInstance().currentUser!!.uid}")
         voteViewModel.user = FirebaseAuth.getInstance().currentUser!!
         voteViewModel.updateCurrentPicture()
-        displayVotingOptions(true)
-        vote_no_button.setOnClickListener { voteViewModel.voteYes(false) }
-        vote_yes_button.setOnClickListener { voteViewModel.voteYes(true) }
+        displayVotingOptions(false)
+        vote_no_button.setOnClickListener { voteViewModel.vote(false) }
+        vote_yes_button.setOnClickListener { voteViewModel.vote(true) }
     }
 
     private fun displayVotingOptions(visible: Boolean) {
+        Log.d(TAG, "dbug displayVotingOptions() vis=$visible")
         if (visible) {
             picture_cardView.visibility = View.VISIBLE
             no_pictures_textView.visibility = View.GONE

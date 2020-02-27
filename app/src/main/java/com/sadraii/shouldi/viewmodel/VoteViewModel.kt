@@ -43,7 +43,6 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
     private val pictureRepo: PictureRepository
 
     internal lateinit var user: FirebaseUser
-    internal var isAuthenticating = false
 
     private val _currentVotePicture: MutableLiveData<PictureEntity?> by lazy {
         MutableLiveData<PictureEntity?>()
@@ -72,7 +71,7 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
                 email,
                 metadata!!.creationTimestamp,
                 metadata!!.lastSignInTimestamp,
-                photoUrl
+                photoUrl.toString()
             )
         }
         viewModelScope.launch {

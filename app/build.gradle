@@ -79,6 +79,8 @@ dependencies {
     // Room components
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 
@@ -88,6 +90,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.archLifecycleVersion"
+    implementation 'androidx.paging:paging-runtime-ktx:2.1.1' // May need to use 1.x.x
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.androidxArchVersion"
 
     // Data Binding
@@ -112,7 +115,8 @@ dependencies {
     implementation "com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion"
     implementation "com.firebaseui:firebase-ui-firestore:$rootProject.firebaseUiVersion"
     implementation "com.firebaseui:firebase-ui-storage:$rootProject.firebaseUiVersion"
-    implementation 'androidx.paging:paging-runtime-ktx:2.1.1' // May need to use 1.x.x
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+//    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
 
     // Camera
     implementation "androidx.camera:camera-core:$rootProject.cameraVersion"

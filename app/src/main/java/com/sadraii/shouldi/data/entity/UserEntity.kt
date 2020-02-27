@@ -16,22 +16,24 @@
 
 package com.sadraii.shouldi.data.entity
 
-import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.Instant
-import java.util.UUID
 
 @Entity(tableName = "users")
 data class UserEntity(
-    @PrimaryKey val id: String = UUID.randomUUID().toString(), /* TODO Remove */
+    @PrimaryKey val id: String,
     @ColumnInfo(name = "user_name") val userName: String? = null,
     @ColumnInfo(name = "email") val email: String? = null,
     @ColumnInfo(name = "created") val created: Long = Instant.now().toEpochMilli(),
     @ColumnInfo(name = "last_online") val lastOnline: Long? = null,
-    @ColumnInfo(name = "photo_url") val photoUrl: Uri? = null,
+    @ColumnInfo(name = "photo_url") val photoUrl: String? = null,
     @ColumnInfo(name = "last_vote") val lastVote: Long? = null
-)
+) {
+
+    // No arg constructor required for FirebaseUI
+    constructor() : this("")
+}
 
 

@@ -1,5 +1,12 @@
 <resources>
-    <string name="app_name">Should I</string>
+   <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+   <string name="facebook_application_id" translatable="false">336321103929687</string>
+   <string name="facebook_login_protocol_scheme" translatable="false">fb336321103929687</string>
+   <!-- Twitter consumer key and secret -->
+   <!--   <string name="twitter_consumer_key" translatable="false">YOUR_CONSUMER_KEY</string>-->
+   <!--   <string name="twitter_consumer_secret" translatable="false">YOUR_CONSUMER_SECRET</string>-->
+
+   <string name="app_name">Should I</string>
 
    <string name="take_picture_button">Should I?</string>
    <string name="nav_vote_button">Vote</string>
@@ -12,6 +19,7 @@
 
    <string name="vote_fragment_title">Should They?</string>
    <string name="take_picture_fragment_title">Should I?</string>
+   <string name="auth_fragment_title">Should I?</string>
    <string name="my_pictures_fragment_title">Should You?</string>
    <string name="caption_title">Should I...</string>
 

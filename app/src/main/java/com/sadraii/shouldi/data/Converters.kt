@@ -24,7 +24,6 @@ import java.util.Date
 class Converters {
 
     companion object {
-
         @TypeConverter
         @JvmStatic
         fun fromInstant(value: Instant?): Long? {

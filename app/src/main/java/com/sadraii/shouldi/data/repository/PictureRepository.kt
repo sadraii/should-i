@@ -29,7 +29,6 @@ class PictureRepository(
 ) {
 
     companion object {
-
         internal const val PICTURES_PATH = "pictures"
     }
 

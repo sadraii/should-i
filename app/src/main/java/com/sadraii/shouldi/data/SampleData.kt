@@ -55,14 +55,10 @@ object SampleData {
             UUID.randomUUID().toString(),
             userUuid,
             randomPictureUrl(),
+            caption(0),
             randomShortPastTime(),
             randomCount(),
-            randomCount(),
-            randomCount(),
-            timeOrNull(),
-            timeOrNull(),
-            Random.nextInt(3),
-            "" /* TODO(): Needed? */
+            randomCount()
         )
         userDao.insert(user)
         pictureDao.insert(picture)
@@ -89,14 +85,10 @@ object SampleData {
                 UUID.randomUUID().toString(),
                 userUuid,
                 randomPictureUrl(),
+                caption(i),
                 randomShortPastTime(),
                 randomCount(),
-                randomCount(),
-                randomCount(),
-                timeOrNull(),
-                timeOrNull(),
-                Random.nextInt(3),
-                "" /* TODO(): Needed? */
+                randomCount()
             )
 
             userDao.insert(user)
@@ -124,6 +116,8 @@ object SampleData {
         else -> null
     }
 
+    private fun caption(i: Int) = SampleArrays.caption[i]
+
     private fun emailOrNull(i: Int) = when (Random.nextInt(2)) {
         0 -> with(SampleArrays) {
             "${firstName[i]}.${lastName[i]}@example.com"
@@ -147,61 +141,78 @@ object SampleData {
     private fun randomShortPastTime() = Instant.now().minusSeconds(Random.nextLong(1_000, 2_000)).toEpochMilli()
 
     private fun randomCount() = Random.nextInt(300)
-}
 
-object SampleArrays {
-    val userName = arrayOf(
-        "creasehygiea",
-        "babymeg",
-        "richeskerchief",
-        "nantllecollect",
-        "kirkwoodbrunton",
-        "dapperitil",
-        "triptakerradon",
-        "gleefulecotone",
-        "appendchamois",
-        "quitjargon",
-        "bowiedriller",
-        "reversingraid",
-        "yieldkilt",
-        "smolderdrove",
-        "jossmuschi"
-    )
-    val firstName = arrayOf(
-        "Bjoern",
-        "Jehovah",
-        "Mariele",
-        "Gidon",
-        "Ukaleq",
-        "Cristiano",
-        "Evangeliya",
-        "Wilhelmina",
-        "Agrafena",
-        "Gracjan",
-        "Severin",
-        "Parvin",
-        "Agung",
-        "Catharina",
-        "Jarah"
-    )
-    val lastName = arrayOf(
-        "Coble",
-        "Borack",
-        "Lowey",
-        "Lestition",
-        "Wheeler",
-        "Presky",
-        "Perrimon",
-        "Chow",
-        "Bradshaw",
-        "Leandro",
-        "Chinman",
-        "Banta",
-        "Redfern",
-        "Serrell",
-        "Cancelliere"
-    )
+    object SampleArrays {
+        val userName = arrayOf(
+            "creasehygiea",
+            "babymeg",
+            "richeskerchief",
+            "nantllecollect",
+            "kirkwoodbrunton",
+            "dapperitil",
+            "triptakerradon",
+            "gleefulecotone",
+            "appendchamois",
+            "quitjargon",
+            "bowiedriller",
+            "reversingraid",
+            "yieldkilt",
+            "smolderdrove",
+            "jossmuschi"
+        )
+        val firstName = arrayOf(
+            "Bjoern",
+            "Jehovah",
+            "Mariele",
+            "Gidon",
+            "Ukaleq",
+            "Cristiano",
+            "Evangeliya",
+            "Wilhelmina",
+            "Agrafena",
+            "Gracjan",
+            "Severin",
+            "Parvin",
+            "Agung",
+            "Catharina",
+            "Jarah"
+        )
+        val lastName = arrayOf(
+            "Coble",
+            "Borack",
+            "Lowey",
+            "Lestition",
+            "Wheeler",
+            "Presky",
+            "Perrimon",
+            "Chow",
+            "Bradshaw",
+            "Leandro",
+            "Chinman",
+            "Banta",
+            "Redfern",
+            "Serrell",
+            "Cancelliere"
+        )
+        val caption = arrayOf(
+            "bubble ",
+            "wiggly",
+            "spooky",
+            "table",
+            "survive",
+            "holiday",
+            "forbid",
+            "rest",
+            "precious",
+            "support",
+            "toss",
+            "pass",
+            "blossom",
+            "install",
+            "addition",
+            "mellow"
+        )
+    }
 }
-
 
 

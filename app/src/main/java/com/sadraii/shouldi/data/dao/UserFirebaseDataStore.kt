@@ -68,7 +68,8 @@ class UserFirebaseDataStore {
                         "userName" to userName,
                         "email" to email,
                         "lastOnline" to lastOnline,
-                        "lastVote" to lastVote
+                        "lastVote" to lastVote,
+                        "photoUrl" to photoUrl
                     )
                 }
             )

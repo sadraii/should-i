@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sadraii.shouldi.data.entity.PictureEntity
 
-class MyPicturesViewModel(application: Application) : AndroidViewModel(application) {
+class PicturesViewModel(application: Application) : AndroidViewModel(application) {
 
     // private val pictureDao: PictureDao
     // private val pictureRepo: PictureRepository
@@ -42,11 +42,11 @@ class MyPicturesViewModel(application: Application) : AndroidViewModel(applicati
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(MyPicturesViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(PicturesViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return MyPicturesViewModel(app) as T
+                return PicturesViewModel(app) as T
             }
-            throw IllegalArgumentException("Unable to construct MyPicturesViewModel")
+            throw IllegalArgumentException("Unable to construct PicturesViewModel")
         }
     }
 }

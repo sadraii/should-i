@@ -38,14 +38,13 @@ import kotlinx.coroutines.withContext
 class PictureFirebaseDataStore {
 
     companion object {
-
         const val PICTURE_FORMAT = "webp"
     }
 
     private val storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
 
     internal suspend fun add(pictureEntity: PictureEntity, picture: Bitmap) {
-        // Await() is used on Tasks to ensure picture is uploaded before RecyclerView load list of pictures.
+        // Await() is called on Tasks to ensure picture is uploaded before RecyclerView loads list of pictures.
         withContext(Dispatchers.IO) {
             val storage = async {
                 storageRef.child(pictureEntity.pictureUrl)

@@ -24,7 +24,6 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.time.Instant
-import java.util.UUID
 
 @Entity(
     tableName = "pictures",
@@ -37,47 +36,36 @@ import java.util.UUID
     indices = [Index(value = ["user_id"])]
 )
 data class PictureEntity(
-    @PrimaryKey val id: String = UUID.randomUUID().toString(), /* TODO Remove */
+    @PrimaryKey val id: String,
     @ColumnInfo(name = "user_id") val userId: String,
     @ColumnInfo(name = "picture_url") var pictureUrl: String,
+    @ColumnInfo(name = "caption") val caption: String,
     @ColumnInfo(name = "created") val created: Long = Instant.now().toEpochMilli(),
     @ColumnInfo(name = "yes_votes") val yesVotes: Int = 0,
-    @ColumnInfo(name = "no_votes") val noVotes: Int = 0,
-    @ColumnInfo(name = "featured_count") val featuredCount: Int = 0,
-    @ColumnInfo(name = "featured_time") val featuredTime: Long? = null,
-    @ColumnInfo(name = "position_time") val positionTime: Long? = null,
-    @ColumnInfo(name = "expo_fallback_scale") val expoFallbackScale: Int = 0,
-    @ColumnInfo(name = "caption") val caption: String = ""
+    @ColumnInfo(name = "no_votes") val noVotes: Int = 0
 ) : Parcelable {
 
-    constructor() : this("", "", "") // TODO Needed for FirebaseUI?
+    // No arg constructor required for FirebaseUI
+    constructor() : this("", "", "", "")
 
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
+        parcel.readString()!!,
         parcel.readLong(),
         parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readValue(Long::class.java.classLoader) as? Long,
-        parcel.readValue(Long::class.java.classLoader) as? Long,
-        parcel.readInt(),
-        parcel.readString()!!
+        parcel.readInt()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(userId)
         parcel.writeString(pictureUrl)
+        parcel.writeString(caption)
         parcel.writeLong(created)
         parcel.writeInt(yesVotes)
         parcel.writeInt(noVotes)
-        parcel.writeInt(featuredCount)
-        parcel.writeValue(featuredTime)
-        parcel.writeValue(positionTime)
-        parcel.writeInt(expoFallbackScale)
-        parcel.writeString(caption)
     }
 
     override fun describeContents(): Int {

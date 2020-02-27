@@ -43,7 +43,7 @@ import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.repository.PictureRepository
 import com.sadraii.shouldi.data.repository.UserRepository
-import com.sadraii.shouldi.viewmodel.MyPicturesViewModel
+import com.sadraii.shouldi.viewmodel.PicturesViewModel
 import kotlinx.android.synthetic.main.fragment_pictures.view.*
 import kotlinx.android.synthetic.main.item_picture.view.*
 
@@ -52,7 +52,7 @@ class PicturesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: FirestorePagingAdapter<PictureEntity, PictureViewHolder>
-    private val myPicturesViewModel by viewModels<MyPicturesViewModel>()
+    private val myPicturesViewModel by viewModels<PicturesViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

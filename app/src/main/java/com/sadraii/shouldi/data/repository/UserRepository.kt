@@ -25,7 +25,6 @@ import com.sadraii.shouldi.data.entity.UserEntity
 class UserRepository(private val userDao: UserDao, private val userFirebaseDataStore: UserFirebaseDataStore) {
 
     companion object {
-
         internal const val USERS_PATH = "users"
     }
 

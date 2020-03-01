@@ -68,6 +68,7 @@ class PictureFirebaseDataStore {
                     }.await()
             }
 
+            // TODO these can throw exception
             storage.await()
             user.await()
         }

@@ -79,7 +79,7 @@ class AuthFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == SIGN_IN) {
             authViewModel.isAuthenticating = false
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK && findNavController().currentDestination?.id == R.id.authFragment) {
                 // TODO if current dest = auth
                 findNavController().navigate(R.id.action_authFragment_to_voteFragment)
             } else if (resultCode != Activity.RESULT_OK && shouldStartAuthentication()) {

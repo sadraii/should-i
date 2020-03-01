@@ -65,6 +65,7 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     internal fun addUser(user: FirebaseUser) {
+        if (this::user.isInitialized) return
         this.user = user
         val userToAdd = with(user) {
             UserEntity(

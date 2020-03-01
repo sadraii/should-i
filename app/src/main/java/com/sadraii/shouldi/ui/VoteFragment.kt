@@ -17,6 +17,7 @@
 package com.sadraii.shouldi.ui
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -54,7 +55,7 @@ class VoteFragment : Fragment() {
         setHasOptionsMenu(true)
         val rootView = inflater.inflate(R.layout.fragment_vote, container, false)
 
-        FirebaseFirestore.setLoggingEnabled(false)
+        FirebaseFirestore.setLoggingEnabled(true)
         initFirestore()
         subscribeToModel()
 
@@ -113,9 +114,15 @@ class VoteFragment : Fragment() {
     private fun displayVotingOptions(visible: Boolean) {
         Log.d(TAG, "dbug displayVotingOptions() vis=$visible")
         if (visible) {
+            Handler().postDelayed({
+                picture_stack_1_cardView.visibility = View.VISIBLE
+                picture_stack_2_cardView.visibility = View.VISIBLE
+            }, 200)
             picture_cardView.visibility = View.VISIBLE
             no_pictures_textView.visibility = View.GONE
         } else {
+            picture_stack_1_cardView.visibility = View.GONE
+            picture_stack_2_cardView.visibility = View.GONE
             picture_cardView.visibility = View.GONE
             no_pictures_textView.visibility = View.VISIBLE
         }

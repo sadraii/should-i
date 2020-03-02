@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="com.sadraii.shouldi.ui.AuthFragment"
+        android:name="com.sadraii.shouldi.ui.Auth"
         android:label="@string/auth_fragment_title"
         tools:layout="@layout/fragment_auth">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/voteFragment"
-        android:name="com.sadraii.shouldi.ui.VoteFragment"
+        android:name="com.sadraii.shouldi.ui.Vote"
         android:label="@string/vote_fragment_title"
         tools:layout="@layout/fragment_vote">
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/takePictureFragment"
-        android:name="com.sadraii.shouldi.ui.TakePictureFragment"
+        android:name="com.sadraii.shouldi.ui.TakePicture"
         android:label="@string/take_picture_fragment_title"
         tools:layout="@layout/fragment_take_picture">
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/captionFragment"
-        android:name="com.sadraii.shouldi.ui.CaptionFragment"
+        android:name="com.sadraii.shouldi.ui.Caption"
         android:label="@string/take_picture_fragment_title"
         tools:layout="@layout/fragment_caption">
         <action
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/myPicturesFragment"
-        android:name="com.sadraii.shouldi.ui.PicturesFragment"
+        android:name="com.sadraii.shouldi.ui.Pictures"
         android:label="@string/my_pictures_fragment_title"
         tools:layout="@layout/fragment_pictures">
         <action
@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/pictureDetailFragment"
-        android:name="com.sadraii.shouldi.ui.PictureDetailFragment"
+        android:name="com.sadraii.shouldi.ui.PictureDetail"
         android:label="@string/my_pictures_fragment_title"
         tools:layout="@layout/fragment_picture_detail">
         <argument
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/permissionFragment"
-        android:name="com.sadraii.shouldi.ui.PermissionFragment"
+        android:name="com.sadraii.shouldi.ui.Permission"
         android:label="fragment_permission"
         tools:layout="@layout/fragment_permission">
         <action

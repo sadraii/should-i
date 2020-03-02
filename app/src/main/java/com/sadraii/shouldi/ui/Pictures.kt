@@ -47,7 +47,7 @@ import com.sadraii.shouldi.viewmodel.PicturesViewModel
 import kotlinx.android.synthetic.main.fragment_pictures.view.*
 import kotlinx.android.synthetic.main.item_picture.view.*
 
-class PicturesFragment : Fragment() {
+class Pictures : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -108,7 +108,7 @@ class PicturesFragment : Fragment() {
 
                 holder.itemView.setOnClickListener {
                     findNavController().navigate(
-                        PicturesFragmentDirections.actionMyPicturesFragmentToPictureDetailFragment(model)
+                        PicturesDirections.actionMyPicturesFragmentToPictureDetailFragment(model)
                     )
                 }
             }

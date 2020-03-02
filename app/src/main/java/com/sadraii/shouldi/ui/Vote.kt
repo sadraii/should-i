@@ -41,7 +41,7 @@ import com.sadraii.shouldi.util.GlideApp
 import com.sadraii.shouldi.viewmodel.VoteViewModel
 import kotlinx.android.synthetic.main.fragment_vote.*
 
-class VoteFragment : Fragment() {
+class Vote : Fragment() {
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var storageRef: StorageReference
@@ -84,6 +84,7 @@ class VoteFragment : Fragment() {
                 displayVotingOptions(false)
             } else {
                 displayVotingOptions(true)
+                caption_textView.text = newPicture.caption
                 val pictureRef = storageRef.child(newPicture.pictureUrl)
                 Log.d(TAG, "Glide loading ${newPicture.pictureUrl}")
                 GlideApp.with(this)

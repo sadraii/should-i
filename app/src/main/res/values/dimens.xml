@@ -36,4 +36,6 @@
     <dimen name="rect_button_width">80dp</dimen>
     <dimen name="rect_button_height">24dp</dimen>
     <dimen name="shutter_button_margin">80dp</dimen>
+
+    <dimen name="caption_alpha" format="float">0.8</dimen>
 </resources>

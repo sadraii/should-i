@@ -28,7 +28,7 @@
    <string name="no_pictures_to_vote">Check back later for new pics and post your own!</string>
    <string name="caption_hint">Type something</string>
 
-   <string name="sample_caption">Should I do this amazing thing?</string>
+   <string name="sample_caption">do this amazing thing?</string>
    <string name="sample_username">Username</string>
    <string name="anonymous_username">Anonymous User</string>
 </resources>

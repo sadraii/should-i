@@ -51,6 +51,10 @@ class PictureRepository(
     internal suspend fun updatePictureVoteCount(picture: PictureEntity, vote: Boolean) {
         pictureFirebaseDataStore.updatePictureVoteCount(picture, vote)
     }
+
+    internal suspend fun delete(pictureEntity: PictureEntity) {
+        pictureFirebaseDataStore.delete(pictureEntity)
+    }
 }
 
 

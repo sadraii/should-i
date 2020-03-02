@@ -30,7 +30,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.sadraii.shouldi.R
 import com.sadraii.shouldi.viewmodel.AuthViewModel
 
-class AuthFragment : Fragment() {
+class Auth : Fragment() {
 
     companion object {
         private const val SIGN_IN = 1001

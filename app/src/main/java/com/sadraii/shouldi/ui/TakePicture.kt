@@ -61,7 +61,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.Executors
 
-class TakePictureFragment : Fragment() {
+class TakePicture : Fragment() {
 
     private lateinit var container: ConstraintLayout
     private lateinit var viewFinder: TextureView
@@ -83,7 +83,7 @@ class TakePictureFragment : Fragment() {
         override fun onDisplayAdded(displayId: Int) = Unit
         override fun onDisplayRemoved(displayId: Int) = Unit
         override fun onDisplayChanged(displayId: Int) = view?.let { view ->
-            if (displayId == this@TakePictureFragment.displayId) {
+            if (displayId == this@TakePicture.displayId) {
                 Log.d(TAG, "Rotation changed: ${view.display.rotation}")
                 preview?.setTargetRotation(view.display.rotation)
                 imageCapture?.setTargetRotation(view.display.rotation)
@@ -101,7 +101,7 @@ class TakePictureFragment : Fragment() {
         super.onResume()
         // Make sure that all permissions are still present, since user could have removed them
         //  while the app was on paused state
-        if (!PermissionFragment.hasPermissions(requireContext())) {
+        if (!Permission.hasPermissions(requireContext())) {
             findNavController().navigate(R.id.action_takePictureFragment_to_permissionFragment)
         }
     }
@@ -125,7 +125,7 @@ class TakePictureFragment : Fragment() {
                 imageProxy?.let {
                     activity?.runOnUiThread {
                         findNavController().navigate(
-                            TakePictureFragmentDirections.actionTakePictureFragmentToCaptionFragment(viewFinder.bitmap)
+                            TakePictureDirections.actionTakePictureFragmentToCaptionFragment(viewFinder.bitmap)
                         )
                     }
                 }

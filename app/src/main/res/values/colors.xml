@@ -8,4 +8,5 @@
     <color name="icPressed">#AAFFFFFF</color>
     <color name="card_bg_1">#F0F0F0</color>
     <color name="card_bg_2">#C8C8C8</color>
+    <color name="caption_card_bg">#F2FFFFFF</color>
 </resources>

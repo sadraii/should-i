@@ -37,7 +37,7 @@ private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA)
  * The sole purpose of this fragment is to request permissions and, once granted, display the
  * camera fragment to the user.
  */
-class PermissionFragment : Fragment() {
+class Permission : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,10 +55,13 @@ class PermissionFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
             if (PackageManager.PERMISSION_GRANTED == grantResults.firstOrNull()) {
-                Toast.makeText(context, "Permission request granted", Toast.LENGTH_LONG).show()
                 findNavController().navigate(R.id.action_permissionFragment_to_takePictureFragment)
             } else {
-                Toast.makeText(context, "Permission request denied", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    context,
+                    "Permission request denied. Please grant permission to use the camera.",
+                    Toast.LENGTH_LONG
+                ).show()
                 findNavController().navigate(R.id.action_permissionFragment_to_voteFragment)
             }
         }

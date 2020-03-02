@@ -36,9 +36,9 @@ import com.sadraii.shouldi.R
 import com.sadraii.shouldi.viewmodel.CaptionViewModel
 import kotlinx.android.synthetic.main.fragment_caption.*
 
-class CaptionFragment : Fragment() {
+class Caption : Fragment() {
 
-    private val safeArgs: CaptionFragmentArgs by navArgs()
+    private val safeArgs: CaptionArgs by navArgs()
     private val captionViewModel: CaptionViewModel by viewModels()
 
     override fun onCreateView(
@@ -53,8 +53,8 @@ class CaptionFragment : Fragment() {
 
         val picture = safeArgs.picture
         picture_imageView.background = picture.toDrawable(resources)
-        upload_button.isEnabled = false
 
+        upload_button.isEnabled = false
         upload_button.setOnClickListener { v ->
             hideKeyboardAndUploadPicture(v, picture)
         }
@@ -79,7 +79,6 @@ class CaptionFragment : Fragment() {
             }
             false
         }
-
         caption_editText.doAfterTextChanged { text ->
             upload_button.isEnabled = !text.isNullOrBlank()
         }

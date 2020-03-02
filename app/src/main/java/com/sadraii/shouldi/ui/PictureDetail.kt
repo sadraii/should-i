@@ -21,16 +21,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.storage.FirebaseStorage
 import com.sadraii.shouldi.R
 import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.util.GlideApp
+import com.sadraii.shouldi.viewmodel.PictureDetailViewModel
 import kotlinx.android.synthetic.main.fragment_picture_detail.*
 
-class PictureDetailFragment : Fragment() {
+class PictureDetail : Fragment() {
 
-    private val safeArgs: PictureDetailFragmentArgs by navArgs()
+    private val safeArgs: PictureDetailArgs by navArgs()
+    private val pictureDetailViewModel: PictureDetailViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +47,7 @@ class PictureDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        subscribeToModel()
         val pictureEntity = safeArgs.pictureEntity
 
         yes_vote_textView.text = pictureEntity.yesVotes.toString()
@@ -53,6 +59,16 @@ class PictureDetailFragment : Fragment() {
             .load(pictureRef)
             .centerCrop()
             .into(picture_imageView)
+
+        delete_fab.setOnClickListener { pictureDetailViewModel.delete(pictureEntity) }
+    }
+
+    private fun subscribeToModel() {
+        pictureDetailViewModel.pictureDeleted.observe(viewLifecycleOwner, Observer { picDeleted ->
+            if (picDeleted) {
+                findNavController().popBackStack()
+            }
+        })
     }
 }
 

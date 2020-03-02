@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.VoteFragment">
+    tools:context=".ui.Vote">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/picture_stack_1_cardView"
@@ -80,19 +80,37 @@
                 android:id="@+id/top_view"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="#4D000000"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/rounded_bottom_corners"
                 app:layout_constraintBottom_toTopOf="@id/vote_no_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/top_space" />
+                app:layout_constraintTop_toTopOf="@+id/top_space"
+                android:alpha="@dimen/caption_alpha" />
 
             <Space
                 android:id="@+id/top_space"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/caption_textView"
+                app:layout_constraintBottom_toTopOf="@+id/caption_title_textView"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/caption_title_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/caption_title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toTopOf="@id/caption_textView"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/caption_title" />
 
             <TextView
                 android:id="@+id/caption_textView"
@@ -102,7 +120,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textColor="#FFFFFFFF"
+                android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toTopOf="@id/vote_no_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -149,6 +167,7 @@
         android:layout_marginBottom="16dp"
         android:text="@string/take_picture_button"
         android:textColor="#DE000000"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

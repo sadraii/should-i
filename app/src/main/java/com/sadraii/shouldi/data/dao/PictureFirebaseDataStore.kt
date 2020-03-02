@@ -110,6 +110,26 @@ class PictureFirebaseDataStore {
             picObject?.toObject(PictureEntity::class.java)!!.noVotes
         }
     }
+
+    internal suspend fun delete(pictureEntity: PictureEntity) {
+        // TODO async this
+        // // Delete from Firestore
+        Firebase.firestore.collection(UserRepository.USERS_PATH)
+            .document(pictureEntity.userId)
+            .collection(PictureRepository.PICTURES_PATH)
+            .document(pictureEntity.id)
+            .delete()
+            .addOnFailureListener { e ->
+                Log.d(TAG, "Failed to delete picture ${pictureEntity.id} from Firestore", e)
+            }.await()
+
+        // Delete from Storage
+        storageRef.child(pictureEntity.pictureUrl)
+            .delete()
+            .addOnFailureListener { e ->
+                Log.d(TAG, "Failed to delete picture ${pictureEntity.id} from Storage: ", e)
+            }.await()
+    }
 }
 
 

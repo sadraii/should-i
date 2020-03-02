@@ -37,7 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/top_space"
-            android:alpha="0.8" />
+            android:alpha="@dimen/caption_alpha" />
 
         <Space
             android:id="@+id/top_space"
@@ -45,7 +45,20 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/caption_textView" />
+            app:layout_constraintBottom_toTopOf="@+id/caption_title_textView" />
+
+        <TextView
+            android:id="@+id/caption_title_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/caption_title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@id/caption_textView"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/caption_title" />
 
         <TextView
             android:id="@+id/caption_textView"

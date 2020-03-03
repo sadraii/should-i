@@ -46,6 +46,7 @@ class PictureFirebaseDataStore {
     internal suspend fun add(pictureEntity: PictureEntity, picture: Bitmap) {
         // Await() is called on Tasks to ensure picture is uploaded before RecyclerView loads list of pictures.
         withContext(Dispatchers.IO) {
+            // Upload to Storage
             val storage = async {
                 storageRef.child(pictureEntity.pictureUrl)
                     .putBytes(
@@ -56,9 +57,9 @@ class PictureFirebaseDataStore {
                     }.await()
             }
 
+            // Upload to Firestore
             val userRef = Firebase.firestore.collection(UserRepository.USERS_PATH)
                 .document(pictureEntity.userId)
-
             val user = async {
                 userRef.collection(PictureRepository.PICTURES_PATH)
                     .document(pictureEntity.id)
@@ -68,9 +69,12 @@ class PictureFirebaseDataStore {
                     }.await()
             }
 
-            // TODO these can throw exception
-            storage.await()
-            user.await()
+            try {
+                storage.await()
+                user.await()
+            } catch (e: Throwable) {
+                Log.d(TAG, "Error adding picture ${pictureEntity.id}", e)
+            }
         }
     }
 
@@ -112,23 +116,36 @@ class PictureFirebaseDataStore {
     }
 
     internal suspend fun delete(pictureEntity: PictureEntity) {
-        // TODO async this
-        // // Delete from Firestore
-        Firebase.firestore.collection(UserRepository.USERS_PATH)
-            .document(pictureEntity.userId)
-            .collection(PictureRepository.PICTURES_PATH)
-            .document(pictureEntity.id)
-            .delete()
-            .addOnFailureListener { e ->
-                Log.d(TAG, "Failed to delete picture ${pictureEntity.id} from Firestore", e)
-            }.await()
+        // Await() is called on Tasks to ensure picture is deleted before RecyclerView loads list of pictures.
+        withContext(Dispatchers.IO) {
+            // // Delete from Firestore
+            val fromFirestore = async {
+                Firebase.firestore.collection(UserRepository.USERS_PATH)
+                    .document(pictureEntity.userId)
+                    .collection(PictureRepository.PICTURES_PATH)
+                    .document(pictureEntity.id)
+                    .delete()
+                    .addOnFailureListener { e ->
+                        Log.d(TAG, "Failed to delete picture ${pictureEntity.id} from Firestore", e)
+                    }.await()
+            }
 
-        // Delete from Storage
-        storageRef.child(pictureEntity.pictureUrl)
-            .delete()
-            .addOnFailureListener { e ->
-                Log.d(TAG, "Failed to delete picture ${pictureEntity.id} from Storage: ", e)
-            }.await()
+            // Delete from Storage
+            val fromStorage = async {
+                storageRef.child(pictureEntity.pictureUrl)
+                    .delete()
+                    .addOnFailureListener { e ->
+                        Log.d(TAG, "Failed to delete picture ${pictureEntity.id} from Storage: ", e)
+                    }.await()
+            }
+
+            try {
+                fromFirestore.await()
+                fromStorage.await()
+            } catch (e: Throwable) {
+                Log.d(TAG, "Error deleting picture ${pictureEntity.id}", e)
+            }
+        }
     }
 }
 

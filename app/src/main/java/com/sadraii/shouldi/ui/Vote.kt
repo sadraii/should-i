@@ -55,7 +55,6 @@ class Vote : Fragment() {
         setHasOptionsMenu(true)
         val rootView = inflater.inflate(R.layout.fragment_vote, container, false)
 
-        FirebaseFirestore.setLoggingEnabled(true)
         initFirestore()
         subscribeToModel()
 
@@ -74,6 +73,7 @@ class Vote : Fragment() {
     }
 
     private fun initFirestore() {
+        FirebaseFirestore.setLoggingEnabled(true)
         firestore = Firebase.firestore
         storageRef = FirebaseStorage.getInstance(ShouldIDatabase.GS_BUCKET).reference
     }

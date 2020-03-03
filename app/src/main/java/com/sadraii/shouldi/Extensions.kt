@@ -50,7 +50,7 @@ internal fun ImageProxy.toBitmap(): Bitmap {
 
 internal fun Bitmap.toByteArrayWebp(): ByteArray {
     val stream = ByteArrayOutputStream()
-    compress(Bitmap.CompressFormat.WEBP, 100, stream)
+    compress(Bitmap.CompressFormat.WEBP, 95, stream)
     return stream.toByteArray()
 }
 

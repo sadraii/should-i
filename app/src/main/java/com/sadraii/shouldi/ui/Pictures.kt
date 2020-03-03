@@ -103,7 +103,6 @@ class Pictures : Fragment() {
                 Log.d(TAG, "Glide loading ${model.pictureUrl}")
                 Glide.with(holder.itemView.context)
                     .load(pictureRef)
-                    .placeholder(R.drawable.ic_photo_placeholder_24dp)
                     .into(holder.picture)
 
                 holder.itemView.setOnClickListener {

@@ -18,8 +18,8 @@
         android:elevation="0dp"
         app:cardBackgroundColor="@color/card_bg_1"
         app:cardCornerRadius="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/picture_cardView"
+        app:layout_constraintStart_toStartOf="@+id/picture_cardView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
@@ -33,8 +33,8 @@
         android:elevation="0dp"
         app:cardBackgroundColor="@color/card_bg_2"
         app:cardCornerRadius="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/picture_cardView"
+        app:layout_constraintStart_toStartOf="@+id/picture_cardView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
@@ -84,12 +84,12 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
+                android:alpha="@dimen/caption_alpha"
                 android:background="@drawable/rounded_bottom_corners"
-                app:layout_constraintBottom_toTopOf="@id/vote_no_button"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/top_space"
-                android:alpha="@dimen/caption_alpha" />
+                app:layout_constraintTop_toTopOf="@+id/top_space" />
 
             <Space
                 android:id="@+id/top_space"
@@ -121,40 +121,10 @@
                 android:layout_marginBottom="16dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toTopOf="@id/vote_no_button"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="@string/sample_caption" />
-
-            <Button
-                android:id="@+id/vote_no_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/vote_no_button"
-                android:textColor="#DE000000"
-                app:icon="@drawable/ic_no_vote_black_24dp"
-                app:iconGravity="textStart"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/vote_yes_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/picture_imageView"
-                tools:text="@string/vote_no_button" />
-
-            <Button
-                android:id="@+id/vote_yes_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/vote_yes_button"
-                android:textColor="#DE000000"
-                app:icon="@drawable/ic_yes_vote_black_24dp"
-                app:iconGravity="textStart"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/vote_no_button"
-                app:layout_constraintTop_toBottomOf="@id/picture_imageView"
-                tools:text="@string/vote_yes_button" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -172,6 +142,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/vote_no_fab"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:text="@string/vote_no_button"
+        app:icon="@drawable/ic_no_vote_black_24dp"
+        app:layout_constraintStart_toStartOf="@+id/picture_cardView"
+        app:layout_constraintTop_toBottomOf="@+id/picture_cardView" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/vote_yes_fab"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:text="@string/vote_yes_button"
+        app:icon="@drawable/ic_yes_vote_black_24dp"
+        app:layout_constraintEnd_toEndOf="@+id/picture_cardView"
+        app:layout_constraintTop_toBottomOf="@+id/picture_cardView" />
+
     <TextView
         android:id="@+id/no_pictures_textView"
         android:layout_width="0dp"
@@ -180,8 +176,8 @@
         android:layout_marginEnd="32dp"
         android:text="@string/no_pictures_to_vote"
         android:textAlignment="center"
-        android:textSize="24sp"
         android:textColor="#DE000000"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

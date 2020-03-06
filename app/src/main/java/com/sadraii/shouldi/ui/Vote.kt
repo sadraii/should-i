@@ -108,8 +108,8 @@ class Vote : Fragment() {
         voteViewModel.user = FirebaseAuth.getInstance().currentUser!!
         voteViewModel.updateCurrentPicture()
         displayVotingOptions(false)
-        vote_no_button.setOnClickListener { voteViewModel.vote(false) }
-        vote_yes_button.setOnClickListener { voteViewModel.vote(true) }
+        vote_no_fab.setOnClickListener { voteViewModel.vote(false) }
+        vote_yes_fab.setOnClickListener { voteViewModel.vote(true) }
     }
 
     private fun displayVotingOptions(visible: Boolean) {
@@ -118,6 +118,8 @@ class Vote : Fragment() {
             Handler().postDelayed({
                 picture_stack_1_cardView.visibility = View.VISIBLE
                 picture_stack_2_cardView.visibility = View.VISIBLE
+                vote_no_fab.show()
+                vote_yes_fab.show()
             }, 200)
             picture_cardView.visibility = View.VISIBLE
             no_pictures_textView.visibility = View.GONE
@@ -125,6 +127,8 @@ class Vote : Fragment() {
             picture_stack_1_cardView.visibility = View.GONE
             picture_stack_2_cardView.visibility = View.GONE
             picture_cardView.visibility = View.GONE
+            vote_no_fab.hide()
+            vote_yes_fab.hide()
             no_pictures_textView.visibility = View.VISIBLE
         }
     }

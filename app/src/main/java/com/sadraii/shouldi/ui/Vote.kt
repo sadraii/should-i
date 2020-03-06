@@ -127,8 +127,8 @@ class Vote : Fragment() {
             picture_stack_1_cardView.visibility = View.GONE
             picture_stack_2_cardView.visibility = View.GONE
             picture_cardView.visibility = View.GONE
-            vote_no_fab.hide()
-            vote_yes_fab.hide()
+            vote_no_fab.visibility = View.GONE
+            vote_yes_fab.visibility = View.GONE
             no_pictures_textView.visibility = View.VISIBLE
         }
     }

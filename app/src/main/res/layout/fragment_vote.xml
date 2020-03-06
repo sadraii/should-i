@@ -10,32 +10,39 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/picture_stack_1_cardView"
         style="@style/CardView.Light"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:elevation="0dp"
         app:cardBackgroundColor="@color/card_bg_1"
         app:cardCornerRadius="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/picture_cardView"
-        app:layout_constraintStart_toStartOf="@+id/picture_cardView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/picture_stack_2_cardView"
+        app:layout_constraintStart_toStartOf="@+id/picture_stack_2_cardView"
+        app:layout_constraintTop_toBottomOf="@+id/stack_space" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/picture_stack_2_cardView"
         style="@style/CardView.Light"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="28dp"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="8dp"
         android:elevation="0dp"
         app:cardBackgroundColor="@color/card_bg_2"
         app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="@+id/picture_cardView"
         app:layout_constraintStart_toStartOf="@+id/picture_cardView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/stack_space" />
+
+    <Space
+        android:id="@+id/stack_space"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/picture_cardView"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/picture_cardView"

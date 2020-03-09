@@ -28,7 +28,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -66,9 +65,6 @@ class Vote : Fragment() {
         take_picture_button.setOnClickListener {
             findNavController().navigate(R.id.action_voteFragment_to_permissionFragment)
         }
-        val user = FirebaseAuth.getInstance().currentUser
-        Log.d(TAG, "dbug onViewCreated() user=${user?.uid}")
-        voteViewModel.addUser(user!!)
         displayPictureForVoting()
     }
 
@@ -104,8 +100,6 @@ class Vote : Fragment() {
     }
 
     private fun displayPictureForVoting() {
-        Log.d(TAG, "dbug displayPictureForVoting user=${FirebaseAuth.getInstance().currentUser!!.uid}")
-        voteViewModel.user = FirebaseAuth.getInstance().currentUser!!
         voteViewModel.updateCurrentPicture()
         displayVotingOptions(false)
         vote_no_fab.setOnClickListener { voteViewModel.vote(false) }
@@ -134,8 +128,10 @@ class Vote : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_menu, menu)
+        inflater.inflate(R.menu.toolbar_menu, menu)
     }
 }
+
+
 
 

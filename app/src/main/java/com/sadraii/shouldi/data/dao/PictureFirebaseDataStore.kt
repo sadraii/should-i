@@ -47,7 +47,7 @@ class PictureFirebaseDataStore {
         // Await() is called on Tasks to ensure picture is uploaded before RecyclerView loads list of pictures.
         withContext(Dispatchers.IO) {
             // Upload to Storage
-            val storage = async {
+            val toStorage = async {
                 storageRef.child(pictureEntity.pictureUrl)
                     .putBytes(
                         picture.toByteArrayWebp(),
@@ -60,7 +60,7 @@ class PictureFirebaseDataStore {
             // Upload to Firestore
             val userRef = Firebase.firestore.collection(UserRepository.USERS_PATH)
                 .document(pictureEntity.userId)
-            val user = async {
+            val toUser = async {
                 userRef.collection(PictureRepository.PICTURES_PATH)
                     .document(pictureEntity.id)
                     .set(pictureEntity)
@@ -70,8 +70,8 @@ class PictureFirebaseDataStore {
             }
 
             try {
-                storage.await()
-                user.await()
+                toStorage.await()
+                toUser.await()
             } catch (e: Throwable) {
                 Log.d(TAG, "Error adding picture ${pictureEntity.id}", e)
             }
@@ -86,8 +86,7 @@ class PictureFirebaseDataStore {
                 .limit(1)
                 .get().await()
         } catch (e: FirebaseFirestoreException) {
-            Log.d(TAG, e.localizedMessage!!)
-            Log.d(TAG, "Failed to get picture snapshot ${picture.id} from Firestore")
+            Log.d(TAG, "Failed to get picture snapshot ${picture.id} from Firestore", e)
             null
         }
         if (picSnapshot != null && !picSnapshot.isEmpty) {
@@ -103,9 +102,8 @@ class PictureFirebaseDataStore {
     private suspend fun getCurrentVotes(picRef: DocumentReference, vote: Boolean): Int {
         val picObject = try {
             picRef.get().await()
-        } catch (e: FirebaseFirestoreException) {
-            Log.d(TAG, e.localizedMessage!!)
-            Log.d(TAG, "Failed to get picture ref ${picRef.id} from Firestore")
+        } catch (e: Throwable) {
+            Log.d(TAG, "Failed to get picture ref ${picRef.id} from Firestore", e)
             null
         }
         return if (vote) {
@@ -148,6 +146,8 @@ class PictureFirebaseDataStore {
         }
     }
 }
+
+
 
 
 

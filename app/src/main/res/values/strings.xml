@@ -11,7 +11,8 @@
    <string name="take_picture_button">Should I?</string>
    <string name="nav_vote_button">Vote</string>
    <string name="nav_pictures_button">My Pictures</string>
-   <string name="sign_out_button">Sign Out</string>
+   <string name="logout_button">LOG OUT</string>
+   <string name="delete_button">DELETE</string>
    <string name="caption_upload_button">Upload</string>
    <string name="vote_no_button">NO</string>
    <string name="vote_yes_button">YES</string>
@@ -31,4 +32,5 @@
    <string name="sample_caption">do this amazing thing?</string>
    <string name="sample_username">Username</string>
    <string name="anonymous_username">Anonymous User</string>
+   <string name="profile_button">Profile</string>
 </resources>

@@ -24,6 +24,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sadraii.shouldi.TAG
 import com.sadraii.shouldi.data.ShouldIDatabase
@@ -43,7 +44,6 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
     private val userRepo: UserRepository
     private val pictureDao: PictureDao
     private val pictureRepo: PictureRepository
-
     internal lateinit var user: FirebaseUser
 
     private val _currentVotePicture: MutableLiveData<PictureEntity?> by lazy {
@@ -62,13 +62,12 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
         userRepo = UserRepository(userDao, UserFirebaseDataStore())
         pictureDao = db.pictureDao()
         pictureRepo = PictureRepository(pictureDao, PictureFirebaseDataStore())
-        // user = FirebaseAuth.getInstance().currentUser // TODO initialize here instead of in VoteUI
+        user = FirebaseAuth.getInstance().currentUser!!
+        addOrUpdateUser(user)
+        Log.d(TAG, "dbug VoteViewModel init() user=${user.uid}")
     }
 
-    internal fun addUser(user: FirebaseUser) {
-        Log.d(TAG, "dbug user init=${this::user.isInitialized}")
-        if (this::user.isInitialized) return
-        this.user = user
+    private fun addOrUpdateUser(user: FirebaseUser) {
         val userToAdd = with(user) {
             UserEntity(
                 uid,
@@ -115,6 +114,8 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 }
+
+
 
 
 

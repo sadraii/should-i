@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/profile_imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,42 +21,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        android:text="@string/sample_username"
         app:layout_constraintStart_toEndOf="@+id/profile_imageView"
-        app:layout_constraintTop_toTopOf="@+id/profile_imageView" />
+        app:layout_constraintTop_toTopOf="@+id/profile_imageView"
+        tools:text="@string/sample_username" />
 
     <TextView
-        android:id="@+id/joined_textView"
+        android:id="@+id/email_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/profile_imageView"
-        app:layout_constraintTop_toBottomOf="@+id/username_textView" />
+        app:layout_constraintTop_toBottomOf="@+id/username_textView"
+        tools:text="@string/sample_email" />
 
     <Button
         android:id="@+id/logout_button"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/vote_no_button"
+        android:layout_marginTop="16dp"
+        android:text="@string/logout_button"
         android:textColor="#FFF"
         app:layout_constraintEnd_toStartOf="@id/delete_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_imageView"
-        tools:text="@string/vote_no_button" />
+        tools:text="@string/logout_button" />
 
     <Button
         android:id="@+id/delete_button"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/vote_no_button"
+        android:layout_marginTop="16dp"
+        android:text="@string/delete_button"
         android:textColor="@color/no_red"
-        app:layout_constraintStart_toEndOf="@id/logout_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/logout_button"
         app:layout_constraintTop_toBottomOf="@+id/profile_imageView"
-        tools:text="@string/vote_no_button" />
+        tools:text="@string/delete_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

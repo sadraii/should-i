@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_voteFragment_to_permissionFragment"
             app:destination="@id/permissionFragment" />
+        <action
+            android:id="@+id/action_voteFragment_to_profileDialog"
+            app:destination="@id/profileDialog" />
     </fragment>
     <fragment
         android:id="@+id/takePictureFragment"
@@ -82,4 +85,15 @@
             app:popUpTo="@id/voteFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <dialog
+        android:id="@+id/profileDialog"
+        android:name="com.sadraii.shouldi.ui.ProfileDialog"
+        tools:layout="@layout/fragment_profile_dialog"
+        android:label="ProfileDialog">
+        <action
+            android:id="@+id/action_profileDialog_to_authFragment"
+            app:destination="@id/authFragment"
+            app:popUpTo="@id/authFragment"
+            app:popUpToInclusive="true" />
+    </dialog>
 </navigation>

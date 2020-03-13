@@ -32,5 +32,6 @@
    <string name="sample_caption">do this amazing thing?</string>
    <string name="sample_username">Username</string>
    <string name="anonymous_username">Anonymous User</string>
+   <string name="sample_email">anonymous@example.com</string>
    <string name="profile_button">Profile</string>
 </resources>

@@ -38,7 +38,7 @@ import com.sadraii.shouldi.data.repository.PictureRepository
 import com.sadraii.shouldi.data.repository.UserRepository
 import kotlinx.coroutines.launch
 
-class VoteViewModel(application: Application) : AndroidViewModel(application) {
+class DecideViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userDao: UserDao
     private val userRepo: UserRepository
@@ -64,7 +64,7 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
         pictureRepo = PictureRepository(pictureDao, PictureFirebaseDataStore())
         user = FirebaseAuth.getInstance().currentUser!!
         addOrUpdateUser(user)
-        Log.d(TAG, "dbug VoteViewModel init() user=${user.uid}")
+        Log.d(TAG, "dbug DecideViewModel init() user=${user.uid}")
     }
 
     private fun addOrUpdateUser(user: FirebaseUser) {
@@ -106,11 +106,11 @@ class VoteViewModel(application: Application) : AndroidViewModel(application) {
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(VoteViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(DecideViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return VoteViewModel(app) as T
+                return DecideViewModel(app) as T
             }
-            throw IllegalArgumentException("Unable to construct VoteViewModel")
+            throw IllegalArgumentException("Unable to construct DecideViewModel")
         }
     }
 }

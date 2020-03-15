@@ -9,16 +9,16 @@
    <string name="app_name">Should I</string>
 
    <string name="take_picture_button">Should I?</string>
-   <string name="nav_vote_button">Vote</string>
+   <string name="nav_decide_button">Decide</string>
    <string name="nav_pictures_button">My Pictures</string>
    <string name="logout_button">LOG OUT</string>
    <string name="delete_button">DELETE</string>
    <string name="caption_upload_button">Upload</string>
-   <string name="vote_no_button">NO</string>
-   <string name="vote_yes_button">YES</string>
+   <string name="decide_no_button">NO</string>
+   <string name="decide_yes_button">YES</string>
    <string name="nav_should_i_button">Should I?</string>
 
-   <string name="vote_fragment_title">Should They?</string>
+   <string name="decide_fragment_title">Should They?</string>
    <string name="take_picture_fragment_title">Should I?</string>
    <string name="auth_fragment_title">Should I?</string>
    <string name="my_pictures_fragment_title">Should You?</string>

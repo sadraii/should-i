@@ -51,7 +51,7 @@ class Auth : Fragment() {
             startAuthentication()
             return
         } else {
-            findNavController().navigate(R.id.action_authFragment_to_voteFragment)
+            findNavController().navigate(R.id.action_authFragment_to_decideFragment)
         }
     }
 
@@ -81,7 +81,7 @@ class Auth : Fragment() {
             authViewModel.isAuthenticating = false
             if (resultCode == Activity.RESULT_OK && findNavController().currentDestination?.id == R.id.authFragment) {
                 // TODO if current dest = auth
-                findNavController().navigate(R.id.action_authFragment_to_voteFragment)
+                findNavController().navigate(R.id.action_authFragment_to_decideFragment)
             } else if (resultCode != Activity.RESULT_OK && shouldStartAuthentication()) {
                 startAuthentication()
             }

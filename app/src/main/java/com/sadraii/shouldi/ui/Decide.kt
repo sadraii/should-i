@@ -38,14 +38,14 @@ import com.sadraii.shouldi.R
 import com.sadraii.shouldi.TAG
 import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.util.GlideApp
-import com.sadraii.shouldi.viewmodel.VoteViewModel
-import kotlinx.android.synthetic.main.fragment_vote.*
+import com.sadraii.shouldi.viewmodel.DecideViewModel
+import kotlinx.android.synthetic.main.fragment_decide.*
 
-class Vote : Fragment() {
+class Decide : Fragment() {
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var storageRef: StorageReference
-    private val voteViewModel: VoteViewModel by viewModels()
+    private val decideViewModel: DecideViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +53,7 @@ class Vote : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        val rootView = inflater.inflate(R.layout.fragment_vote, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_decide, container, false)
 
         initFirestore()
         subscribeToModel()
@@ -63,9 +63,6 @@ class Vote : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        take_picture_button.setOnClickListener {
-            findNavController().navigate(R.id.action_voteFragment_to_permissionFragment)
-        }
         displayPictureForVoting()
     }
 
@@ -76,7 +73,7 @@ class Vote : Fragment() {
     }
 
     private fun subscribeToModel() {
-        voteViewModel.currentVotePicture.observe(viewLifecycleOwner, Observer { newPicture ->
+        decideViewModel.currentVotePicture.observe(viewLifecycleOwner, Observer { newPicture ->
             if (newPicture == null) {
                 displayVotingOptions(false)
             } else {
@@ -91,7 +88,7 @@ class Vote : Fragment() {
             }
         })
 
-        voteViewModel.currentVoteUser.observe(viewLifecycleOwner, Observer { newUser ->
+        decideViewModel.currentVoteUser.observe(viewLifecycleOwner, Observer { newUser ->
             if (newUser?.userName.isNullOrBlank()) {
                 username_textView.text = getString(R.string.anonymous_username)
             } else {
@@ -101,10 +98,10 @@ class Vote : Fragment() {
     }
 
     private fun displayPictureForVoting() {
-        voteViewModel.updateCurrentPicture()
+        decideViewModel.updateCurrentPicture()
         displayVotingOptions(false)
-        vote_no_fab.setOnClickListener { voteViewModel.vote(false) }
-        vote_yes_fab.setOnClickListener { voteViewModel.vote(true) }
+        decide_no_fab.setOnClickListener { decideViewModel.vote(false) }
+        decide_yes_fab.setOnClickListener { decideViewModel.vote(true) }
     }
 
     private fun displayVotingOptions(visible: Boolean) {
@@ -113,18 +110,20 @@ class Vote : Fragment() {
             Handler().postDelayed({
                 picture_stack_1_cardView.visibility = View.VISIBLE
                 picture_stack_2_cardView.visibility = View.VISIBLE
-                vote_no_fab.show()
-                vote_yes_fab.show()
+                decide_no_fab.show()
+                decide_yes_fab.show()
             }, 200)
             picture_cardView.visibility = View.VISIBLE
             no_pictures_textView.visibility = View.GONE
+            down_arrow_imageView.visibility = View.GONE
         } else {
             picture_stack_1_cardView.visibility = View.GONE
             picture_stack_2_cardView.visibility = View.GONE
             picture_cardView.visibility = View.GONE
-            vote_no_fab.visibility = View.GONE
-            vote_yes_fab.visibility = View.GONE
+            decide_no_fab.visibility = View.GONE
+            decide_yes_fab.visibility = View.GONE
             no_pictures_textView.visibility = View.VISIBLE
+            down_arrow_imageView.visibility = View.VISIBLE
         }
     }
 
@@ -134,7 +133,7 @@ class Vote : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.profile_button) {
-            findNavController().navigate(R.id.action_voteFragment_to_profileDialog)
+            findNavController().navigate(R.id.action_decideFragment_to_profileDialog)
         }
         return super.onOptionsItemSelected(item)
     }

@@ -62,7 +62,7 @@ class Permission : Fragment() {
                     "Permission request denied. Please grant permission to use the camera.",
                     Toast.LENGTH_LONG
                 ).show()
-                findNavController().navigate(R.id.action_permissionFragment_to_voteFragment)
+                findNavController().navigate(R.id.action_permissionFragment_to_decideFragment)
             }
         }
     }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@id/voteFragment"
-        android:icon="@drawable/ic_nav_vote"
-        android:title="@string/nav_vote_button" />
+        android:id="@id/decideFragment"
+        android:icon="@drawable/ic_nav_decide_black_24dp"
+        android:title="@string/nav_decide_button" />
     <item
         android:id="@id/permissionFragment"
-        android:icon="@drawable/ic_add_a_photo_black_36dp"
+        android:icon="@drawable/ic_nav_add_photo_black_36dp"
         android:title="@string/nav_should_i_button" />
     <item
         android:id="@id/myPicturesFragment"

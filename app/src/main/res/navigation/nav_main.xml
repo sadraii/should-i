@@ -11,19 +11,19 @@
         android:label="@string/auth_fragment_title"
         tools:layout="@layout/fragment_auth">
         <action
-            android:id="@+id/action_authFragment_to_voteFragment"
-            app:destination="@id/voteFragment" />
+            android:id="@+id/action_authFragment_to_decideFragment"
+            app:destination="@id/decideFragment" />
     </fragment>
     <fragment
-        android:id="@+id/voteFragment"
-        android:name="com.sadraii.shouldi.ui.Vote"
-        android:label="@string/vote_fragment_title"
-        tools:layout="@layout/fragment_vote">
+        android:id="@+id/decideFragment"
+        android:name="com.sadraii.shouldi.ui.Decide"
+        android:label="@string/decide_fragment_title"
+        tools:layout="@layout/fragment_decide">
         <action
-            android:id="@+id/action_voteFragment_to_permissionFragment"
+            android:id="@+id/action_decideFragment_to_permissionFragment"
             app:destination="@id/permissionFragment" />
         <action
-            android:id="@+id/action_voteFragment_to_profileDialog"
+            android:id="@+id/action_decideFragment_to_profileDialog"
             app:destination="@id/profileDialog" />
     </fragment>
     <fragment
@@ -37,7 +37,7 @@
         <action
             android:id="@+id/action_takePictureFragment_to_permissionFragment"
             app:destination="@id/permissionFragment"
-            app:popUpTo="@id/voteFragment"
+            app:popUpTo="@id/decideFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -78,18 +78,18 @@
         <action
             android:id="@+id/action_permissionFragment_to_takePictureFragment"
             app:destination="@id/takePictureFragment"
-            app:popUpTo="@id/voteFragment" />
+            app:popUpTo="@id/decideFragment" />
         <action
-            android:id="@+id/action_permissionFragment_to_voteFragment"
-            app:destination="@id/voteFragment"
-            app:popUpTo="@id/voteFragment"
+            android:id="@+id/action_permissionFragment_to_decideFragment"
+            app:destination="@id/decideFragment"
+            app:popUpTo="@id/decideFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <dialog
         android:id="@+id/profileDialog"
         android:name="com.sadraii.shouldi.ui.ProfileDialog"
-        tools:layout="@layout/fragment_profile_dialog"
-        android:label="ProfileDialog">
+        android:label="ProfileDialog"
+        tools:layout="@layout/fragment_profile_dialog">
         <action
             android:id="@+id/action_profileDialog_to_authFragment"
             app:destination="@id/authFragment"

@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.Caption">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ImageView
         android:id="@+id/picture_imageView"
         android:layout_width="0dp"

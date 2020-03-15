@@ -35,7 +35,6 @@ class PictureRepository(
     private val user = FirebaseAuth.getInstance().currentUser
 
     internal suspend fun add(picture: Bitmap, caption: String) {
-        // TODO add actual bitmap?
         val uuid = UUID.randomUUID().toString().replace("-", "")
         val uri = "${user!!.uid}/$uuid.${PictureFirebaseDataStore.PICTURE_FORMAT}"
         val pictureToAdd = PictureEntity(uuid, user.uid, uri, caption = caption)

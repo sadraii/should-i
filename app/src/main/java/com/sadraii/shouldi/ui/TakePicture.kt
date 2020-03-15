@@ -166,7 +166,6 @@ class TakePicture : Fragment() {
         val viewFinderConfig = PreviewConfig.Builder().apply {
             setLensFacing(lensFacing)
             // We request aspect ratio but no resolution to let CameraX optimize our use cases
-            // TODO(): Change on rotation?
             // setTargetAspectRatioCustom(screenAspectRatio)
             setTargetAspectRatio(AspectRatio.RATIO_4_3)
             // Set initial target rotation, we will have to call this again if rotation changes
@@ -183,7 +182,6 @@ class TakePicture : Fragment() {
             setCaptureMode(CaptureMode.MIN_LATENCY)
             // We request aspect ratio but no resolution to match preview config but letting
             // CameraX optimize for whatever specific resolution best fits requested capture mode
-            // TODO(): Change on rotation?
             // setTargetAspectRatioCustom(screenAspectRatio)
             setTargetAspectRatio(AspectRatio.RATIO_4_3)
             // Set initial target rotation, we will have to call this again if rotation changes

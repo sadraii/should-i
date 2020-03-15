@@ -24,7 +24,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,7 +42,6 @@ import com.sadraii.shouldi.data.ShouldIDatabase
 import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.data.repository.PictureRepository
 import com.sadraii.shouldi.data.repository.UserRepository
-import com.sadraii.shouldi.viewmodel.PicturesViewModel
 import kotlinx.android.synthetic.main.fragment_pictures.view.*
 import kotlinx.android.synthetic.main.item_picture.view.*
 
@@ -52,7 +50,6 @@ class Pictures : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: FirestorePagingAdapter<PictureEntity, PictureViewHolder>
-    private val myPicturesViewModel by viewModels<PicturesViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,7 +72,6 @@ class Pictures : Fragment() {
             .setPrefetchDistance(10)
             .setPageSize(10)
             .build()
-        // TODO Parser?
         val options = FirestorePagingOptions.Builder<PictureEntity>()
             .setLifecycleOwner(this)
             .setQuery(query, config, PictureEntity::class.java)
@@ -97,7 +93,6 @@ class Pictures : Fragment() {
                 holder.caption.text = model.caption
                 Log.d(TAG, "recycling yes: ${model.yesVotes}")
 
-                // TODO Move to Repo
                 val pictureRef = storageRef.child(model.pictureUrl)
 
                 Log.d(TAG, "Glide loading ${model.pictureUrl}")

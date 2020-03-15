@@ -17,6 +17,7 @@
 package com.sadraii.shouldi.data.dao
 
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
@@ -85,7 +86,14 @@ class UserFirebaseDataStore {
             }
     }
 
-    // TODO finish
+    internal suspend fun updateLastVoteAwait(user: FirebaseUser, lastVote: Long) {
+        userCollection.document(user.uid)
+            .update(mapOf("lastVote" to lastVote))
+            .addOnFailureListener { e ->
+                Log.d(TAG, "Failed to update vote for ${user.uid} in Firestore", e)
+            }.await()
+    }
+
     internal suspend fun getUser(user: String?) =
         user?.let {
             withContext(Dispatchers.IO) {
@@ -113,7 +121,6 @@ class UserFirebaseDataStore {
             getNextPicture(userEntity?.lastVote)
         }
 
-    // TODO Can't vote for your own picture
     private suspend fun getNextPicture(lastVote: Long?): PictureEntity? {
         val nextPicSnapshot = try {
             if (lastVote == null) {
@@ -129,13 +136,22 @@ class UserFirebaseDataStore {
                     .get().await()
             }
         } catch (e: FirebaseFirestoreException) {
-            Log.d(TAG, e.message!!)
+            Log.d(TAG, "Failed to get collection group for lastVote=$lastVote", e)
             null
         }
         Log.d(TAG, "collectionGroup size=${nextPicSnapshot?.size()}")
 
+        // If next picture is your own, skip it and go to the next one
         return if (nextPicSnapshot != null && !nextPicSnapshot.isEmpty) {
-            nextPicSnapshot.documents[0].toObject(PictureEntity::class.java)
+            val user = FirebaseAuth.getInstance().currentUser!!
+            val pic = nextPicSnapshot.documents[0].toObject(PictureEntity::class.java)
+            if (pic?.userId == user.uid) {
+                Log.d(TAG, "dbug skip own pic")
+                updateLastVoteAwait(user, pic.created)
+                getNextPicture(pic.created)
+            } else {
+                pic
+            }
         } else {
             null
         }

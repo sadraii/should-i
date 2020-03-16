@@ -28,9 +28,6 @@ interface PictureDao : BaseDao<PictureEntity> {
 
     @Query("DELETE FROM pictures")
     suspend fun deleteAllPictures()
-
-    // @Query("SELECT * FROM pictures WHERE user_id = :userId")
-    // suspend fun getPicturesForUser(userId: String): List<PictureEntity>?
 }
 
 

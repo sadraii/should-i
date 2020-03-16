@@ -16,6 +16,8 @@
 
 package com.sadraii.shouldi.ui
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -25,6 +27,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -37,6 +40,7 @@ import com.google.firebase.storage.StorageReference
 import com.sadraii.shouldi.R
 import com.sadraii.shouldi.TAG
 import com.sadraii.shouldi.data.ShouldIDatabase
+import com.sadraii.shouldi.data.entity.PictureEntity
 import com.sadraii.shouldi.util.GlideApp
 import com.sadraii.shouldi.viewmodel.DecideViewModel
 import kotlinx.android.synthetic.main.fragment_decide.*
@@ -45,6 +49,7 @@ class Decide : Fragment() {
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var storageRef: StorageReference
+    private lateinit var picture: PictureEntity
     private val decideViewModel: DecideViewModel by viewModels()
 
     override fun onCreateView(
@@ -63,6 +68,7 @@ class Decide : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        report_imageView.setOnClickListener { reportImage() }
         displayPictureForVoting()
     }
 
@@ -85,6 +91,7 @@ class Decide : Fragment() {
                     .load(pictureRef)
                     .centerCrop()
                     .into(picture_imageView)
+                picture = newPicture
             }
         })
 
@@ -95,6 +102,23 @@ class Decide : Fragment() {
                 username_textView.text = newUser?.userName
             }
         })
+    }
+
+    private fun reportImage() {
+        if (this::picture.isInitialized) {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "message/rfc822"
+                putExtra(Intent.EXTRA_EMAIL, arrayOf("msadraii@gmail.com"))
+                putExtra(Intent.EXTRA_SUBJECT, "Should I: Reporting image ${picture.id}")
+                putExtra(Intent.EXTRA_TEXT, "Please write below why you are reporting this image: ")
+            }
+            try {
+                startActivity(Intent.createChooser(intent, "Report an image..."))
+            } catch (ex: ActivityNotFoundException) {
+                Toast.makeText(context, "Please install an email client to report this image.", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
 
     private fun displayPictureForVoting() {

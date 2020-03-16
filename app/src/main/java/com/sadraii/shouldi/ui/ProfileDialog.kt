@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.request.RequestOptions
+import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.sadraii.shouldi.R
@@ -35,19 +36,21 @@ class ProfileDialog : BottomSheetDialogFragment() {
         email_textView.text = user?.email
 
         logout_button.setOnClickListener {
-            signOut()
+            AuthUI.getInstance().signOut(context!!)
+                .addOnSuccessListener {
+                    findNavController().navigate(R.id.action_profileDialog_to_authFragment)
+                }
         }
         delete_button.setOnClickListener {
-            FirebaseAuth.getInstance().currentUser?.delete()?.addOnFailureListener {
-                Toast.makeText(context, "Please sign in again to delete your account.", Toast.LENGTH_LONG).show()
-            }
-            signOut()
+            AuthUI.getInstance().delete(context!!)
+                .addOnSuccessListener {
+                    findNavController().navigate(R.id.action_profileDialog_to_authFragment)
+                }
+                .addOnFailureListener {
+                    Toast.makeText(context, "Please sign in again to delete your account.", Toast.LENGTH_LONG).show()
+                    findNavController().navigate(R.id.action_profileDialog_to_authFragment)
+                }
         }
-    }
-
-    private fun signOut() {
-        FirebaseAuth.getInstance().signOut()
-        findNavController().navigate(R.id.action_profileDialog_to_authFragment)
     }
 }
 

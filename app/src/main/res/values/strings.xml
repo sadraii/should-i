@@ -34,4 +34,7 @@
    <string name="anonymous_username">Anonymous User</string>
    <string name="sample_email">anonymous@example.com</string>
    <string name="profile_button">Profile</string>
+
+   <string name="terms_of_service_url">https://docs.google.com/document/d/1OH9Kkyrh_SdRMTuvDug43wVu1JxcVHUm199uB4Q7akw/edit?usp=sharing</string>
+   <string name="privacy_policy_url">https://docs.google.com/document/d/1uancL8V8Rps5MSN7Isi7c-JtWgaelMZddWuahZef_gM/edit?usp=sharing</string>
 </resources>

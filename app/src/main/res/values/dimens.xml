@@ -39,4 +39,5 @@
 
     <dimen name="caption_alpha" format="float">0.8</dimen>
     <dimen name="votes_alpha" format="float">0.2</dimen>
+    <dimen name="report_alpha" format="float">0.5</dimen>
 </resources>

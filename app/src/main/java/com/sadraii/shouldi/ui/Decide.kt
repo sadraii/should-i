@@ -109,8 +109,8 @@ class Decide : Fragment() {
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "message/rfc822"
                 putExtra(Intent.EXTRA_EMAIL, arrayOf("msadraii@gmail.com"))
-                putExtra(Intent.EXTRA_SUBJECT, "Should I: Reporting image ${picture.id}")
                 putExtra(Intent.EXTRA_TEXT, "Please write below why you are reporting this image: ")
+                putExtra(Intent.EXTRA_SUBJECT, "Should I: Reporting image ${picture.id}")
             }
             try {
                 startActivity(Intent.createChooser(intent, "Report an image..."))

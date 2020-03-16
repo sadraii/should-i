@@ -70,6 +70,12 @@ class Auth : Fragment() {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .setIsSmartLockEnabled(false)
+                .setTheme(R.style.AppTheme)
+                .setLogo(R.drawable.auth_ui_logo)
+                .setTosAndPrivacyPolicyUrls(
+                    getString(R.string.terms_of_service_url),
+                    getString(R.string.privacy_policy_url)
+                )
                 .build(),
             SIGN_IN
         )

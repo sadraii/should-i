@@ -133,6 +133,9 @@ dependencies {
 //    implementation 'de.hdodenhof:circleimageview:3.0.1'
 //    implementation 'joda-time:joda-time:2.10.5'
 
+    // Misc
+    implementation 'com.google.code.gson:gson:2.8.6'
+
     // Testing
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
     testImplementation 'junit:junit:4.12'

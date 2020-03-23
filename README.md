@@ -4,7 +4,7 @@
 
 A photo-sharing app where you can take a picture, add a caption, and have others help you decide if you should do something.
 
-[![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.sadraii.shouldi)
+<a href='https://play.google.com/store/apps/details?id=com.sadraii.shouldi&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width='250'/></a>
 
 ### Frameworks and Libraries
 
